@@ -1,0 +1,16 @@
+input1 := 2
+input2 := 0
+input3 := 0
+input4 := 1
+input5 := 3
+input6 := 1
+input7 := 1
+input8 := 1
+input9 := 4
+input10 := 3
+input11 := 3
+input12 := 2
+input13 := 6
+input14 := 1
+input15 := 0
+input16 := 0

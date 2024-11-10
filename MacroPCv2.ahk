@@ -151,6 +151,7 @@ GetDpiScale() { ;lấy tỉ lệ scale của màn hình
 runRoblox(){ ;run Roblox as Administrator
     Run ("*RunAs " "C:\Users\pc\AppData\Local\Roblox\Versions\version-0c1a10704cb043cc\RobloxPlayerBeta.exe")
     LongWaitingTime
+    LongWaitingTime
     While(true){
         if WinExist('Roblox'){
             WinActivate
@@ -170,8 +171,9 @@ RestartRoblox(){
     main()
 }
 
+ScriptfilePath := A_ScriptFullPath
 if !A_IsAdmin{ ; run as Administrator
-    Run( "*RunAs " "C:\Program Files\AutoHotkey\v2\AutoHotkey.exe" " " "G:\Macro-Roblox\MacroPCv2.ahk")
+    Run( "*RunAs " "C:\Program Files\AutoHotkey\v2\AutoHotkey.exe" " " ScriptfilePath)
     ExitApp
 }
 
@@ -417,6 +419,8 @@ ReadyUp(){ ;wait for the ready button and press (function has a waiting time of 
             }
             
             while (color == c7){
+                MouseMove x7, y7
+                ShortWaitingTime
                 SetTimer(CloseMsgBox, 500) 
                 MsgBox("bấm ready", "Thông báo")
                 Click
@@ -425,7 +429,7 @@ ReadyUp(){ ;wait for the ready button and press (function has a waiting time of 
             }
             roundcount++
             if (!globalAutoReady || recharging)
-            break
+                break
             else count := 0
         }
         if (PixelGetColor(x14, y14) == 0x000000 and PixelGetColor(x15, y15) == 0x000000 and PixelGetColor(x16, y16) == 0x000000 and PixelGetColor(x17, y17) == 0x000000)
@@ -801,7 +805,7 @@ main(){
             SpecialGear1SetupDone := false
         }else SpecialGear1SetupDone := true
         
-        global golbalDeath := 0
+        global globalDeath := 0
         global globalAutoReady := false
         global firsttimesetup := true
         loopCurrent := A_Index
@@ -947,7 +951,7 @@ main(){
         ReadyUp
 
 
-        if (globalDeath >0 || roundcount == 5){
+        if (globalDeath >0 || roundcount == Resetround){
             SendEvent "{Esc}"
             sleep 1000
             SendEvent "L"
