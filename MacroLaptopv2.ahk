@@ -1230,18 +1230,20 @@ Constructor(){
     gameGUI := Gui()
     global roundcount
     gameGUI.Opt("+AlwaysOnTop -Caption")
+    gameGUI.BackColor := "0x000040"
+    gameGUI.SetFont("cWhite")
 	gameGUI.SetFont("s14", "Segoe UI")
 	gameGUI.SetFont("s16", "Segoe UI")
-	gameGUI.Add("Text", "x-1 y8 w407 h42 +0x200 +Center", "MACRO THE FINAL STAND 2 v1.02")
+	gameGUI.Add("Text", "x-1 y8 w407 h42 +0x200 +Center", "MACRO THE FINAL STAND 2 v2.01")
 	gameGUI.SetFont("s14", "Segoe UI")
-	loopEdit := gameGUI.Add("Text", "x8 y96 w96 h26 +0x200 -Background", "Loop" loopCurrent "/" userInput)
+	loopEdit := gameGUI.Add("Text", "x8 y96 w96 h26 +0x200", "Loop" loopCurrent "/" userInput)
 
 	roundsSurvived := gameGUI.Add("Text", "x8 y64 w254 h23 +0x200", "Rounds survived last time: " getroundsSurvivedvalue)
 	gameGUI.Add("Text", "x-8 y56 w493 h1 +0x10")
 	roundEdit := gameGUI.Add("Text", "x104 y96 w176 h26 +0x200", "Current Round: " roundcount)
 	timeEdit := gameGUI.Add("Text", "x288 y96 w106 h26 +0x200", "Time")
     Progressvar :=  0 ;loopCurrent / userInput *100
-	gameProgress := gameGUI.Add("Progress", "x0 y128 w407 h20 -Smooth", Progressvar)
+	gameProgress := gameGUI.Add("Progress", "x0 y128 w407 h20 -Smooth +Background0x000040 +C0x006A67", Progressvar)
 	gameGUI.OnEvent('Close', (*) => ExitApp())
 	gameGUI.Title := "Press Pgup Key to cancel"
     global StartTime := A_TickCount
@@ -1257,6 +1259,7 @@ Constructor(){
         totalTime := totalMinutes *60
         mins := ElapsedTime //60
         hours := mins //60
+        mins := Mod(mins, 60)
         seconds := Mod(ElapsedTime, 60)
         
         if (!changeText){
