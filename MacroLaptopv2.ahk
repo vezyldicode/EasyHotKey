@@ -87,24 +87,24 @@ global centerDis := 2440
 
 
 ; 4 vị trí đặt đồ
-global x10 := 802 ;864
-global y10 := 691 ;690
-global x11 := 1073 ;849
-global y11 := 693 ;821
-global x12 := 1052 ;1201
-global y12 := 796 ;819
-global x13 := 872 ; 1081 
-global y13 := 799 ;671
+global x10 := 1278 ;864
+global y10 := 1287 ;690
+global x11 := 1732 ;849
+global y11 := 1308 ;821
+global x12 := 1814 ;1201
+global y12 := 1516 ;819
+global x13 := 1396 ; 1081 
+global y13 := 1474 ;671
 
 ; 4 vị trí màu đen báo hiệu khi thua
-global x14 := 500
-global y14 := 200
-global x15 := 1500
-global y15 := 200
-global x16 := 500
-global y16 := 900
-global x17 := 1500
-global y17 := 900
+global x14 := 800
+global y14 := 500
+global x15 := 2400
+global y15 := 500
+global x16 := 2400
+global y16 := 1500
+global x17 := 800
+global y17 := 1500
 
 
 ;YOU SHOULD ASK THE AUTHOR BEFORE EDITING THE FOLLOWING VARIABLES
@@ -149,7 +149,7 @@ GetDpiScale() { ;lấy tỉ lệ scale của màn hình
 
 
 runRoblox(){ ;run Roblox as Administrator
-    Run ("*RunAs " "C:\Users\pc\AppData\Local\Roblox\Versions\version-0c1a10704cb043cc\RobloxPlayerBeta.exe")
+    Run ("*RunAs " "C:\Users\ADMIN\AppData\Local\Roblox\Versions\version-6fdcfe060c6440cd\RobloxPlayerBeta.exe")
     LongWaitingTime
     LongWaitingTime
     While(true){
