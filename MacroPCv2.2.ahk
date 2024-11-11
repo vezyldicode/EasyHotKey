@@ -30,81 +30,176 @@ Note each time use
 
 SendMode "InputThenPlay"
 
-; Edit it when first used
+; tạo file macro customization
+cusFilePath := "MacroCustomization.ini"
+If !FileExist(cusFilePath) || FileGetSize(cusFilePath) = 0 {
+    if FileExist(cusFilePath) ; Kiểm tra sự tồn tại trước khi xóa
+        FileDelete(cusFilePath) ; Xóa file nếu có nhưng trống
+    FileAppend("", cusFilePath) ; Tạo file mới
+    WriteValueToFile(cusFilePath, 'robloxPath := ')
+    WriteValueToFile(cusFilePath, "chọn game pixel màu trắng")
+    WriteValueToFile(cusFilePath, "x1 := 0")
+    WriteValueToFile(cusFilePath, "y1 := 0")
+    WriteValueToFile(cusFilePath, "c1 := 0")
+    WriteValueToFile(cusFilePath, "nút vào game màu xanh góc trên bên trái")
+    WriteValueToFile(cusFilePath, "x2 := 0")
+    WriteValueToFile(cusFilePath, "y2 := 0")
+    WriteValueToFile(cusFilePath, "c2 := 0")
+    WriteValueToFile(cusFilePath, "c21 := 0")
+    WriteValueToFile(cusFilePath, "bấm vào private game pixel màu trắng")
+    WriteValueToFile(cusFilePath, "x3 := 0")
+    WriteValueToFile(cusFilePath, "y3 := 0")
+    WriteValueToFile(cusFilePath, "c3 := 0")
+    WriteValueToFile(cusFilePath, "bấm vào career mode màu xanh dương")
+    WriteValueToFile(cusFilePath, "x4 := 0")
+    WriteValueToFile(cusFilePath, "y4 := 0")
+    WriteValueToFile(cusFilePath, "c4 := 0")
+    WriteValueToFile(cusFilePath, "c41 := 0")
+    WriteValueToFile(cusFilePath, "bấm vào tạo Private game")
+    WriteValueToFile(cusFilePath, "x5 := 0")
+    WriteValueToFile(cusFilePath, "y5 := 0")
+    WriteValueToFile(cusFilePath, "c5 := 0")
+    WriteValueToFile(cusFilePath, "bấm vào nút play trong trận")
+    WriteValueToFile(cusFilePath, "x6 := 0")
+    WriteValueToFile(cusFilePath, "y6 := 0")
+    WriteValueToFile(cusFilePath, "c6 := 0")
+    WriteValueToFile(cusFilePath, "bấm nút Ready (dùng pixel màu trắng ở ngay chữ R - tránh bị trùng vào Kill)")
+    WriteValueToFile(cusFilePath, "x7 := 0")
+    WriteValueToFile(cusFilePath, "y7 := 0")
+    WriteValueToFile(cusFilePath, "c7 := 0")
+    WriteValueToFile(cusFilePath, "bấm nút sang phải 3 lần pixel màu trắng ở mũi tên")
+    WriteValueToFile(cusFilePath, "x8 := 0")
+    WriteValueToFile(cusFilePath, "y8 := 0")
+    WriteValueToFile(cusFilePath, "c8 := 0")
+    WriteValueToFile(cusFilePath, "vị trí nhận tiền round đầu tiên pixel màu vàng")
+    WriteValueToFile(cusFilePath, "x9 := 0")
+    WriteValueToFile(cusFilePath, "y9 := 0")
+    WriteValueToFile(cusFilePath, "c9 := 0")
+    WriteValueToFile(cusFilePath, "4 vị trí đặt đồ")
+    WriteValueToFile(cusFilePath, "x10 := 0")
+    WriteValueToFile(cusFilePath, "y10 := 0")
+    WriteValueToFile(cusFilePath, "x11 := 0")
+    WriteValueToFile(cusFilePath, "y11 := 0")
+    WriteValueToFile(cusFilePath, "x12 := 0")
+    WriteValueToFile(cusFilePath, "y12 := 0")
+    WriteValueToFile(cusFilePath, "x13 := 0")
+    WriteValueToFile(cusFilePath, "y13 := 0")
+    WriteValueToFile(cusFilePath, "4 vị trí màu đen báo hiệu khi thua")
+    WriteValueToFile(cusFilePath, "x14 := 0")
+    WriteValueToFile(cusFilePath, "y14 := 0")
+    WriteValueToFile(cusFilePath, "x15 := 0")
+    WriteValueToFile(cusFilePath, "y15 := 0")
+    WriteValueToFile(cusFilePath, "x16 := 0")
+    WriteValueToFile(cusFilePath, "y16 := 0")
+    WriteValueToFile(cusFilePath, "x17 := 0")
+    WriteValueToFile(cusFilePath, "y17 := 0")
+    WriteValueToFile(cusFilePath, "doorDis := 2310")
+    WriteValueToFile(cusFilePath, "centerDis := 2440")
+}
+
+;tạo file data
+dataFilePath := "MacroData.txt"
+If !FileExist(dataFilePath) || FileGetSize(dataFilePath) = 0 {
+    if FileExist(dataFilePath) ; Kiểm tra sự tồn tại trước khi xóa
+        FileDelete(dataFilePath) ; Xóa file nếu có nhưng trống
+    FileAppend("", dataFilePath) ; Tạo file mới
+    WriteValueToFile(dataFilePath, "input1 := 0" )
+    WriteValueToFile(dataFilePath, "input2 := 0" )
+    WriteValueToFile(dataFilePath, "input3 := 0" )
+    WriteValueToFile(dataFilePath, "input4 := 0" )
+    WriteValueToFile(dataFilePath, "input5 := 0" )
+    WriteValueToFile(dataFilePath, "input6 := 0" )
+    WriteValueToFile(dataFilePath, "input7 := 0" )
+    WriteValueToFile(dataFilePath, "input8 := 0" )
+    WriteValueToFile(dataFilePath, "input9 := 0" )
+    WriteValueToFile(dataFilePath, "input10 := 0" )
+    WriteValueToFile(dataFilePath, "input11 := 0" )
+    WriteValueToFile(dataFilePath, "input12 := 0" )
+    WriteValueToFile(dataFilePath, "input13 := 0" )
+    WriteValueToFile(dataFilePath, "input14 := 0" )
+    WriteValueToFile(dataFilePath, "input15 := 0" )
+    WriteValueToFile(dataFilePath, "input16 := 0" )
+}
+
+hisFilePath := "MacroHistory.txt"
+If !FileExist(hisFilePath){
+    FileAppend("", hisFilePath) ; Tạo file mới
+}
 
 
+ 
 ; chọn game pixel màu trắng
-global x1 := 250
-global y1 := 1006
-global c1 := 0xFFFFFF
+global x1 := ReadValueFromFile(cusFilePath, "x1")
+global y1 := ReadValueFromFile(cusFilePath, "y1")
+global c1 := ReadValueFromFile(cusFilePath, "c1")
 
 ; nút vào game màu xanh góc trên bên trái
-global x2 := 485
-global y2 := 246
-global c2 := 0x00B06F
-global c21 := 0x009F64
+global x2 := ReadValueFromFile(cusFilePath, "x2")
+global y2 := ReadValueFromFile(cusFilePath, "y2")
+global c2 := ReadValueFromFile(cusFilePath, "c2")
+global c21 := ReadValueFromFile(cusFilePath, "c21")
 
 ; bấm vào private game pixel màu trắng
-global x3 := 289
-global y3 := 679
-global c3 := 0xFFFFFF
+global x3 := ReadValueFromFile(cusFilePath, "x3")
+global y3 := ReadValueFromFile(cusFilePath, "y3")
+global c3 := ReadValueFromFile(cusFilePath, "c3")
 
 ; bấm vào career mode màu xanh dương
-global x4 := 1034
-global y4 := 449
-global c4 := 0x00A5FF
-global c41 := 0x00527F
+global x4 := ReadValueFromFile(cusFilePath, "x4")
+global y4 := ReadValueFromFile(cusFilePath, "y4")
+global c4 := ReadValueFromFile(cusFilePath, "c4")
+global c41 := ReadValueFromFile(cusFilePath, "c41")
 
 ; bấm vào tạo Private game
-global x5 := 427
-global y5 := 860
-global c5 := 0xFFFFFF
+global x5 := ReadValueFromFile(cusFilePath, "x5")
+global y5 := ReadValueFromFile(cusFilePath, "y5")
+global c5 := ReadValueFromFile(cusFilePath, "c5")
 
 ; bấm vào nút play trong trận
-global x6 := 948
-global y6 := 1033
-global c6 := 0xFFFFFF
+global x6 := ReadValueFromFile(cusFilePath, "x6")
+global y6 := ReadValueFromFile(cusFilePath, "y6")
+global c6 := ReadValueFromFile(cusFilePath, "c6")
 
 ; bấm nút Ready (dùng pixel màu trắng ở ngay chữ R - tránh bị trùng vào Kill)
-global x7 := 1790
-global y7 := 1000
-global c7 := 0xA6A6A6
+global x7 := ReadValueFromFile(cusFilePath, "x7")
+global y7 := ReadValueFromFile(cusFilePath, "y7")
+global c7 := ReadValueFromFile(cusFilePath, "c7")
 
 ; bấm nút sang phải 3 lần pixel màu trắng ở mũi tên
-global x8 := 1137
-global y8 := 992
-global c8 := 0xFFFFFF
+global x8 := ReadValueFromFile(cusFilePath, "x8")
+global y8 := ReadValueFromFile(cusFilePath, "y8")
+global c8 := ReadValueFromFile(cusFilePath, "c8")
 
 ; vị trí nhận tiền round đầu tiên pixel màu vàng
-global x9 := 1018
-global y9 := 659 
-global c9 := 0xFFB400
+global x9 := ReadValueFromFile(cusFilePath, "x9")
+global y9 := ReadValueFromFile(cusFilePath, "y9")
+global c9 := ReadValueFromFile(cusFilePath, "c9")
 
 ; thời gian di chuyển các chặng
-global doorDis := 2310
-global centerDis := 2440
+global doorDis := ReadValueFromFile(cusFilePath, "doorDis")
+global centerDis := ReadValueFromFile(cusFilePath, "centerDis")
 
 
 
 ; 4 vị trí đặt đồ
-global x10 := 802 ;864
-global y10 := 691 ;690
-global x11 := 1073 ;849
-global y11 := 693 ;821
-global x12 := 1052 ;1201
-global y12 := 796 ;819
-global x13 := 872 ; 1081 
-global y13 := 799 ;671
+global x10 := ReadValueFromFile(cusFilePath, "x10")
+global y10 := ReadValueFromFile(cusFilePath, "y10")
+global x11 := ReadValueFromFile(cusFilePath, "x11")
+global y11 := ReadValueFromFile(cusFilePath, "y11")
+global x12 := ReadValueFromFile(cusFilePath, "x12")
+global y12 := ReadValueFromFile(cusFilePath, "y12")
+global x13 := ReadValueFromFile(cusFilePath, "x13")
+global y13 := ReadValueFromFile(cusFilePath, "y13")
 
 ; 4 vị trí màu đen báo hiệu khi thua
-global x14 := 500
-global y14 := 200
-global x15 := 1500
-global y15 := 200
-global x16 := 500
-global y16 := 900
-global x17 := 1500
-global y17 := 900
+global x14 := ReadValueFromFile(cusFilePath, "x14")
+global y14 := ReadValueFromFile(cusFilePath, "y14")
+global x15 := ReadValueFromFile(cusFilePath, "x15")
+global y15 := ReadValueFromFile(cusFilePath, "y15")
+global x16 := ReadValueFromFile(cusFilePath, "x16")
+global y16 := ReadValueFromFile(cusFilePath, "y16")
+global x17 := ReadValueFromFile(cusFilePath, "x17")
+global y17 := ReadValueFromFile(cusFilePath, "y17")
 
 
 ;YOU SHOULD ASK THE AUTHOR BEFORE EDITING THE FOLLOWING VARIABLES
@@ -120,6 +215,7 @@ globalDeath := 0 ;biến đếm số lần chết
 global recharging := false ;biến quy định khi nào là lúc đang thực hiện recharge (mặc định là false khi chưa thực hiện)
 global Resetround := 30 ;chống tình trạng trôi loop, khi đến round chỉ định thì tự động tắt game 
 global loopCurrent := 0
+global robloxopen := false ;biến hiển thị trạng thái roblox lên gameGUI
 
 ; lấy vị trí chính giữa màn hình
 dpi := GetDpiScale()
@@ -131,9 +227,7 @@ global gameGUIWidth := 405
 global gameGUIHeight := 147
 screenWidth := A_ScreenWidth
 screenHeight := A_ScreenHeight
-
 ScaleFactor := Dpi / 96.0
-
 xPos := ((screenWidth - gameGUIWidth * dpi) / 2)/dpi ; X tại giữa màn hình
 yPos := screenHeight / 12 ; Y tại 1/12 chiều rộng màn hình
 
@@ -147,9 +241,13 @@ GetDpiScale() { ;lấy tỉ lệ scale của màn hình
     return dpi / 96
 }
 
-
+robloxPath := ReadValueFromFile(cusFilePath, "robloxPath") ; "C:\Users\pc\AppData\Local\Roblox\Versions\version-0c1a10704cb043cc\RobloxPlayerBeta.exe"
+if (robloxPath == ""){
+    MsgBox("Enter your Roblox file Path in MacroCustomization.ini first before open this macro again", "Macro By Vezyl")
+    ExitApp
+}
 runRoblox(){ ;run Roblox as Administrator
-    Run ("*RunAs " "C:\Users\pc\AppData\Local\Roblox\Versions\version-0c1a10704cb043cc\RobloxPlayerBeta.exe")
+    Run ("*RunAs " robloxPath)
     LongWaitingTime
     LongWaitingTime
     While(true){
@@ -178,46 +276,12 @@ if !A_IsAdmin{ ; run as Administrator
 }
 
 
-dataFilePath := "MacroData.txt"
 
-; tạo file user data
-If !FileExist(dataFilePath) || FileGetSize(dataFilePath) = 0 {
-    if FileExist(dataFilePath) ; Kiểm tra sự tồn tại trước khi xóa
-        FileDelete(dataFilePath) ; Xóa file nếu có nhưng trống
-    FileAppend("", dataFilePath) ; Tạo file mới
-    WriteValueToFile(dataFilePath, "input1 := 0" )
-    WriteValueToFile(dataFilePath, "input2 := 0" )
-    WriteValueToFile(dataFilePath, "input3 := 0" )
-    WriteValueToFile(dataFilePath, "input4 := 0" )
-    WriteValueToFile(dataFilePath, "input5 := 0" )
-    WriteValueToFile(dataFilePath, "input6 := 0" )
-    WriteValueToFile(dataFilePath, "input7 := 0" )
-    WriteValueToFile(dataFilePath, "input8 := 0" )
-    WriteValueToFile(dataFilePath, "input9 := 0" )
-    WriteValueToFile(dataFilePath, "input10 := 0" )
-    WriteValueToFile(dataFilePath, "input11 := 0" )
-    WriteValueToFile(dataFilePath, "input12 := 0" )
-    WriteValueToFile(dataFilePath, "input13 := 0" )
-    WriteValueToFile(dataFilePath, "input14 := 0" )
-    WriteValueToFile(dataFilePath, "input15 := 0" )
-    WriteValueToFile(dataFilePath, "input16 := 0" )
 
-}
 
-WriteValueToFile(filePath, content) { ; ghi file
-    FileAppend(content "`n", filePath) ; Thêm nội dung vào file
-}
 
-ReadValueFromFile(filePath, keyword) {
-    fileContent := FileRead(filePath) ; Đọc toàn bộ nội dung file
-    for line in StrSplit(fileContent, "`n") { ; Duyệt từng dòng
-        if InStr(line, keyword " := ") = 1 { ; Kiểm tra dòng bắt đầu bằng từ khóa
-            global value := StrSplit(line, " := ")[2] ; Lấy giá trị sau dấu :=
-            return value
-        }
-    }
-    return "0" ; Trả về chuỗi trống nếu không tìm thấy từ khóa
-}
+
+
 
 /*
 Các hàm có ảnh hưởng đến thời gian hoặc vòng lặp đều mặc định có đoạn code dưới đây để nhận tín hiệu từ phím PgUp để buộc dừng chương trình
@@ -354,7 +418,6 @@ PlacementWalkTime(){ ;time to go from center to Placement position (default 30cD
 }
 
 
-
 ReadyUp(){ ;wait for the ready button and press (function has a waiting time of about 1 round)
     /*
     Hàm điều phối và thực hiện lệnh bấm ready khi round mới
@@ -371,7 +434,8 @@ ReadyUp(){ ;wait for the ready button and press (function has a waiting time of 
     global globalAutoReady
     global roundcount
     global SpecialGear1SetupDone
-    global getroundsSurvivedvalue
+    global loopCount
+
     if (GetKeyState("PgUp", "P")) {
         StopFlag := true
         ErrorMissTime
@@ -396,13 +460,6 @@ ReadyUp(){ ;wait for the ready button and press (function has a waiting time of 
         if (color == c7) ;
         {
             if (roundcount == 16 and SpecialGear1SetupDone == false){ ;setup sau round chỉ định 1 round
-                ; Loop backwardtime {
-                ;     MoveForward
-                ; }
-                ; SpecialGear1Setup
-                ; Loop backwardtime {
-                ;     MoveBackward
-                ; }
                 currentDis := cDis
                 oldPos := cDis
                 While (currentDis < 30){
@@ -435,8 +492,6 @@ ReadyUp(){ ;wait for the ready button and press (function has a waiting time of 
         if (PixelGetColor(x14, y14) == 0x000000 and PixelGetColor(x15, y15) == 0x000000 and PixelGetColor(x16, y16) == 0x000000 and PixelGetColor(x17, y17) == 0x000000)
             {globalDeath++
             roundcount--
-            getroundsSurvivedvalue := roundcount
-
             SetTimer(CloseMsgBox, 1000) 
             MsgBox("so lan chet" globalDeath)
             LongWaitingTime
@@ -491,42 +546,39 @@ GearSetup(){
     currentHotKey3 := 0
     currentX := x10
     currentY := y10
-    While (round <5 and globalDeath ==0){ ;setup đến hết round 4
+    While (round <5 and globalDeath == 0){ ;setup đến hết round 4
         NormalWaitingTime
 
         SendEvent "1"
         currentHotKey1 := 0
         currentHotKey2 := 0
         currentHotKey3 := 0
-
-        if (round == 2) { ;nếu đang round 2 thì chỉnh số lượng hiện có của các đồ cho round 2
-            currentNumforHotkey1 := NumforHotkey1round2
-            currentNumforHotkey2 := NumforHotkey2round2
-            currentNumforHotkey3 := NumforHotkey3round2
-            if (rechargeWait == false) { ;nếu không phải lần recharge thì bấm ready
+        switch round {
+            case 2:  ;nếu đang round 2 thì chỉnh số lượng hiện có của các đồ cho round 2
+                currentNumforHotkey1 := NumforHotkey1round2
+                currentNumforHotkey2 := NumforHotkey2round2
+                currentNumforHotkey3 := NumforHotkey3round2
+                if (rechargeWait == false) { ;nếu không phải lần recharge thì bấm ready
+                    ReadyUp
+                }else {
+                    recharging := true
+                    rechargeWait := false
+                    ; MsgBox ('tat recharge wait')
+                }
+            case 3: 
+                currentNumforHotkey1 := NumforHotkey1round3
+                currentNumforHotkey2 := NumforHotkey2round3
+                currentNumforHotkey3 := NumforHotkey3round3
                 ReadyUp
-            }else {
-                recharging := true
-                rechargeWait := false
-                ; MsgBox ('tat recharge wait')
-            }
+            case 4: 
+                currentNumforHotkey1 := NumforHotkey1round4
+                currentNumforHotkey2 := NumforHotkey2round4
+                currentNumforHotkey3 := NumforHotkey3round4
+                ReadyUp
+                recharging := false
+                rechargeWait := true
         }
-        if (round == 3) {
-            currentNumforHotkey1 := NumforHotkey1round3
-            currentNumforHotkey2 := NumforHotkey2round3
-            currentNumforHotkey3 := NumforHotkey3round3
-            ReadyUp
-        }
-        if (round == 4) {
-            currentNumforHotkey1 := NumforHotkey1round4
-            currentNumforHotkey2 := NumforHotkey2round4
-            currentNumforHotkey3 := NumforHotkey3round4
-            ReadyUp
-            recharging := false
-            rechargeWait := true
-        }
-
-        While (currentHotKey1 < currentNumforHotkey1){ ;khi mà số đồ hiện có của hotkey1 bé hơn hoặc bằng số lượng đặt được trong round đấy
+        While (globalDeath == 0 and currentHotKey1 < currentNumforHotkey1){ ;khi mà số đồ hiện có của hotkey1 bé hơn hoặc bằng số lượng đặt được trong round đấy
             currentHotKey1++ ;cộng 1 đồ đã được đặt
             if (!x13able){
                 MoveBackward
@@ -550,24 +602,27 @@ GearSetup(){
                 ShortWaitingTime
                 currentColor := PixelGetColor(currentX, currentY)
             }
-            if (currentX == x10){ ;nếu đang đặt cho vị trí 1 thì chuyển sang vị trí 2
-                currentX := x11
-                currentY := y11
-            }else if (currentX == x11){ ;nếu đang đặt cho vị trí 2 thì chuyển sang vị trí 3
-                currentX := x12
-                currentY := y12
-            }else if (currentX == x12){ ;nếu đang đặt cho vị trí 3 thì chuyển sang vị trí 4
-                currentX := x13
-                currentY := y13
-            }else if currentX == x13 and (currentHotKey2 < currentNumforHotkey2 || currentHotKey1 < currentNumforHotkey1 || currentHotKey3 < currentNumforHotkey3){
-                MoveBackward
-                currentX := x10
-                currentY := y10
-            }else if (currentX == x13 and round <4){ ;khi còn round sau mà đã đặt đồ vào vị trí thứ 4
-                x13able := false
-            }  
+            switch currentX {
+                case x10:
+                    currentX := x11
+                    currentY := y11
+                case x11:
+                    currentX := x12
+                    currentY := y12
+                case x12:
+                    currentX := x13
+                    currentY := y13
+                case x13:
+                    if (currentHotKey2 < currentNumforHotkey2 || currentHotKey1 < currentNumforHotkey1 || currentHotKey3 < currentNumforHotkey3){
+                        MoveBackward
+                        currentX := x10
+                        currentY := y10
+                    }else if (round <4){
+                        x13able := false
+                    }
+            } 
         }
-        While (currentHotKey2 < currentNumforHotkey2){ ;khi mà số đồ hiện có của hotkey2 bé hơn hoặc bằng số lượng đặt được trong round đấy
+        While (globalDeath == 0 and currentHotKey2 < currentNumforHotkey2){ ;khi mà số đồ hiện có của hotkey2 bé hơn hoặc bằng số lượng đặt được trong round đấy
             currentHotKey2++ ;cộng 1 đồ đã được đặt
             if (!x13able){
                 MoveBackward
@@ -591,24 +646,27 @@ GearSetup(){
                 ShortWaitingTime
                 currentColor := PixelGetColor(currentX, currentY)
             }
-            if (currentX == x10){ ;nếu đang đặt cho vị trí 1 thì chuyển sang vị trí 2
-                currentX := x11
-                currentY := y11
-            }else if (currentX == x11){ ;nếu đang đặt cho vị trí 2 thì chuyển sang vị trí 3
-                currentX := x12
-                currentY := y12
-            }else if (currentX == x12){ ;nếu đang đặt cho vị trí 3 thì chuyển sang vị trí 4
-                currentX := x13
-                currentY := y13
-            }else if currentX == x13 and (currentHotKey2 < currentNumforHotkey2 || currentHotKey3 < currentNumforHotkey3){
-                MoveBackward
-                currentX := x10
-                currentY := y10
-            }else if (currentX == x13 and round <4){ ;khi còn round sau mà đã đặt đồ vào vị trí thứ 4
-                x13able := false
-            }  
+            switch currentX {
+                case x10:
+                    currentX := x11
+                    currentY := y11
+                case x11:
+                    currentX := x12
+                    currentY := y12
+                case x12:
+                    currentX := x13
+                    currentY := y13
+                case x13:
+                    if (currentHotKey2 < currentNumforHotkey2 || currentHotKey3 < currentNumforHotkey3){
+                        MoveBackward
+                        currentX := x10
+                        currentY := y10
+                    }else if (round <4){
+                        x13able := false
+                    }
+            } 
         }
-        While (currentHotKey3 < currentNumforHotkey3){ ;khi mà số đồ hiện có của hotkey2 bé hơn hoặc bằng số lượng đặt được trong round đấy
+        While (globalDeath == 0 and currentHotKey3 < currentNumforHotkey3){ ;khi mà số đồ hiện có của hotkey2 bé hơn hoặc bằng số lượng đặt được trong round đấy
             currentHotKey3++ ;cộng 1 đồ đã được đặt
             if (!x13able){
                 MoveBackward
@@ -632,26 +690,30 @@ GearSetup(){
                 ShortWaitingTime
                 currentColor := PixelGetColor(currentX, currentY)
             }
-            if (currentX == x10){ ;nếu đang đặt cho vị trí 1 thì chuyển sang vị trí 2
-                currentX := x11
-                currentY := y11
-            }else if (currentX == x11){ ;nếu đang đặt cho vị trí 2 thì chuyển sang vị trí 3
-                currentX := x12
-                currentY := y12
-            }else if (currentX == x12){ ;nếu đang đặt cho vị trí 3 thì chuyển sang vị trí 4
-                currentX := x13
-                currentY := y13
-            }else if (currentX == x13 and currentHotKey3 < currentNumforHotkey3){
-                MoveBackward
-                currentX := x10
-                currentY := y10
-            }else if (currentX == x13 and round <4){ ;khi còn round sau mà đã đặt đồ vào vị trí thứ 4
-                x13able := false
-            }   
+            switch currentX {
+                case x10:
+                    currentX := x11
+                    currentY := y11
+                case x11:
+                    currentX := x12
+                    currentY := y12
+                case x12:
+                    currentX := x13
+                    currentY := y13
+                case x13:
+                    if (currentHotKey3 < currentNumforHotkey3){
+                        MoveBackward
+                        currentX := x10
+                        currentY := y10
+                    }else if (round <4){
+                        x13able := false
+                    }
+            }
         }
         round++
     }
 }
+
 
 SpecialGear1Setup(){ ;đặt special gear 1 cách sang bên phải 2460ms
     ; ĐẶT FLAME TURRET
@@ -667,7 +729,7 @@ SpecialGear1Setup(){ ;đặt special gear 1 cách sang bên phải 2460ms
         currentX := x10
         currentY := y10
         
-        While (currentHotKey4 < NumforHotkey4){ ;khi mà số đồ hiện có của hotkey4 bé hơn hoặc bằng số lượng đặt được trong round đấy
+        While (globalDeath == 0 and currentHotKey4 < NumforHotkey4){ ;khi mà số đồ hiện có của hotkey4 bé hơn hoặc bằng số lượng đặt được trong round đấy
             currentHotKey4++ ;cộng 1 đồ đã được đặt
             SendEvent "1"
             ShortWaitingTime
@@ -703,16 +765,6 @@ SpecialGear1Setup(){ ;đặt special gear 1 cách sang bên phải 2460ms
             if (currentX == x10){ ;nếu đang đặt cho vị trí 1 thì chuyển sang vị trí 2
                 currentX := x11
                 currentY := y11
-            }else if (currentX == x11){ ;nếu đang đặt cho vị trí 2 thì chuyển sang vị trí 3
-                currentX := x12
-                currentY := y12
-            }else if (currentX == x12){ ;nếu đang đặt cho vị trí 3 thì chuyển sang vị trí 4
-                currentX := x13
-                currentY := y13
-            }else if (currentX == x13){
-                MoveBackward
-                currentX := x10
-                currentY := y10
             }
         }
 
@@ -759,18 +811,27 @@ main(){
     global roundcount := 0
     global SpecialGear1SetupDone
     global getroundsSurvivedvalue := 0
+    global robloxopen := false
     
     GUIingame()
+
+    ;display current time and write into macrodata
+    WriteValueToFile(hisFilePath, "---" )
+    formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+    WriteValueToFile(hisFilePath, formattedTime " run macro with " loopCount " loop(s)" )
+
+
     runRoblox
     if (GetKeyState("PgUp", "P")) {
         StopFlag := true
         ErrorMissTime
     }
-
+    
     ;hover to most recent game location
     LongWaitingTime
     LongWaitingTime
     count := 0
+    global robloxopen := true
     While (!StopFlag) {
         if (GetKeyState("PgUp", "P")) {
             StopFlag := true
@@ -964,9 +1025,14 @@ main(){
         ;loop count notification
         loopCurrent := A_Index
         LoopRemaining := loopCount - loopCurrent
+        getroundsSurvivedvalue := roundcount
+        formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+        WriteValueToFile(hisFilePath, formattedTime " Complete loop " loopCurrent ", Rounds Survived: " getroundsSurvivedvalue)
         SetTimer(CloseMsgBox, 1000)
         MsgBox("complete the loop: " loopCurrent "`nremaining loop : " LoopRemaining)
     }
+    formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+    WriteValueToFile(hisFilePath, formattedTime " Complete all ")
     SetTimer(CloseMsgBox, 3000) 
     MsgBox("Chạy thành công", "Thông báo")
     ExitApp
@@ -1018,8 +1084,8 @@ input12 := mainGUI.Add("ComboBox", "x448 y264 w112", ["1", "2", "3", "4", "5", "
 
 ;advanced macro
 mainGUI.Add("Text", "x16 y336 w291 h25 +0x200", "Special Gear ")
-input13 := mainGUI.Add("ComboBox", "x16 y384 w112", ["1", "2", "3", "4", "5", "6", "7", "8"])
-input14 := mainGUI.Add("ComboBox", "x160 y384 w112", ["1", "2", "3", "4", "5", "6", "7", "8"])
+input13 := mainGUI.Add("ComboBox", "x16 y384 w112", ["1", "2", "3", "4", "5", "6", "7", "8", "9"])
+input14 := mainGUI.Add("ComboBox", "x160 y384 w112", ["1", "2"])
 input15 := mainGUI.Add("ComboBox", "x16 y448 w112", ["1", "2", "3", "4", "5", "6", "7", "8"])
 input16 := mainGUI.Add("ComboBox", "x160 y448 w112", ["1", "2", "3", "4", "5", "6", "7", "8"])
 mainGUI.SetFont("s10")
@@ -1081,7 +1147,7 @@ mainGUI.OnEvent('Close', (*) => ExitApp())
 isContinuePressed := false
 global roundcount
 
-OnEventHandler(*){
+OnEventHandler(*){ ;gán các giá trị người dùng vào biến xử lý khi các giá trị thay đổi
     global isContinuePressed  ; Sử dụng biến toàn cục
     global userInput := textInput.Value
     global HotKey1 := input1.Value
@@ -1138,8 +1204,8 @@ onButtonClick(*) {
     global NumforHotkey3round4 := input12.Value
 
 
-    if FileExist(dataFilePath) ; Kiểm tra sự tồn tại trước khi xóa
-        FileDelete(dataFilePath) ; Xóa file nếu có nhưng trống
+    if FileExist(dataFilePath)
+        FileDelete(dataFilePath) ;xóa file data cũ
     FileAppend("", dataFilePath) ; Tạo file mới
     WriteValueToFile(dataFilePath, "input1 := " input1.value)
     WriteValueToFile(dataFilePath, "input2 := " input2.value)
@@ -1158,37 +1224,6 @@ onButtonClick(*) {
     WriteValueToFile(dataFilePath, "input15 := " input15.value)
     WriteValueToFile(dataFilePath, "input16 := " input16.value)
 
-    if (userInput == '') {
-    MsgBox('Mày đang đéo nhập gì cả', "Macro by Vezyl")
-    }else if !RegExMatch(userInput, "^\d+$") {
-        MsgBox('Mày cần nhập vào đúng định dạng 1 số', "Macro by Vezyl")
-        isButtonClicked := false  ; Đặt lại nếu không phải là số
-        return
-    }else {
-        if (HotKey1 == "") 
-            HotKey1 := 0
-        if (NumforHotkey1round2 == "") 
-            NumforHotkey1round2 := 0
-        if (NumforHotkey1round3 == "") 
-            NumforHotkey1round3 := 0
-        if (NumforHotkey1round4 == "") 
-            NumforHotkey1round4 := 0
-        if (HotKey2 == "") 
-            HotKey2 := 0
-        if (NumforHotkey2round2 == "") 
-            NumforHotkey2round2 := 0
-        if (NumforHotkey2round3 == "") 
-            NumforHotkey2round3 := 0
-        if (NumforHotkey2round4 == "") 
-            NumforHotkey2round4 := 0
-        if (HotKey3 == "") 
-            HotKey3 := 0
-        if (NumforHotkey3round2 == "") 
-            NumforHotkey3round2 := 0
-        if (NumforHotkey3round3 == "") 
-            NumforHotkey3round3 := 0
-        if (NumforHotkey3round4 == "") 
-            NumforHotkey3round4 := 0
         
         global totalMinutes := userInput * 54
         hours := totalMinutes // 60
@@ -1202,7 +1237,7 @@ onButtonClick(*) {
         isContinuePressed := true
         mainGUI.Hide()
         main()
-    }
+    ; }
 }
 
 mainGUI.Show ("w623 h514")
@@ -1234,7 +1269,7 @@ Constructor(){
     gameGUI.SetFont("cWhite")
 	gameGUI.SetFont("s14", "Segoe UI")
 	gameGUI.SetFont("s16", "Segoe UI")
-	gameGUI.Add("Text", "x-1 y8 w407 h42 +0x200 +Center", "MACRO THE FINAL STAND 2 v1.02")
+	gameGUI.Add("Text", "x-1 y8 w407 h42 +0x200 +Center", "MACRO THE FINAL STAND 2 v2.2")
 	gameGUI.SetFont("s14", "Segoe UI")
 	loopEdit := gameGUI.Add("Text", "x8 y96 w96 h26 +0x200", "Loop" loopCurrent "/" userInput)
 
@@ -1255,6 +1290,7 @@ Constructor(){
     UpdateTimer() {
         global StartTime, Gui
         global changeText
+        global robloxopen
         ElapsedTime := Round((A_TickCount - StartTime) / 1000) ; Tính thời gian đã trôi qua bằng giây
         totalTime := totalMinutes *60
         mins := ElapsedTime //60
@@ -1273,7 +1309,9 @@ Constructor(){
         loopEdit.Text := "Loop" loopCurrent "/" userInput
         Progressvar := ElapsedTime / totalTime * 100
         gameProgress.Value := Progressvar
-        roundsSurvived.Text := "Rounds survived last time: " getroundsSurvivedvalue
+        if (!robloxopen){
+            roundsSurvived.Text := "Starting Roblox ..."
+        }else roundsSurvived.Text := "Rounds survived last time: " getroundsSurvivedvalue
     }
     
     
@@ -1290,14 +1328,35 @@ CloseMsgBox() { ;close dialog box automatically
 }
 
 ErrorMissTime() { ;error report, close Program
+    global loopCurrent
+    global roundcount
     MouseGetPos &xpos, &ypos 
     color := PixelGetColor(xpos, ypos)
     if (StopFlag == true){
-        MsgBox("Stop by User ", "Time ran out")
+        formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+        WriteValueToFile(hisFilePath, formattedTime " Stop by User. Current loop: " loopCurrent ", Current round " roundcount)
+        MsgBox("Stop by User ", "Macro Stopped")
     } else {
+        formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+        WriteValueToFile(hisFilePath, formattedTime " Error. Current loop: " loopCurrent ", Current round " roundcount)
         SetTimer(CloseMsgBox, 1000)
         MsgBox("unexpected color, the color code collected is: " color, "Time ran out")
         RestartRoblox
         }
     ExitApp
+}
+
+WriteValueToFile(filePath, content) { ; ghi file
+    FileAppend(content "`n", filePath) ; Thêm nội dung vào file
+}
+
+ReadValueFromFile(filePath, keyword) {
+    fileContent := FileRead(filePath) ; Đọc toàn bộ nội dung file
+    for line in StrSplit(fileContent, "`n") { ; Duyệt từng dòng
+        if InStr(line, keyword " := ") = 1 { ; Kiểm tra dòng bắt đầu bằng từ khóa
+            global value := StrSplit(line, " := ")[2] ; Lấy giá trị sau dấu :=
+            return value
+        }
+    }
+    return "0" ; Trả về chuỗi trống nếu không tìm thấy từ khóa
 }
