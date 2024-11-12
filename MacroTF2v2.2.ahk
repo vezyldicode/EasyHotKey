@@ -1077,7 +1077,7 @@ mainGUI := Gui()
 mainGUI.SetFont("s14", "Segoe UI")
 mainGUI.SetFont("s30 cBlack")
 startButton := mainGUI.Add("Button", "x544 y16 w64 h49", "▸")
-mainGUI.Title := "MACRO THE FINAL STAND 2"
+mainGUI.Title := "MACRO THE FINAL STAND 2 v2.2"
 
 
 ; nhập thông tin số lần loop
