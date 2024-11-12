@@ -454,6 +454,8 @@ ReadyUp(){ ;wait for the ready button and press (function has a waiting time of 
         count++
         NormalWaitingTime
         if (count > 10000)
+            formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+            WriteValueToFile(hisFilePath, formattedTime " Error: Cannot Ready. Current loop: " loopCurrent ", Current round " roundcount)
             ErrorMissTime
         if (globalDeath >0)
             break
@@ -593,7 +595,7 @@ GearSetup(){
             SetTimer(CloseMsgBox, 500) 
             MsgBox("Đặt ở vị trí x" currentX " y" currentY , "Thông báo")
             oldColor := PixelGetColor(currentX, currentY)
-            currentColor := PixelGetColor(currentX, currentY)
+            currentColor := oldColor
             While (currentColor == oldColor){
                 SetTimer(CloseMsgBox, 500) 
                 MsgBox("Đang đặt đặt ... " currentHotKey1 " cho " HotKey1, "Thông báo")
@@ -637,7 +639,7 @@ GearSetup(){
             SetTimer(CloseMsgBox, 500) 
             MsgBox("Đặt ở vị trí x" currentX " y" currentY , "Thông báo")
             oldColor := PixelGetColor(currentX, currentY)
-            currentColor := PixelGetColor(currentX, currentY)
+            currentColor := oldColor
             While (currentColor == oldColor){
                 SetTimer(CloseMsgBox, 500) 
                 MsgBox("Đang đặt đặt ... " currentHotKey2 " cho " HotKey2, "Thông báo")
@@ -681,7 +683,7 @@ GearSetup(){
             SetTimer(CloseMsgBox, 500) 
             MsgBox("Đặt ở vị trí x" currentX " y" currentY , "Thông báo")
             oldColor := PixelGetColor(currentX, currentY)
-            currentColor := PixelGetColor(currentX, currentY)
+            currentColor := oldColor
             While (currentColor == oldColor){
                 SetTimer(CloseMsgBox, 500) 
                 MsgBox("Đang đặt đặt ... " currentHotKey3 " cho " HotKey3, "Thông báo")
@@ -747,14 +749,14 @@ SpecialGear1Setup(){ ;đặt special gear 1 cách sang bên phải 2460ms
                 SetTimer(CloseMsgBox, 500) 
                 MsgBox("Đặt ở vị trí x" currentX " y" currentY , "Thông báo")
                 oldColor := PixelGetColor(currentX, currentY)
-                currentColor := PixelGetColor(currentX, currentY)
+                currentColor := oldColor
                 While (currentColor == oldColor){
-                SetTimer(CloseMsgBox, 500) 
-                MsgBox("Đang đặt... " currentHotKey4 " cho " HotKey4, "Thông báo")
-                ShortWaitingTime
-                SendEvent "{Lbutton}" ;đặt đồ
-                ShortWaitingTime
-                currentColor := PixelGetColor(currentX, currentY)
+                    SetTimer(CloseMsgBox, 500) 
+                    MsgBox("Đang đặt... " currentHotKey4 " cho " HotKey4, "Thông báo")
+                    ShortWaitingTime
+                    SendEvent "{Lbutton}" ;đặt đồ
+                    ShortWaitingTime
+                    currentColor := PixelGetColor(currentX, currentY)
                 }
                 ; SendEvent "{Lbutton}" ;đặt đồ
                 ; NormalWaitingTime
@@ -765,14 +767,14 @@ SpecialGear1Setup(){ ;đặt special gear 1 cách sang bên phải 2460ms
                 SetTimer(CloseMsgBox, 500) 
                 MsgBox("Đặt ở vị trí x" currentX " y" currentY , "Thông báo")
                 oldColor := PixelGetColor(currentX, currentY)
-                currentColor := PixelGetColor(currentX, currentY)
+                currentColor := oldColor
                 While (currentColor == oldColor){
-                SetTimer(CloseMsgBox, 500) 
-                MsgBox("Đang đặt... " currentHotKey4 " cho " HotKey4, "Thông báo")
-                ShortWaitingTime
-                SendEvent "{Lbutton}" ;đặt đồ
-                ShortWaitingTime
-                currentColor := PixelGetColor(currentX, currentY)
+                    SetTimer(CloseMsgBox, 500) 
+                    MsgBox("Đang đặt... " currentHotKey4 " cho " HotKey4, "Thông báo")
+                    ShortWaitingTime
+                    SendEvent "{Lbutton}" ;đặt đồ
+                    ShortWaitingTime
+                    currentColor := PixelGetColor(currentX, currentY)
                 }
                 ; SendEvent "{Lbutton}" ;đặt đồ
                 ; NormalWaitingTime
@@ -869,6 +871,8 @@ main(){
         count++
         ShortWaitingTime
         if (count > 100)
+            formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+            WriteValueToFile(hisFilePath, formattedTime " Error: Cannot find game. Current loop: " loopCurrent)
             ErrorMissTime ;error report after 100 tries
         if (color == c1) 
         {
@@ -918,7 +922,24 @@ main(){
                 nextcolor := PixelGetColor(x%nextXYC%, y%nextXYC%)
                 count++
                 ShortWaitingTime
-                if (count > 300) 
+                if (count > 300)
+                    switch currentXYC{
+                        case 2:
+                            formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+                            WriteValueToFile(hisFilePath, formattedTime " Error: Cannot join game. Current loop: " loopCurrent)
+                        case 3:
+                            formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+                            WriteValueToFile(hisFilePath, formattedTime " Error: Cannot find Private Game button. Current loop: " loopCurrent)
+                        case 4:
+                            formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+                            WriteValueToFile(hisFilePath, formattedTime " Error: Cannot find Career Mode button. Current loop: " loopCurrent)
+                        case 5:
+                            formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+                            WriteValueToFile(hisFilePath, formattedTime " Error: Cannot find Create Private button. Current loop: " loopCurrent)
+                        case 6:
+                            formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+                            WriteValueToFile(hisFilePath, formattedTime " Error: Cannot find Play button. Current loop: " loopCurrent)
+                        }
                     ErrorMissTime
                 if (color == c4 || color == c41){
                     MouseMove x%currentXYC%, y%currentXYC%
@@ -935,6 +956,23 @@ main(){
                         ShortWaitingTime
                         minicount++
                         if (minicount > 300){
+                            switch currentXYC{
+                                case 2:
+                                    formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+                                    WriteValueToFile(hisFilePath, formattedTime " Error: Spam clicking at join game. Current loop: " loopCurrent)
+                                case 3:
+                                    formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+                                    WriteValueToFile(hisFilePath, formattedTime " Error: Spam clicking at Private Game button. Current loop: " loopCurrent)
+                                case 4:
+                                    formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+                                    WriteValueToFile(hisFilePath, formattedTime " Error: Spam clicking at Career Mode button. Current loop: " loopCurrent)
+                                case 5:
+                                    formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+                                    WriteValueToFile(hisFilePath, formattedTime " Error: Spam clicking at Create Private button. Current loop: " loopCurrent)
+                                case 6:
+                                    formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+                                    WriteValueToFile(hisFilePath, formattedTime " Error: Spam clicking at Play button. Current loop: " loopCurrent)
+                                }
                             ErrorMissTime
                             break
                         }
