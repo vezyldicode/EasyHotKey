@@ -453,10 +453,11 @@ ReadyUp(){ ;wait for the ready button and press (function has a waiting time of 
         color := PixelGetColor(xpos, ypos)
         count++
         NormalWaitingTime
-        if (count > 10000)
+        if (count > 10000){
             formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
             WriteValueToFile(hisFilePath, formattedTime " Error: Cannot Ready. Current loop: " loopCurrent ", Current round " roundcount)
             ErrorMissTime
+        }
         if (globalDeath >0)
             break
         if (color == c7) ;
@@ -870,10 +871,11 @@ main(){
         color := PixelGetColor(xpos, ypos)
         count++
         ShortWaitingTime
-        if (count > 100)
+        if (count > 100){
             formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
             WriteValueToFile(hisFilePath, formattedTime " Error: Cannot find game. Current loop: " loopCurrent)
             ErrorMissTime ;error report after 100 tries
+        }
         if (color == c1) 
         {
             SetTimer(CloseMsgBox, 500) 
@@ -922,7 +924,7 @@ main(){
                 nextcolor := PixelGetColor(x%nextXYC%, y%nextXYC%)
                 count++
                 ShortWaitingTime
-                if (count > 300)
+                if (count > 300){
                     switch currentXYC{
                         case 2:
                             formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
@@ -941,6 +943,7 @@ main(){
                             WriteValueToFile(hisFilePath, formattedTime " Error: Cannot find Play button. Current loop: " loopCurrent)
                         }
                     ErrorMissTime
+                }
                 if (color == c4 || color == c41){
                     MouseMove x%currentXYC%, y%currentXYC%
                     SetTimer(CloseMsgBox, 500) 
@@ -1007,8 +1010,11 @@ main(){
             color := PixelGetColor(xpos, ypos)
             count++
             NormalWaitingTime
-            if (count > 100)
-                ErrorMissTime  ;
+            if (count > 100){
+                formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+                WriteValueToFile(hisFilePath, formattedTime " Error:  cannot change character perspective. Current loop: " loopCurrent)
+                ErrorMissTime
+            }
             if (color == c8) 
             {
                 SetTimer(CloseMsgBox, 500) 
@@ -1036,8 +1042,11 @@ main(){
             color := PixelGetColor(xpos, ypos)
             count++
             sleep 250
-            if (count > 600)
-                ErrorMissTime  ;
+            if (count > 600){
+                formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+                WriteValueToFile(hisFilePath, formattedTime " Error: Cannot get out of round 1. Current loop: " loopCurrent)
+                ErrorMissTime
+            }
             if (color == c9) 
             {
                 SendEvent("{w down}") 
