@@ -216,6 +216,7 @@ global recharging := false ;biến quy định khi nào là lúc đang thực hi
 global Resetround := 30 ;chống tình trạng trôi loop, khi đến round chỉ định thì tự động tắt game 
 global loopCurrent := 0
 global robloxopen := false ;biến hiển thị trạng thái roblox lên gameGUI
+global isShopUpgrade := false ;biến báo hiệu khi nào hoàn thành việc nâng shop
 
 ; lấy vị trí chính giữa màn hình
 dpi := GetDpiScale()
@@ -435,6 +436,7 @@ ReadyUp(){ ;wait for the ready button and press (function has a waiting time of 
     global roundcount
     global SpecialGear1SetupDone
     global loopCount
+    global isShopUpgrade
 
     if (GetKeyState("PgUp", "P")) {
         StopFlag := true
@@ -477,7 +479,19 @@ ReadyUp(){ ;wait for the ready button and press (function has a waiting time of 
                 SpecialGear1SetupDone := true
                 MouseMove x7, y7
             }
-            
+            ; if (roundcount == 1 and isShopUpgrade == false){
+            ;     currentDis := cDis
+            ;     oldPos := cDis
+            ;     While (currentDis >0){
+            ;         MoveBackward
+            ;         currentDis := cDis
+            ;     }
+            ;     ShopUpgrade
+            ;     While (currentDis < oldPos){
+            ;         MoveForward
+            ;         currentDis := cDis
+            ;     }
+            ; }
             while (color == c7){
                 MouseMove x7, y7
                 ShortWaitingTime
@@ -804,7 +818,32 @@ SpecialGear1Setup(){ ;đặt special gear 1 cách sang bên phải 2460ms
         }
 }
 
+ShopUpgrade(){
+    ;di sang phai
+    SendEvent("{d down}")
+    NormalWaitingTime
+    NormalWaitingTime
+    ShortWaitingTime
+    SendEvent("{d up}")
+    SendEvent("{s down}")
+    NormalWaitingTime
+    NormalWaitingTime
+    ShortWaitingTime
+    SendEvent("{s up}")
 
+
+    SendEvent("{w down}")
+    NormalWaitingTime
+    NormalWaitingTime
+    ShortWaitingTime
+    SendEvent("{w up}")
+    SendEvent("{a down}")
+    NormalWaitingTime
+    NormalWaitingTime
+    ShortWaitingTime
+    SendEvent("{a up}")
+    isShopUpgrade := true
+}
 MoveBackward(){ ; di chuyển xuống 1 cDis
     global backwardtime
     backwardtime++
@@ -904,6 +943,7 @@ main(){
         global cDis := 0
         count := 0
         global roundcount := 0
+        global isShopUpgrade := false
 
         currentXYC := 2 ; biến xác định hiện tại chuột nên ở vị trí thứ mấy
         While(!StopFlag and currentXYC <= 6){
