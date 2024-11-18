@@ -36,46 +36,53 @@ If !FileExist(cusFilePath) || FileGetSize(cusFilePath) = 0 {
     if FileExist(cusFilePath) ; Kiểm tra sự tồn tại trước khi xóa
         FileDelete(cusFilePath) ; Xóa file nếu có nhưng trống
     FileAppend("", cusFilePath) ; Tạo file mới
+    WriteValueToFile(cusFilePath, '---')
+    WriteValueToFile(cusFilePath, 'path to AutoHotkey.exe file')
+    WriteValueToFile(cusFilePath, 'AHKfilePath := "C:\Program Files\AutoHotkey\v2\AutoHotkey.exe"')
+    WriteValueToFile(cusFilePath, '---')
+    WriteValueToFile(cusFilePath, 'path to RobloxPlayerBeta.exe file')
     WriteValueToFile(cusFilePath, 'robloxPath := ')
-    WriteValueToFile(cusFilePath, "chọn game pixel màu trắng")
+    WriteValueToFile(cusFilePath, '---')
+    WriteValueToFile(cusFilePath, "Mouse position on screen at last played game position")
     WriteValueToFile(cusFilePath, "x1 := 0")
     WriteValueToFile(cusFilePath, "y1 := 0")
-    WriteValueToFile(cusFilePath, "c1 := 0")
-    WriteValueToFile(cusFilePath, "nút vào game màu xanh góc trên bên trái")
+    WriteValueToFile(cusFilePath, "c1 := 0x202227")
+    WriteValueToFile(cusFilePath, "Mouse position at play game button")
     WriteValueToFile(cusFilePath, "x2 := 0")
     WriteValueToFile(cusFilePath, "y2 := 0")
-    WriteValueToFile(cusFilePath, "c2 := 0")
-    WriteValueToFile(cusFilePath, "c21 := 0")
-    WriteValueToFile(cusFilePath, "bấm vào private game pixel màu trắng")
+    WriteValueToFile(cusFilePath, "c2 := 0x00B06F")
+    WriteValueToFile(cusFilePath, "c21 := 0x009F64")
+    WriteValueToFile(cusFilePath, "mouse position on white text in private game option")
     WriteValueToFile(cusFilePath, "x3 := 0")
     WriteValueToFile(cusFilePath, "y3 := 0")
-    WriteValueToFile(cusFilePath, "c3 := 0")
-    WriteValueToFile(cusFilePath, "bấm vào career mode màu xanh dương")
+    WriteValueToFile(cusFilePath, "c3 := 0xFFFFFF")
+    WriteValueToFile(cusFilePath, "mouse position at the green text in career mode option")
     WriteValueToFile(cusFilePath, "x4 := 0")
     WriteValueToFile(cusFilePath, "y4 := 0")
-    WriteValueToFile(cusFilePath, "c4 := 0")
-    WriteValueToFile(cusFilePath, "c41 := 0")
-    WriteValueToFile(cusFilePath, "bấm vào tạo Private game")
+    WriteValueToFile(cusFilePath, "c4 := 0x00A5FF")
+    WriteValueToFile(cusFilePath, "c41 := 0x00527F")
+    WriteValueToFile(cusFilePath, "Mouse position on the white text in the private game creation button")
     WriteValueToFile(cusFilePath, "x5 := 0")
     WriteValueToFile(cusFilePath, "y5 := 0")
-    WriteValueToFile(cusFilePath, "c5 := 0")
-    WriteValueToFile(cusFilePath, "bấm vào nút play trong trận")
+    WriteValueToFile(cusFilePath, "c5 := 0xFFFFFF")
+    WriteValueToFile(cusFilePath, "mouse position on white text in play button")
     WriteValueToFile(cusFilePath, "x6 := 0")
     WriteValueToFile(cusFilePath, "y6 := 0")
-    WriteValueToFile(cusFilePath, "c6 := 0")
-    WriteValueToFile(cusFilePath, "bấm nút Ready (dùng pixel màu trắng ở ngay chữ R - tránh bị trùng vào Kill)")
+    WriteValueToFile(cusFilePath, "c6 := 0xFFFFFF")
+    WriteValueToFile(cusFilePath, "Mouse position at the white text in the Ready button (recommended to choose the letter R to avoid being recognized as counting kills")
     WriteValueToFile(cusFilePath, "x7 := 0")
     WriteValueToFile(cusFilePath, "y7 := 0")
-    WriteValueToFile(cusFilePath, "c7 := 0")
-    WriteValueToFile(cusFilePath, "bấm nút sang phải 3 lần pixel màu trắng ở mũi tên")
+    WriteValueToFile(cusFilePath, "c7 := 0xA6A6A6")
+    WriteValueToFile(cusFilePath, "Position the mouse on the white text in the view change button (right arrow)")
     WriteValueToFile(cusFilePath, "x8 := 0")
     WriteValueToFile(cusFilePath, "y8 := 0")
-    WriteValueToFile(cusFilePath, "c8 := 0")
-    WriteValueToFile(cusFilePath, "vị trí nhận tiền round đầu tiên pixel màu vàng")
+    WriteValueToFile(cusFilePath, "c8 := 0xFFFFFF")
+    WriteValueToFile(cusFilePath, "Mouse position at yellow text when receiving first round reward (recommended not to use perk that can change the amount received in first round)")
     WriteValueToFile(cusFilePath, "x9 := 0")
     WriteValueToFile(cusFilePath, "y9 := 0")
-    WriteValueToFile(cusFilePath, "c9 := 0")
-    WriteValueToFile(cusFilePath, "4 vị trí đặt đồ")
+    WriteValueToFile(cusFilePath, "c9 := 0xFFB400")
+    WriteValueToFile(cusFilePath, '---')
+    WriteValueToFile(cusFilePath, "4 desired mouse positions to set Normal gear")
     WriteValueToFile(cusFilePath, "x10 := 0")
     WriteValueToFile(cusFilePath, "y10 := 0")
     WriteValueToFile(cusFilePath, "x11 := 0")
@@ -84,7 +91,8 @@ If !FileExist(cusFilePath) || FileGetSize(cusFilePath) = 0 {
     WriteValueToFile(cusFilePath, "y12 := 0")
     WriteValueToFile(cusFilePath, "x13 := 0")
     WriteValueToFile(cusFilePath, "y13 := 0")
-    WriteValueToFile(cusFilePath, "4 vị trí màu đen báo hiệu khi thua")
+    WriteValueToFile(cusFilePath, '---')
+    WriteValueToFile(cusFilePath, "4 positions on the screen will have black space when losing the match")
     WriteValueToFile(cusFilePath, "x14 := 0")
     WriteValueToFile(cusFilePath, "y14 := 0")
     WriteValueToFile(cusFilePath, "x15 := 0")
@@ -93,6 +101,10 @@ If !FileExist(cusFilePath) || FileGetSize(cusFilePath) = 0 {
     WriteValueToFile(cusFilePath, "y16 := 0")
     WriteValueToFile(cusFilePath, "x17 := 0")
     WriteValueToFile(cusFilePath, "y17 := 0")
+    WriteValueToFile(cusFilePath, '---')
+    WriteValueToFile(cusFilePath, "Position the mouse on the screen at the position of special gear 2 (recommended in the middle of the character)")
+    WriteValueToFile(cusFilePath, "xs2 := 0")
+    WriteValueToFile(cusFilePath, "ys2 := 0")
     WriteValueToFile(cusFilePath, "doorDis := 2310")
     WriteValueToFile(cusFilePath, "centerDis := 2440")
 }
@@ -103,22 +115,10 @@ If !FileExist(dataFilePath) || FileGetSize(dataFilePath) = 0 {
     if FileExist(dataFilePath) ; Kiểm tra sự tồn tại trước khi xóa
         FileDelete(dataFilePath) ; Xóa file nếu có nhưng trống
     FileAppend("", dataFilePath) ; Tạo file mới
-    WriteValueToFile(dataFilePath, "input1 := 0" )
-    WriteValueToFile(dataFilePath, "input2 := 0" )
-    WriteValueToFile(dataFilePath, "input3 := 0" )
-    WriteValueToFile(dataFilePath, "input4 := 0" )
-    WriteValueToFile(dataFilePath, "input5 := 0" )
-    WriteValueToFile(dataFilePath, "input6 := 0" )
-    WriteValueToFile(dataFilePath, "input7 := 0" )
-    WriteValueToFile(dataFilePath, "input8 := 0" )
-    WriteValueToFile(dataFilePath, "input9 := 0" )
-    WriteValueToFile(dataFilePath, "input10 := 0" )
-    WriteValueToFile(dataFilePath, "input11 := 0" )
-    WriteValueToFile(dataFilePath, "input12 := 0" )
-    WriteValueToFile(dataFilePath, "input13 := 0" )
-    WriteValueToFile(dataFilePath, "input14 := 0" )
-    WriteValueToFile(dataFilePath, "input15 := 0" )
-    WriteValueToFile(dataFilePath, "input16 := 0" )
+    Loop 16{
+        num := A_Index
+        WriteValueToFile(dataFilePath, "input" num " := 0" )
+    }
 }
 
 hisFilePath := "MacroHistory.txt"
@@ -220,8 +220,8 @@ global isShopUpgrade := false ;biến báo hiệu khi nào hoàn thành việc n
 
 ; lấy vị trí chính giữa màn hình
 dpi := GetDpiScale()
-global xct := (A_ScreenWidth /2)/dpi
-global yct := (A_ScreenHeight /2)/dpi
+global xct := A_ScreenWidth /2
+global yct := A_ScreenHeight /2
 global cct
 ; Tính toán vị trí cho GUI
 global gameGUIWidth := 405
@@ -232,17 +232,12 @@ ScaleFactor := Dpi / 96.0
 xPos := ((screenWidth - gameGUIWidth * dpi) / 2)/dpi ; X tại giữa màn hình
 yPos := screenHeight / 12 ; Y tại 1/12 chiều rộng màn hình
 
-GetDpiScale() { ;lấy tỉ lệ scale của màn hình
-    ; Retrieve the DPI of the main screen
-    hdc := DllCall("GetDC", "ptr", 0)
-    dpi := DllCall("GetDeviceCaps", "ptr", hdc, "int", 88, "int") ; LOGPIXELSX
-    DllCall("ReleaseDC", "ptr", 0, "ptr", hdc)
-    
-    ; Calculate the scaling factor based on DPI (96 is the default DPI)
-    return dpi / 96
-}
 
+
+AHKfilePath := ReadValueFromFile(cusFilePath, "AHKfilePath")
 robloxPath := ReadValueFromFile(cusFilePath, "robloxPath") ; "C:\Users\pc\AppData\Local\Roblox\Versions\version-0c1a10704cb043cc\RobloxPlayerBeta.exe"
+
+
 if (robloxPath == ""){
     MsgBox("Enter your Roblox file Path in MacroCustomization.ini first before open this macro again", "Macro By Vezyl")
     ExitApp
@@ -272,7 +267,7 @@ RestartRoblox(){
 
 ScriptfilePath := A_ScriptFullPath
 if !A_IsAdmin{ ; run as Administrator
-    Run( "*RunAs " "C:\Program Files\AutoHotkey\v2\AutoHotkey.exe" " " ScriptfilePath)
+    Run( "*RunAs " AHKfilePath " " ScriptfilePath)
     ExitApp
 }
 
@@ -399,20 +394,6 @@ CenterTime(){ ;time to go from door to center (default 2440ms)
 
 
 PlacementWalkTime(){ ;time to go from center to Placement position (default 30cDis)
-    ; global StopFlag
-
-    ; totalSleepDuration := 41540
-    ; sleepInterval := 50
-    ; elapsed := 0
-    ; While (elapsed < totalSleepDuration) {
-    ;     if (GetKeyState("PgUp", "P")) {
-    ;         stopFlag := true  ; Set the flag if Page Up is pressed
-    ;         ErrorMissTime
-    ;         break  ; Exit the sleep loop
-    ;     }
-    ;     Sleep sleepInterval  ; Sleep for a short interval
-    ;     elapsed += sleepInterval  ; Increment elapsed time
-    ; }
     Loop 30 {
     MoveForward
     }
@@ -505,14 +486,6 @@ ReadyUp(){ ;wait for the ready button and press (function has a waiting time of 
             if (!globalAutoReady || recharging)
                 break
             else count := 0
-        }
-        if (PixelGetColor(x14, y14) == 0x000000 and PixelGetColor(x15, y15) == 0x000000 and PixelGetColor(x16, y16) == 0x000000 and PixelGetColor(x17, y17) == 0x000000)
-            {globalDeath++
-            roundcount--
-            SetTimer(CloseMsgBox, 1000) 
-            MsgBox("so lan chet" globalDeath)
-            LongWaitingTime
-            LongWaitingTime
         }
         if (roundcount == 14 and rechargeWait == true){
             MoveBackward
@@ -735,7 +708,7 @@ GearSetup(){
 SpecialGear1Setup(){ ;đặt special gear 1 cách sang bên phải 2460ms
     ; ĐẶT FLAME TURRET
     global firsttimesetup
-    if (NumforHotkey4 >0 and HotKey4 != 0){
+    if (NumforHotkey4 >0 and HotKey4 != 0 and globalDeath == 0){
         global NumforHotkey4
         global HotKey4
         SendEvent("{d down}") 
@@ -879,7 +852,6 @@ main(){
     global SpecialGear1SetupDone
     global getroundsSurvivedvalue := 0
     global robloxopen := false
-    
     GUIingame()
 
     ;display current time and write into macrodata
@@ -946,7 +918,7 @@ main(){
         global isShopUpgrade := false
 
         currentXYC := 2 ; biến xác định hiện tại chuột nên ở vị trí thứ mấy
-        While(!StopFlag and currentXYC <= 6){
+        While(!StopFlag and currentXYC <= 6){ ; vòng lặp này sẽ vào đến màn hình trong shop chờ ready
             count := 0
             While(!StopFlag){
                 ;vòng lặp chờ load này có thời gian chờ 11 phút
@@ -959,6 +931,7 @@ main(){
                 nextXYC := currentXYC +1
                 NormalWaitingTime
                 MouseMove x%currentXYC%, y%currentXYC% ; di chuyển chuột đến vị trí mong muốn
+                ShortWaitingTime
                 MouseGetPos &xpos, &ypos ;lấy vị trí chuột hiện tại
                 color := PixelGetColor(xpos, ypos) ; lấy mã màu hiện tại
                 nextcolor := PixelGetColor(x%nextXYC%, y%nextXYC%)
@@ -1037,7 +1010,7 @@ main(){
         }
 
         ReadyUp
-
+        SetTimer(Deathcount, 1000)
 
         count := 0
         While (!StopFlag) { ;comfirm and click change character perspective
@@ -1133,7 +1106,7 @@ main(){
             sleep 1000
             loopCurrent++
         }
-
+        SetTimer(Deathcount, -1)
         ;loop count notification
         loopCurrent := A_Index
         LoopRemaining := loopCount - loopCurrent
@@ -1471,4 +1444,28 @@ ReadValueFromFile(filePath, keyword) {
         }
     }
     return "0" ; Trả về chuỗi trống nếu không tìm thấy từ khóa
+}
+
+Deathcount(){
+    global globalDeath
+    global roundcount
+    if (PixelGetColor(x14, y14) == 0x000000 and PixelGetColor(x15, y15) == 0x000000 and PixelGetColor(x16, y16) == 0x000000 and PixelGetColor(x17, y17) == 0x000000)
+        {globalDeath++
+        roundcount--
+        SetTimer(CloseMsgBox, 1000) 
+        MsgBox("so lan chet" globalDeath)
+        LongWaitingTime
+        LongWaitingTime
+    }
+    ToolTip("Death detector is working" . A_TickCount)
+}
+
+GetDpiScale() { ;lấy tỉ lệ scale của màn hình
+    ; Retrieve the DPI of the main screen
+    hdc := DllCall("GetDC", "ptr", 0)
+    dpi := DllCall("GetDeviceCaps", "ptr", hdc, "int", 88, "int") ; LOGPIXELSX
+    DllCall("ReleaseDC", "ptr", 0, "ptr", hdc)
+    
+    ; Calculate the scaling factor based on DPI (96 is the default DPI)
+    return dpi / 96
 }
