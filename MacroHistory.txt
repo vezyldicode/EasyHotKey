@@ -175,3 +175,59 @@
 2024-11-19 00:32:24 run macro with 6 loop(s)
 2024-11-19 01:39:20 Complete loop 1, Rounds Survived: 26
 2024-11-19 01:39:24 Stop by User. Current loop: 2, Current round 0
+---
+2024-11-19 02:36:58 run macro with 2 loop(s)
+2024-11-19 02:37:00 Stop by User. Current loop: 0, Current round 0
+---
+2024-11-19 02:37:36 run macro with 5 loop(s)
+2024-11-19 02:37:40 Stop by User. Current loop: 0, Current round 0
+---
+2024-11-19 02:40:36 run macro with 4 loop(s)
+2024-11-19 02:40:42 Stop by User. Current loop: 0, Current round 0
+---
+2024-11-19 02:41:09 run macro with 4 loop(s)
+2024-11-19 02:41:18 Stop by User. Current loop: 0, Current round 0
+2024-11-19 02:42:18 Stop by User. Current loop: 1, Current round 0
+---
+2024-11-19 02:44:33 run macro with 4 loop(s)
+---
+2024-11-19 02:46:21 run macro with 3 loop(s)
+2024-11-19 02:46:36 Stop by User. Current loop: 0, Current round 0
+2024-11-19 02:46:45 Stop by User. Current loop: 1, Current round 0
+2024-11-19 02:46:55 Stop by User. Current loop: 1, Current round 0
+2024-11-19 02:47:15 Stop by User. Current loop: 1, Current round 0
+2024-11-19 02:47:55 Stop by User. Current loop: 1, Current round 1
+2024-11-19 02:48:02 Stop by User. Current loop: 1, Current round 1
+2024-11-19 02:49:14 Stop by User. Current loop: 1, Current round 2
+---
+2024-11-19 02:49:23 run macro with 2 loop(s)
+2024-11-19 02:49:52 Stop by User. Current loop: 1, Current round 0
+2024-11-19 02:51:32 Stop by User. Current loop: 1, Current round 1
+2024-11-19 02:52:34 Stop by User. Current loop: 1, Current round 2
+---
+2024-11-19 02:54:48 run macro with 8 loop(s)
+2024-11-19 02:55:50 Stop by User. Current loop: 1, Current round 1
+2024-11-19 02:56:34 Stop by User. Current loop: 1, Current round 1
+2024-11-19 02:57:10 Stop by User. Current loop: 1, Current round 1
+---
+2024-11-19 02:57:26 run macro with 7 loop(s)
+2024-11-19 02:58:27 Stop by User. Current loop: 1, Current round 1
+2024-11-19 02:58:41 Stop by User. Current loop: 1, Current round 1
+2024-11-19 02:59:28 Stop by User. Current loop: 1, Current round 1
+2024-11-19 02:59:43 Stop by User. Current loop: 1, Current round 1
+2024-11-19 02:59:52 Stop by User. Current loop: 1, Current round 1
+---
+2024-11-19 03:01:33 run macro with 9 loop(s)
+2024-11-19 03:04:00 Stop by User. Current loop: 1, Current round 1
+2024-11-19 03:04:15 Stop by User. Current loop: 1, Current round 1
+---
+2024-11-19 03:04:22 run macro with 3 loop(s)
+2024-11-19 03:05:50 Stop by User. Current loop: 1, Current round 1
+2024-11-19 03:06:37 Stop by User. Current loop: 1, Current round 1
+2024-11-19 03:06:44 Stop by User. Current loop: 1, Current round 1
+2024-11-19 03:09:24 Stop by User. Current loop: 1, Current round 1
+---
+2024-11-19 03:13:10 run macro with 3 loop(s)
+2024-11-19 03:17:30 Stop by User. Current loop: 1, Current round 1
+2024-11-19 03:17:41 Stop by User. Current loop: 1, Current round 1
+2024-11-19 03:17:46 Stop by User. Current loop: 1, Current round 1

@@ -320,7 +320,6 @@ Các hàm có ảnh hưởng đến thời gian hoặc vòng lặp đều mặc 
         if (GetKeyState("PgUp", "P")) {
                     stopFlag := true
                     ErrorMissTime
-                    break
                 }
 */
 
@@ -334,7 +333,6 @@ ShortWaitingTime(){ ;anti-system overload
         if (GetKeyState("PgUp", "P")) {
             stopFlag := true
             ErrorMissTime
-            break
         }
         Sleep sleepInterval
         elapsed += sleepInterval
@@ -351,7 +349,6 @@ NormalWaitingTime(){ ;pause between actions
         if (GetKeyState("PgUp", "P")) {
             stopFlag := true
             ErrorMissTime
-            break
         }
         Sleep sleepInterval
         elapsed += sleepInterval 
@@ -368,7 +365,6 @@ AvgLongWaitingTime(){
         if (GetKeyState("PgUp", "P")) {
             stopFlag := true
             ErrorMissTime
-            break
         }
         Sleep sleepInterval
         elapsed += sleepInterval
@@ -385,7 +381,6 @@ LongWaitingTime(){ ;wait for system response
         if (GetKeyState("PgUp", "P")) {
             stopFlag := true
             ErrorMissTime
-            break
         }
         Sleep sleepInterval
         elapsed += sleepInterval
@@ -403,7 +398,7 @@ DoorTime(){ ;time to go from corner to door (default 2310ms)
         if (GetKeyState("PgUp", "P")) {
             stopFlag := true
             ErrorMissTime
-            break
+            SendEvent "{a down}"
         }
         Sleep sleepInterval
         elapsed += sleepInterval
@@ -421,7 +416,6 @@ CenterTime(){ ;time to go from door to center (default 2440ms)
         if (GetKeyState("PgUp", "P")) {
             stopFlag := true  ; Set the flag if Page Up is pressed
             ErrorMissTime
-            break  ; Exit the sleep loop
         }
         Sleep sleepInterval  ; Sleep for a short interval
         elapsed += sleepInterval  ; Increment elapsed time
@@ -465,7 +459,6 @@ ReadyUp(){ ;wait for the ready button and press (function has a waiting time of 
         if (GetKeyState("PgUp", "P")) {
             StopFlag := true
             ErrorMissTime
-            break
         }
         MouseMove x7, y7
         MouseGetPos &xpos, &ypos 
@@ -866,7 +859,6 @@ ShopUpgrade(){
         ;vòng lặp chờ load này có thời gian chờ 11 phút
         if (GetKeyState("PgUp", "P")) {
             StopFlag := true
-            break
         }
         NormalWaitingTime
         MouseMove xct, yct ; di chuyển chuột ra giữa màn hình
@@ -901,7 +893,6 @@ ShopUpgrade(){
         ;vòng lặp chờ load này có thời gian chờ 11 phút
         if (GetKeyState("PgUp", "P")) {
             StopFlag := true
-            break
         }
         NormalWaitingTime
         MouseMove xct, yct ; di chuyển chuột ra giữa màn hình
@@ -992,7 +983,6 @@ main(){
         if (GetKeyState("PgUp", "P")) {
             StopFlag := true
             ErrorMissTime
-            break
         }
         MouseMove x1, y1 
         MouseGetPos &xpos, &ypos 
@@ -1019,7 +1009,6 @@ main(){
         if (GetKeyState("PgUp", "P")) {
             StopFlag := true
             ErrorMissTime
-            break
         }
         if (NumforHotkey4 >0 and HotKey4 != 0){ ;nếu không có special gear 1 coi như setup xong
             SpecialGear1SetupDone := false
@@ -1041,7 +1030,7 @@ main(){
                 ;vòng lặp chờ load này có thời gian chờ 11 phút
                 if (GetKeyState("PgUp", "P")) {
                     StopFlag := true
-                    break
+                    ErrorMissTime
                 }
                 NormalWaitingTime
                 MouseMove xct, yct ; di chuyển chuột ra giữa màn hình
@@ -1133,7 +1122,6 @@ main(){
         While (!StopFlag) { ;comfirm and click change character perspective
             if (GetKeyState("PgUp", "P")) {
                 StopFlag := true
-                break
             }
             MouseMove x8, y8
             MouseGetPos &xpos, &ypos 
@@ -1165,7 +1153,7 @@ main(){
         While (!StopFlag) { ;move character out of shop
             if (GetKeyState("PgUp", "P")) {
                 StopFlag := true
-                break
+                ErrorMissTime
             } 
             MouseMove x9, y9
             MouseGetPos &xpos, &ypos 
@@ -1253,16 +1241,22 @@ mainGUI := Gui()
 ; mainGUI.Opt("+AlwaysOnTop")
 mainGUI.SetFont("s14", "Segoe UI")
 mainGUI.SetFont("s30 cBlack")
-startButton := mainGUI.Add("Button", "x544 y16 w64 h49", "▸")
+
 mainGUI.Title := "MACRO THE FINAL STAND 2 v2.2"
 
 
 ; nhập thông tin số lần loop
+mainGUI.SetFont("s9", "Segoe UI")
+Tab := mainGUI.Add("Tab3", "x0 y0 w623 h514 +Bottom", ["Edit", "Info"])
 mainGUI.SetFont("s14", "Segoe UI")
+
+Tab.UseTab(1)
 mainGUI.Add("Text", "x16 y16 w309 h34 +0x200 -Background", "Enter the number of loops you want:")
 MyText := mainGUI.Add("Text", "x400 y16 w137 h33 +0x200", "Estimated time")
 textInput := mainGUI.Add("ComboBox", "x328 y16 w62", ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"])
-
+mainGUI.SetFont("s30 cBlack")
+startButton := mainGUI.Add("Button", "x544 y16 w64 h49", "▸")
+mainGUI.SetFont("s14", "Segoe UI")
 ;phần chữ
 mainGUI.Add("Text", "x16 y72 w120 h23 +0x200", "Gear Setting")
 mainGUI.Add("Text", "x16 y112 w112 h23 +0x200", "Hotkey")
@@ -1346,6 +1340,7 @@ input14.OnEvent("Change", OnEventHandler)
 input15.OnEvent("Change", OnEventHandler)
 input16.OnEvent("Change", OnEventHandler)
 mainGUI.OnEvent('Close', (*) => ExitApp())
+Tab.UseTab(2)
 isContinuePressed := false
 global roundcount
 
@@ -1431,15 +1426,15 @@ onButtonClick(*) {
         hours := totalMinutes // 60
         minutes := Mod(totalMinutes, 60)
         result := " " hours "h" minutes "m"
-        confirm := MsgBox("Run the program with the number of loops is " userInput "`nEstimated time :" result, "Macro by Vezyl - Press Pgup Key to force Stop", 4)  ; 4 là flag cho Yes/No
+        confirm := MsgBox("Run the program with the number of loops is " userInput "`nEstimated time :" result, "Macro by Vezyl - Press Pgup Key to force Stop", 68)  ; 4 là flag cho Yes/No
         if (confirm == 'No') {
-            ExitApp  ; Nếu người dùng chọn "No", kết thúc
+            ; ExitApp  ; Nếu người dùng chọn "No", kết thúc
             isContinuePressed := false
+        }else{
+            isContinuePressed := true
+            mainGUI.Hide()
+            main()
         }
-        isContinuePressed := true
-        mainGUI.Hide()
-        main()
-    ; }
 }
 
 mainGUI.Show ("w623 h514")
@@ -1530,6 +1525,7 @@ CloseMsgBox() { ;close dialog box automatically
 }
 
 ErrorMissTime() { ;error report, close Program
+    global StopFlag
     global loopCurrent
     global roundcount
     MouseGetPos &xpos, &ypos 
@@ -1537,7 +1533,14 @@ ErrorMissTime() { ;error report, close Program
     if (StopFlag == true){
         formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
         WriteValueToFile(hisFilePath, formattedTime " Stop by User. Current loop: " loopCurrent ", Current round " roundcount)
-        MsgBox("Stop by User ", "Macro Stopped")
+        confirm := MsgBox("Stop by User? ", "Macro Stopped", 20)
+        if (confirm == 'No') {
+            ; ExitApp  ; Nếu người dùng chọn "No", kết thúc
+            StopFlag := false
+            return
+        }else{
+            ExitApp
+        }
     } else {
         formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
         WriteValueToFile(hisFilePath, formattedTime " Error. Current loop: " loopCurrent ", Current round " roundcount)
