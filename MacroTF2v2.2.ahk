@@ -69,7 +69,7 @@ If !FileExist(cusFilePath) || FileGetSize(cusFilePath) = 0 {
     WriteValueToFile(cusFilePath, "x6 := 0")
     WriteValueToFile(cusFilePath, "y6 := 0")
     WriteValueToFile(cusFilePath, "c6 := 0xFFFFFF")
-    WriteValueToFile(cusFilePath, "Mouse position at the white text in the Ready button (recommended to choose the letter R to avoid being recognized as counting kills")
+    WriteValueToFile(cusFilePath, "Mouse position at the white text in the Ready button (recommended to choose the letter R to avoid being recognized as counting kills)")
     WriteValueToFile(cusFilePath, "x7 := 0")
     WriteValueToFile(cusFilePath, "y7 := 0")
     WriteValueToFile(cusFilePath, "c7 := 0xA6A6A6")
@@ -128,7 +128,7 @@ If !FileExist(hisFilePath){
 }
 
 
-global GearModeKey := ReadValueFromFile(cusFilePath, "GearModeKeyBind")
+
 ; chọn game pixel màu trắng
 global x1 := ReadValueFromFile(cusFilePath, "x1")
 global y1 := ReadValueFromFile(cusFilePath, "y1")
@@ -179,7 +179,8 @@ global c9 := ReadValueFromFile(cusFilePath, "c9")
 ; thời gian di chuyển các chặng
 global doorDis := ReadValueFromFile(cusFilePath, "doorDis")
 global centerDis := ReadValueFromFile(cusFilePath, "centerDis")
-
+global GearModeKey := ReadValueFromFile(cusFilePath, "GearModeKeyBind")
+global maxDis := ReadValueFromFile(cusFilePath, "maxDis(cDis)")
 
 
 ; 4 vị trí đặt đồ
@@ -202,6 +203,40 @@ global y16 := ReadValueFromFile(cusFilePath, "y16")
 global x17 := ReadValueFromFile(cusFilePath, "x17")
 global y17 := ReadValueFromFile(cusFilePath, "y17")
 
+; repair
+global xshop1 := 1229
+global yshop1 := 622
+; upgrade
+global xshop2 := 1036
+global yshop2 := 963
+;1
+global xshop3 := 673
+global yshop3 := 710
+;2
+global xshop4 := 727
+global yshop4 := 814
+;3
+global xshop5 := 986
+global yshop5 := 696
+;4
+global xshop6 := 1242
+global yshop6 := 705
+;5
+global xshop7 := 1019
+global yshop7 := 807
+;6
+global xshop8 := 1237
+global yshop8 := 813
+;7
+global xshop9 := 704
+global yshop9 := 915
+;8
+global xshop10 := 924
+global yshop10 := 914
+
+global xshopnext := 1266
+global yshopnext := 962
+
 
 ;YOU SHOULD ASK THE AUTHOR BEFORE EDITING THE FOLLOWING VARIABLES
 global backwardtime := 0 ; số lần di chuyển lùi về, mặc định ban đầu là 0
@@ -214,7 +249,7 @@ global StopFlag := false ;quy định khi giá trị này bằng true thì chư�
 globalAutoReady := false ;biến boolean sau khi setup lần đầu tiên thì tự động ready cho đến khi thua (mặc định là false khi chưa thực hiện setup)
 globalDeath := 0 ;biến đếm số lần chết
 global recharging := false ;biến quy định khi nào là lúc đang thực hiện recharge (mặc định là false khi chưa thực hiện)
-global Resetround := 30 ;chống tình trạng trôi loop, khi đến round chỉ định thì tự động tắt game 
+global Resetround := 31 ;chống tình trạng trôi loop, khi đến round chỉ định thì tự động tắt game 
 global loopCurrent := 0
 global robloxopen := false ;biến hiển thị trạng thái roblox lên gameGUI
 global isShopUpgrade := false ;biến báo hiệu khi nào hoàn thành việc nâng shop
@@ -395,7 +430,7 @@ CenterTime(){ ;time to go from door to center (default 2440ms)
 
 
 PlacementWalkTime(){ ;time to go from center to Placement position (default 30cDis)
-    Loop 30 {
+    Loop maxDis {
     MoveForward
     }
 }
@@ -461,19 +496,19 @@ ReadyUp(){ ;wait for the ready button and press (function has a waiting time of 
                 SpecialGear1SetupDone := true
                 MouseMove x7, y7
             }
-            ; if (roundcount == 1 and isShopUpgrade == false){
-            ;     currentDis := cDis
-            ;     oldPos := cDis
-            ;     While (currentDis >0){
-            ;         MoveBackward
-            ;         currentDis := cDis
-            ;     }
-            ;     ShopUpgrade
-            ;     While (currentDis < oldPos){
-            ;         MoveForward
-            ;         currentDis := cDis
-            ;     }
-            ; }
+            if (roundcount == 21 and isShopUpgrade == false){
+                currentDis := cDis
+                oldPos := cDis
+                While (currentDis >0){
+                    MoveBackward
+                    currentDis := cDis
+                }
+                ShopUpgrade
+                While (currentDis < oldPos){
+                    MoveForward
+                    currentDis := cDis
+                }
+            }
             while (color == c7){
                 MouseMove x7, y7
                 ShortWaitingTime
@@ -589,7 +624,10 @@ GearSetup(){
                 SetTimer(CloseMsgBox, 500) 
                 MsgBox("Đang đặt đặt ... " currentHotKey1 " cho " HotKey1, "Thông báo")
                 ShortWaitingTime
-                SendEvent "{Lbutton}" ;đặt đồ
+                ;SendEvent "{Lbutton}" ;đặt đồ
+                Click "Down"
+                Sleep 100
+                Click "Up"
                 ShortWaitingTime
                 currentColor := PixelGetColor(currentX, currentY)
             }
@@ -633,7 +671,10 @@ GearSetup(){
                 SetTimer(CloseMsgBox, 500) 
                 MsgBox("Đang đặt đặt ... " currentHotKey2 " cho " HotKey2, "Thông báo")
                 ShortWaitingTime
-                SendEvent "{Lbutton}" ;đặt đồ
+                ;SendEvent "{Lbutton}" ;đặt đồ
+                Click "Down"
+                Sleep 100
+                Click "Up"
                 ShortWaitingTime
                 currentColor := PixelGetColor(currentX, currentY)
             }
@@ -677,7 +718,10 @@ GearSetup(){
                 SetTimer(CloseMsgBox, 500) 
                 MsgBox("Đang đặt đặt ... " currentHotKey3 " cho " HotKey3, "Thông báo")
                 ShortWaitingTime
-                SendEvent "{Lbutton}" ;đặt đồ
+                ;SendEvent "{Lbutton}" ;đặt đồ
+                Click "Down"
+                Sleep 100
+                Click "Up"
                 ShortWaitingTime
                 currentColor := PixelGetColor(currentX, currentY)
             }
@@ -793,6 +837,7 @@ SpecialGear1Setup(){ ;đặt special gear 1 cách sang bên phải 2460ms
 }
 
 ShopUpgrade(){
+    global StopFlag
     ;di sang phai
     SendEvent("{d down}")
     NormalWaitingTime
@@ -804,12 +849,73 @@ ShopUpgrade(){
     NormalWaitingTime
     ShortWaitingTime
     SendEvent("{s up}")
+    SendEvent "F"
 
 
+    currentXY := 1
+    While(!StopFlag and currentXY <= 7){
+        ;vòng lặp chờ load này có thời gian chờ 11 phút
+        if (GetKeyState("PgUp", "P")) {
+            StopFlag := true
+            break
+        }
+        NormalWaitingTime
+        MouseMove xct, yct ; di chuyển chuột ra giữa màn hình
+        ShortWaitingTime
+        MouseMove xshop%currentXY%, yshop%currentXY% ; di chuyển chuột đến vị trí mong muốn
+        ShortWaitingTime
+        SetTimer(CloseMsgBox, 500) 
+        MsgBox("Nhấm Chuột tại vị trí: x" currentXY, "Macro By Vezyl")
+        ShortWaitingTime
+        Click
+        ShortWaitingTime
+        Click
+        ShortWaitingTime
+        Click
+        ShortWaitingTime
+        Click
+        ShortWaitingTime
+        currentXY++
+    }
+    MouseMove xshopnext, yshopnext
+    SetTimer(CloseMsgBox, 500) 
+    MsgBox("chuyen sang sniper", "Macro By Vezyl")
+    ShortWaitingTime
+    Click
+    ShortWaitingTime
+    Click
+    ShortWaitingTime
+    Click
+    ShortWaitingTime
+    currentXY := 1
+    While(!StopFlag and currentXY <= 10){
+        ;vòng lặp chờ load này có thời gian chờ 11 phút
+        if (GetKeyState("PgUp", "P")) {
+            StopFlag := true
+            break
+        }
+        NormalWaitingTime
+        MouseMove xct, yct ; di chuyển chuột ra giữa màn hình
+        ShortWaitingTime
+        MouseMove xshop%currentXY%, yshop%currentXY% ; di chuyển chuột đến vị trí mong muốn
+        ShortWaitingTime
+        SetTimer(CloseMsgBox, 500) 
+        MsgBox("Nhấm Chuột tại vị trí: x" currentXY, "Macro By Vezyl")
+        ShortWaitingTime
+        Click
+        ShortWaitingTime
+        Click
+        ShortWaitingTime
+        Click
+        ShortWaitingTime
+        Click
+        ShortWaitingTime
+        currentXY++
+    }
+    SendEvent "F"   
     SendEvent("{w down}")
     NormalWaitingTime
     NormalWaitingTime
-    ShortWaitingTime
     SendEvent("{w up}")
     SendEvent("{a down}")
     NormalWaitingTime
@@ -818,6 +924,7 @@ ShopUpgrade(){
     SendEvent("{a up}")
     isShopUpgrade := true
 }
+
 MoveBackward(){ ; di chuyển xuống 1 cDis
     global backwardtime
     backwardtime++
