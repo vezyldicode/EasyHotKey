@@ -523,6 +523,10 @@ ReadyUp(){ ;wait for the ready button and press (function has a waiting time of 
                 break
             else count := 0
         }
+        if (roundcount == 10 and rechargeWait == true){
+            MoveBackward
+            GearSetup
+        }
         if (roundcount == 14 and rechargeWait == true){
             MoveBackward
             GearSetup
@@ -546,8 +550,13 @@ ReadyUp(){ ;wait for the ready button and press (function has a waiting time of 
         if (roundcount == 21 and rechargeWait == true){
             MoveBackward
             GearSetup
+        }
+        if (roundcount == 26 and rechargeWait == true){
+            MoveBackward
+            GearSetup
             rechargeWait := false
         }
+
         if (roundcount == Resetround){
             RestartRoblox
             break
