@@ -107,6 +107,7 @@ If !FileExist(cusFilePath) || FileGetSize(cusFilePath) = 0 {
     WriteValueToFile(cusFilePath, "ys2 := 0")
     WriteValueToFile(cusFilePath, "doorDis := 2310")
     WriteValueToFile(cusFilePath, "centerDis := 2440")
+    WriteValueToFile(cusFilePath, "GearModeKeyBind := B")
 }
 
 ;tạo file data
@@ -127,7 +128,7 @@ If !FileExist(hisFilePath){
 }
 
 
- 
+global GearModeKey := ReadValueFromFile(cusFilePath, "GearModeKeyBind")
 ; chọn game pixel màu trắng
 global x1 := ReadValueFromFile(cusFilePath, "x1")
 global y1 := ReadValueFromFile(cusFilePath, "y1")
@@ -749,7 +750,7 @@ SpecialGear1Setup(){ ;đặt special gear 1 cách sang bên phải 2460ms
                 ; SendEvent "{Lbutton}" ;đặt đồ
                 ; NormalWaitingTime
                 NormalWaitingTime
-                SendEvent "b"
+                SendEvent GearModeKey
                 firsttimesetup := false
             }else{
                 SetTimer(CloseMsgBox, 500) 

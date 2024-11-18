@@ -127,3 +127,13 @@
 ---
 2024-11-18 07:27:31 run macro with 2 loop(s)
 2024-11-18 07:28:11 Stop by User. Current loop: 1, Current round 0
+---
+2024-11-18 07:31:36 run macro with 7 loop(s)
+2024-11-18 07:31:43 Stop by User. Current loop: 0, Current round 0
+---
+2024-11-18 07:31:54 run macro with 5 loop(s)
+2024-11-18 07:35:43 Complete loop 1, Rounds Survived: 1
+2024-11-18 07:35:47 Stop by User. Current loop: 2, Current round 0
+---
+2024-11-18 07:42:45 run macro with 7 loop(s)
+2024-11-18 07:46:00 Stop by User. Current loop: 1, Current round 2
