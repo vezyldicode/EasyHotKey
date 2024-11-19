@@ -102,12 +102,47 @@ If !FileExist(cusFilePath) || FileGetSize(cusFilePath) = 0 {
     WriteValueToFile(cusFilePath, "x17 := 0")
     WriteValueToFile(cusFilePath, "y17 := 0")
     WriteValueToFile(cusFilePath, '---')
+    WriteValueToFile(cusFilePath, "11 mouse positions to upgrade shop")
+    WriteValueToFile(cusFilePath, "xshop1 := ")
+    WriteValueToFile(cusFilePath, "yshop1 := ")
+    WriteValueToFile(cusFilePath, "xshop2 := ")
+    WriteValueToFile(cusFilePath, "yshop2 := ")
+    WriteValueToFile(cusFilePath, "xshop3 := ")
+    WriteValueToFile(cusFilePath, "yshop3 := ")
+    WriteValueToFile(cusFilePath, "xshop4 := ")
+    WriteValueToFile(cusFilePath, "yshop4 := ")
+    WriteValueToFile(cusFilePath, "xshop5 := ")
+    WriteValueToFile(cusFilePath, "yshop5 := ")
+    WriteValueToFile(cusFilePath, "xshop6 := ")
+    WriteValueToFile(cusFilePath, "yshop6 := ")
+    WriteValueToFile(cusFilePath, "xshop7 := ")
+    WriteValueToFile(cusFilePath, "yshop7 := ")
+    WriteValueToFile(cusFilePath, "xshop8 := ")
+    WriteValueToFile(cusFilePath, "yshop8 := ")
+    WriteValueToFile(cusFilePath, "xshop9 := ")
+    WriteValueToFile(cusFilePath, "yshop9 := ")
+    WriteValueToFile(cusFilePath, "xshop10 := ")
+    WriteValueToFile(cusFilePath, "yshop10 := ")
+    WriteValueToFile(cusFilePath, "xshopnext := ")
+    WriteValueToFile(cusFilePath, "yshopnext := ")
+    WriteValueToFile(cusFilePath, '---')
     WriteValueToFile(cusFilePath, "Position the mouse on the screen at the position of special gear 2 (recommended in the middle of the character)")
     WriteValueToFile(cusFilePath, "xs2 := 0")
     WriteValueToFile(cusFilePath, "ys2 := 0")
+    WriteValueToFile(cusFilePath, '---')
     WriteValueToFile(cusFilePath, "doorDis := 2310")
     WriteValueToFile(cusFilePath, "centerDis := 2440")
+    WriteValueToFile(cusFilePath, "maxDis(cDis) := 30")
+    WriteValueToFile(cusFilePath, '---')
     WriteValueToFile(cusFilePath, "GearModeKeyBind := B")
+    WriteValueToFile(cusFilePath, '---')
+    WriteValueToFile(cusFilePath, "RechargeNormalGear1st := 10")
+    WriteValueToFile(cusFilePath, "RechargeNormalGear2nd := 14")
+    WriteValueToFile(cusFilePath, "RechargeNormalGear3rd := 18")
+    WriteValueToFile(cusFilePath, "RechargeNormalGear4th := 21")
+    WriteValueToFile(cusFilePath, "RechargeNormalGear5th := 26")
+    WriteValueToFile(cusFilePath, "RechargeSpecialGear1 := 17")
+    WriteValueToFile(cusFilePath, "ShopUpgradeRound := 21")
 }
 
 ;tạo file data
@@ -203,39 +238,82 @@ global y16 := ReadValueFromFile(cusFilePath, "y16")
 global x17 := ReadValueFromFile(cusFilePath, "x17")
 global y17 := ReadValueFromFile(cusFilePath, "y17")
 
-; repair
-global xshop1 := 1229
-global yshop1 := 622
-; upgrade
-global xshop2 := 1036
-global yshop2 := 963
-;1
-global xshop3 := 673
-global yshop3 := 710
-;2
-global xshop4 := 727
-global yshop4 := 814
-;3
-global xshop5 := 986
-global yshop5 := 696
-;4
-global xshop6 := 1242
-global yshop6 := 705
-;5
-global xshop7 := 1019
-global yshop7 := 807
-;6
-global xshop8 := 1237
-global yshop8 := 813
-;7
-global xshop9 := 704
-global yshop9 := 915
-;8
-global xshop10 := 924
-global yshop10 := 914
 
-global xshopnext := 1266
-global yshopnext := 962
+; repair
+global xshop1 := ReadValueFromFile(cusFilePath, "xshop1")
+global yshop1 := ReadValueFromFile(cusFilePath, "yshop1")
+; upgrade
+global xshop2 := ReadValueFromFile(cusFilePath, "xshop2")
+global yshop2 := ReadValueFromFile(cusFilePath, "yshop2")
+; 1
+global xshop3 := ReadValueFromFile(cusFilePath, "xshop3")
+global yshop3 := ReadValueFromFile(cusFilePath, "yshop3")
+; 2
+global xshop4 := ReadValueFromFile(cusFilePath, "xshop4")
+global yshop4 := ReadValueFromFile(cusFilePath, "yshop4")
+; 3
+global xshop5 := ReadValueFromFile(cusFilePath, "xshop5")
+global yshop5 := ReadValueFromFile(cusFilePath, "yshop5")
+; 4
+global xshop6 := ReadValueFromFile(cusFilePath, "xshop6")
+global yshop6 := ReadValueFromFile(cusFilePath, "yshop6")
+; 5
+global xshop7 := ReadValueFromFile(cusFilePath, "xshop7")
+global yshop7 := ReadValueFromFile(cusFilePath, "yshop7")
+; 6
+global xshop8 := ReadValueFromFile(cusFilePath, "xshop8")
+global yshop8 := ReadValueFromFile(cusFilePath, "yshop8")
+; 7
+global xshop9 := ReadValueFromFile(cusFilePath, "xshop9")
+global yshop9 := ReadValueFromFile(cusFilePath, "yshop9")
+; 8
+global xshop10 := ReadValueFromFile(cusFilePath, "xshop10")
+global yshop10 := ReadValueFromFile(cusFilePath, "yshop10")
+
+global xshopnext := ReadValueFromFile(cusFilePath, "xshopnext")
+global yshopnext := ReadValueFromFile(cusFilePath, "yshopnext")
+
+global RechargeNormalGear1st := ReadValueFromFile(cusFilePath, "RechargeNormalGear1st")
+global RechargeNormalGear2nd := ReadValueFromFile(cusFilePath, "RechargeNormalGear2nd")
+global RechargeNormalGear3rd := ReadValueFromFile(cusFilePath, "RechargeNormalGear3rd")
+global RechargeNormalGear4th := ReadValueFromFile(cusFilePath, "RechargeNormalGear4th")
+global RechargeNormalGear5th := ReadValueFromFile(cusFilePath, "RechargeNormalGear5th")
+global RechargeSpecialGear1 := ReadValueFromFile(cusFilePath, "RechargeSpecialGear1")
+global ShopUpgradeRound := ReadValueFromFile(cusFilePath, "ShopUpgradeRound")
+
+; ; repair
+; global xshop1 := 1229
+; global yshop1 := 622
+; ; upgrade
+; global xshop2 := 1036
+; global yshop2 := 963
+; ;1
+; global xshop3 := 673
+; global yshop3 := 710
+; ;2
+; global xshop4 := 727
+; global yshop4 := 814
+; ;3
+; global xshop5 := 986
+; global yshop5 := 696
+; ;4
+; global xshop6 := 1242
+; global yshop6 := 705
+; ;5
+; global xshop7 := 1019
+; global yshop7 := 807
+; ;6
+; global xshop8 := 1237
+; global yshop8 := 813
+; ;7
+; global xshop9 := 704
+; global yshop9 := 915
+; ;8
+; global xshop10 := 924
+; global yshop10 := 914
+
+; global xshopnext := 1266
+; global yshopnext := 962
 
 
 ;YOU SHOULD ASK THE AUTHOR BEFORE EDITING THE FOLLOWING VARIABLES
@@ -253,12 +331,12 @@ global Resetround := 31 ;chống tình trạng trôi loop, khi đến round ch�
 global loopCurrent := 0
 global robloxopen := false ;biến hiển thị trạng thái roblox lên gameGUI
 global isShopUpgrade := false ;biến báo hiệu khi nào hoàn thành việc nâng shop
+global KeyTracker := false
 
 ; lấy vị trí chính giữa màn hình
 dpi := GetDpiScale()
 global xct := A_ScreenWidth /2
 global yct := A_ScreenHeight /2
-global cct
 ; Tính toán vị trí cho GUI
 global gameGUIWidth := 405
 global gameGUIHeight := 147
@@ -398,7 +476,9 @@ DoorTime(){ ;time to go from corner to door (default 2310ms)
         if (GetKeyState("PgUp", "P")) {
             stopFlag := true
             ErrorMissTime
-            SendEvent "{a down}"
+            if (!StopFlag) {
+                SendEvent("{a down}") ; Đảm bảo phím 'a' vẫn được giữ
+            }
         }
         Sleep sleepInterval
         elapsed += sleepInterval
@@ -459,6 +539,7 @@ ReadyUp(){ ;wait for the ready button and press (function has a waiting time of 
         if (GetKeyState("PgUp", "P")) {
             StopFlag := true
             ErrorMissTime
+            NormalWaitingTime
         }
         MouseMove x7, y7
         MouseGetPos &xpos, &ypos 
@@ -755,13 +836,16 @@ GearSetup(){
 SpecialGear1Setup(){ ;đặt special gear 1 cách sang bên phải 2460ms
     ; ĐẶT FLAME TURRET
     global firsttimesetup
+    global KeyTracker
     if (NumforHotkey4 >0 and HotKey4 != 0 and globalDeath == 0){
         global NumforHotkey4
         global HotKey4
+        KeyTracker := true
         SendEvent("{d down}") 
         CenterTime
         ShortWaitingTime  
         SendEvent("{d up}")
+        KeyTracker := false
         currentHotKey4 := 0
         if (firsttimesetup){
             currentX := x10
@@ -829,12 +913,14 @@ SpecialGear1Setup(){ ;đặt special gear 1 cách sang bên phải 2460ms
                     currentX := x10
                     currentY := y10
             }
-            }
+        }
+        KeyTracker := true
         SendEvent("{a down}") 
         CenterTime
         ShortWaitingTime  
         SendEvent("{a up}")
         ShortWaitingTime
+        KeyTracker := false
         }
 }
 
@@ -913,6 +999,7 @@ ShopUpgrade(){
         currentXY++
     }
     SendEvent "F"   
+    KeyTracker := true
     SendEvent("{w down}")
     NormalWaitingTime
     NormalWaitingTime
@@ -922,10 +1009,12 @@ ShopUpgrade(){
     NormalWaitingTime
     ShortWaitingTime
     SendEvent("{a up}")
+    KeyTracker := false
     isShopUpgrade := true
 }
 
 MoveBackward(){ ; di chuyển xuống 1 cDis
+    KeyTracker := true
     global backwardtime
     backwardtime++
     global cDis
@@ -935,10 +1024,12 @@ MoveBackward(){ ; di chuyển xuống 1 cDis
     ShortWaitingTime
     ShortWaitingTime
     SendEvent("{s up}")
+    KeyTracker := false
 }
 
 
 MoveForward(){ ;di chuyển lên 1 cDis
+    KeyTracker := true
     global cDis
     cDis++
     SendEvent("{w down}")
@@ -946,10 +1037,12 @@ MoveForward(){ ;di chuyển lên 1 cDis
     ShortWaitingTime
     ShortWaitingTime
     SendEvent("{w up}")
+    KeyTracker := false
 }
 
 
 main(){
+    global KeyTracker
     global StopFlag := false
     global globalAutoReady
     global Hotkey4
@@ -1167,6 +1260,7 @@ main(){
             }
             if (color == c9) 
             {
+                KeyTracker := true
                 SendEvent("{w down}") 
                 AvgLongWaitingTime 
                 SendEvent("{w up}")
@@ -1176,13 +1270,14 @@ main(){
                 SendEvent("{a down}")
                 DoorTime     
                 SendEvent("{a up}")
+                KeyTracker := false
                 ShortWaitingTime
                 SendEvent "F"
                 break
             }
         }
 
-
+        KeyTracker := true
         SendEvent("{d down}") 
         CenterTime  
         SendEvent("{d up}")
@@ -1190,9 +1285,9 @@ main(){
         PlacementWalkTime    
         SendEvent("{w up}")
         ShortWaitingTime
-
+        KeyTracker := false
         SpecialGear1Setup
-
+        
 
 
         global rechargeWait :=false
@@ -1455,6 +1550,7 @@ GUIingame() {
 }
 
 Constructor(){
+    global KeyTracker
     global totalMinutes
     global changeText := false
     global SpecialGear1SetupDone
@@ -1497,10 +1593,53 @@ Constructor(){
         
         if (!changeText){
             timeEdit.Text := hours "h " mins "m " seconds "s"
+            if(KeyTracker == true){
+                roundEdit.Text := "force stop disabled"
+            }else roundEdit.Text := "Current Round: " roundcount
+            
+            if (!robloxopen){
+                roundsSurvived.Text := "Starting Roblox ..."
+            }else{
+                closest := 0
+                if (RechargeNormalGear1st >= roundcount && (closest == 0 || RechargeNormalGear1st < closest)){
+                    roundsSurvived.Text := "Next gear setup in round: " RechargeNormalGear1st
+                    closest := RechargeNormalGear1st
+                }
+                if (RechargeNormalGear2nd >= roundcount && (closest == 0 || RechargeNormalGear2nd < closest)){
+                    roundsSurvived.Text := "Next gear setup in round: " RechargeNormalGear2nd
+                    closest := RechargeNormalGear2nd
+                }
+                if (RechargeNormalGear3rd >= roundcount && (closest == 0 || RechargeNormalGear3rd < closest)){
+                    roundsSurvived.Text := "Next gear setup in round: " RechargeNormalGear3rd
+                    closest := RechargeNormalGear3rd
+                }
+                if (RechargeNormalGear4th >= roundcount && (closest == 0 || RechargeNormalGear4th < closest)){
+                    roundsSurvived.Text := "Next gear setup in round: " RechargeNormalGear4th
+                    closest := RechargeNormalGear4th
+                }
+                if (RechargeNormalGear5th >= roundcount && (closest == 0 || RechargeNormalGear5th < closest)){
+                    roundsSurvived.Text := "Next gear setup in round: " RechargeNormalGear5th
+                    closest := RechargeNormalGear5th
+                }
+                if (RechargeSpecialGear1 >= roundcount && (closest == 0 || RechargeSpecialGear1 < closest)){
+                    roundsSurvived.Text := "Next special gear setup in round: " RechargeSpecialGear1
+                    closest := RechargeSpecialGear1
+                }
+                if (ShopUpgradeRound >= roundcount && (closest == 0 || ShopUpgradeRound < closest)){
+                    roundsSurvived.Text := "upgrade shop in round" ShopUpgradeRound
+                    closest := ShopUpgradeRound
+                }
             changeText := true
+            }
         }else {
+            if(KeyTracker == true){
+                roundEdit.Text := "force stop disabled"
+            }else roundEdit.Text := "Current Round: " roundcount
             timeEdit.Text := "Dis: " cDis
             changeText := false
+            if (!robloxopen){
+                roundsSurvived.Text := "Starting Roblox ..."
+            }else roundsSurvived.Text := "Rounds survived last time: " getroundsSurvivedvalue
     }
         roundEdit.Text := "Current Round: " roundcount
         loopEdit.Text := "Loop" loopCurrent "/" userInput
@@ -1508,7 +1647,7 @@ Constructor(){
         gameProgress.Value := Progressvar
         if (!robloxopen){
             roundsSurvived.Text := "Starting Roblox ..."
-        }else roundsSurvived.Text := "Rounds survived last time: " getroundsSurvivedvalue
+        } ; else roundsSurvived.Text := "Rounds survived last time: " getroundsSurvivedvalue
     }
     
     
@@ -1525,20 +1664,27 @@ CloseMsgBox() { ;close dialog box automatically
 }
 
 ErrorMissTime() { ;error report, close Program
+    global KeyTracker
     global StopFlag
     global loopCurrent
     global roundcount
     MouseGetPos &xpos, &ypos 
     color := PixelGetColor(xpos, ypos)
     if (StopFlag == true){
+        if (KeyTracker == true){
+            StopFlag := false
+            return
+        }
         formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
-        WriteValueToFile(hisFilePath, formattedTime " Stop by User. Current loop: " loopCurrent ", Current round " roundcount)
-        confirm := MsgBox("Stop by User? ", "Macro Stopped", 20)
+        WriteValueToFile(hisFilePath, formattedTime " Pause.")
+        confirm := MsgBox("Are you sure to close the program? ", "Macro Stopped", 20)
         if (confirm == 'No') {
             ; ExitApp  ; Nếu người dùng chọn "No", kết thúc
             StopFlag := false
             return
         }else{
+            formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+            WriteValueToFile(hisFilePath, formattedTime " Stop by User. Current loop: " loopCurrent ", Current round " roundcount)
             ExitApp
         }
     } else {
@@ -1577,7 +1723,6 @@ Deathcount(){
         LongWaitingTime
         LongWaitingTime
     }
-    ToolTip("Death detector is working" . A_TickCount)
 }
 
 GetDpiScale() { ;lấy tỉ lệ scale của màn hình
