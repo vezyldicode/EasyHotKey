@@ -555,7 +555,7 @@ ReadyUp(){ ;wait for the ready button and press (function has a waiting time of 
             break
         if (color == c7) ;
         {
-            if (roundcount == 16 and SpecialGear1SetupDone == false){ ;setup sau round chỉ định 1 round
+            if (roundcount == (RechargeSpecialGear1 -1) and SpecialGear1SetupDone == false){ ;setup sau round chỉ định 1 round
                 currentDis := cDis
                 oldPos := cDis
                 While (currentDis < 30){
@@ -570,7 +570,7 @@ ReadyUp(){ ;wait for the ready button and press (function has a waiting time of 
                 SpecialGear1SetupDone := true
                 MouseMove x7, y7
             }
-            if (roundcount == 21 and isShopUpgrade == false){
+            if (roundcount == (ShopUpgradeRound -1) and isShopUpgrade == false){
                 currentDis := cDis
                 oldPos := cDis
                 While (currentDis >0){
@@ -597,16 +597,16 @@ ReadyUp(){ ;wait for the ready button and press (function has a waiting time of 
                 break
             else count := 0
         }
-        if (roundcount == 10 and rechargeWait == true){
+        if (roundcount == RechargeNormalGear1st and rechargeWait == true){
             MoveBackward
             GearSetup
         }
-        if (roundcount == 14 and rechargeWait == true){
+        if (roundcount == RechargeNormalGear2nd and rechargeWait == true){
             MoveBackward
             GearSetup
         }
 
-        if (roundcount == 18 and rechargeWait == true){
+        if (roundcount == RechargeNormalGear3rd and rechargeWait == true){
             MoveBackward
             GearSetup
         }
@@ -621,11 +621,11 @@ ReadyUp(){ ;wait for the ready button and press (function has a waiting time of 
         Thêm lệnh "rechargeWait := false" vào lần cuối cùng recharge để đảm bảo không có lỗi
         }
         */
-        if (roundcount == 21 and rechargeWait == true){
+        if (roundcount == RechargeNormalGear4th and rechargeWait == true){
             MoveBackward
             GearSetup
         }
-        if (roundcount == 26 and rechargeWait == true){
+        if (roundcount == RechargeNormalGear5th and rechargeWait == true){
             MoveBackward
             GearSetup
             rechargeWait := false
@@ -1521,7 +1521,7 @@ onButtonClick(*) {
         hours := totalMinutes // 60
         minutes := Mod(totalMinutes, 60)
         result := " " hours "h" minutes "m"
-        confirm := MsgBox("Run the program with the number of loops is " userInput "`nEstimated time :" result, "Macro by Vezyl - Press Pgup Key to force Stop", 68)  ; 4 là flag cho Yes/No
+        confirm := MsgBox("Run the program with the number of loops is " userInput "`nEstimated time :" result, "Macro by Vezyl - Press Pgup Key to force Stop", 262212)
         if (confirm == 'No') {
             ; ExitApp  ; Nếu người dùng chọn "No", kết thúc
             isContinuePressed := false
@@ -1677,7 +1677,7 @@ ErrorMissTime() { ;error report, close Program
         }
         formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
         WriteValueToFile(hisFilePath, formattedTime " Pause.")
-        confirm := MsgBox("Are you sure to close the program? ", "Macro Stopped", 20)
+        confirm := MsgBox("Are you sure to close the program? ", "Macro Stopped", 262164)
         if (confirm == 'No') {
             ; ExitApp  ; Nếu người dùng chọn "No", kết thúc
             StopFlag := false
