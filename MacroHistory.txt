@@ -1,0 +1,25 @@
+---
+2024-11-21 10:50:02 run macro with 20 loop(s)
+2024-11-21 10:50:20 Pause.
+2024-11-21 10:50:22 Stop by User. Current loop: 0, Current round 0
+---
+2024-11-21 10:50:33 run macro with 20 loop(s)
+2024-11-21 11:38:34 Complete loop 1, Rounds Survived: 20
+2024-11-21 12:34:10 Complete loop 2, Rounds Survived: 22
+2024-11-21 13:23:02 Complete loop 3, Rounds Survived: 20
+2024-11-21 13:32:02 Error: Spam clicking at join game. Current loop: 4
+2024-11-21 13:32:02 Error. Current loop: 4, Current round 0
+---
+2024-11-21 13:32:03 run macro with 20 loop(s)
+2024-11-21 14:20:13 Complete loop 1, Rounds Survived: 20
+2024-11-21 15:11:03 Complete loop 2, Rounds Survived: 20
+2024-11-21 15:59:19 Complete loop 3, Rounds Survived: 19
+2024-11-21 16:52:28 Complete loop 4, Rounds Survived: 22
+2024-11-21 17:40:53 Complete loop 5, Rounds Survived: 20
+2024-11-21 18:28:30 Complete loop 6, Rounds Survived: 19
+2024-11-21 19:27:13 Complete loop 7, Rounds Survived: 24
+2024-11-21 20:15:58 Complete loop 8, Rounds Survived: 20
+2024-11-21 21:09:55 Complete loop 9, Rounds Survived: 22
+2024-11-21 22:03:43 Complete loop 10, Rounds Survived: 22
+2024-11-21 22:49:58 Pause.
+2024-11-21 22:50:01 Stop by User. Current loop: 11, Current round 20

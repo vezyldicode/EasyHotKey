@@ -281,39 +281,6 @@ global RechargeNormalGear5th := ReadValueFromFile(cusFilePath, "RechargeNormalGe
 global RechargeSpecialGear1 := ReadValueFromFile(cusFilePath, "RechargeSpecialGear1")
 global ShopUpgradeRound := ReadValueFromFile(cusFilePath, "ShopUpgradeRound")
 
-; ; repair
-; global xshop1 := 1229
-; global yshop1 := 622
-; ; upgrade
-; global xshop2 := 1036
-; global yshop2 := 963
-; ;1
-; global xshop3 := 673
-; global yshop3 := 710
-; ;2
-; global xshop4 := 727
-; global yshop4 := 814
-; ;3
-; global xshop5 := 986
-; global yshop5 := 696
-; ;4
-; global xshop6 := 1242
-; global yshop6 := 705
-; ;5
-; global xshop7 := 1019
-; global yshop7 := 807
-; ;6
-; global xshop8 := 1237
-; global yshop8 := 813
-; ;7
-; global xshop9 := 704
-; global yshop9 := 915
-; ;8
-; global xshop10 := 924
-; global yshop10 := 914
-
-; global xshopnext := 1266
-; global yshopnext := 962
 
 
 ;YOU SHOULD ASK THE AUTHOR BEFORE EDITING THE FOLLOWING VARIABLES
@@ -381,8 +348,15 @@ RestartRoblox(){
 
 ScriptfilePath := A_ScriptFullPath
 if !A_IsAdmin{ ; run as Administrator
-    Run( "*RunAs " AHKfilePath " " ScriptfilePath)
-    ExitApp
+    if (SubStr(A_ScriptFullPath, -3) = "exe"){
+        exePath := A_ScriptFullPath ; Lấy đường dẫn của tệp .exe
+        Run("*RunAs " exePath) ; Chạy lại chính nó với quyền Admin
+        ExitApp
+    }else{
+        Run( "*RunAs " AHKfilePath " " ScriptfilePath)
+        ExitApp
+    }
+
 }
 
 
