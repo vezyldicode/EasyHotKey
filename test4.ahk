@@ -27,7 +27,7 @@ validateInput(value) {
 ; Hàm lắc nút
 shakeButton(button) {
     button.GetPos(&x, &y)
-
+    A_Clipboard := "duma"
     ; Lắc nút theo trục x
     loop 4 {
         button.Move(x + 5, y) ; Dịch sang phải
