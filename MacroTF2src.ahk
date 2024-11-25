@@ -1,5 +1,5 @@
 #Requires AutoHotkey v2.0
-
+#SingleInstance Force
 
 /*
 Macro The final stand 2 Roblox
@@ -29,9 +29,10 @@ Note each time use
 
 
 SendMode ("InputThenPlay")
-
+CoordMode "Mouse", "Screen"
+global MacroName := "Macro The Final Stand 2 by Vezyl"
 ; tạo file macro customization
-cusFilePath := "MacroCustomization.ini"
+cusFilePath := A_WorkingDir "\MacroCustomization.ini"
 If !FileExist(cusFilePath) || FileGetSize(cusFilePath) = 0 {
     if FileExist(cusFilePath) ; Kiểm tra sự tồn tại trước khi xóa
         FileDelete(cusFilePath) ; Xóa file nếu có nhưng trống
@@ -131,8 +132,11 @@ If !FileExist(cusFilePath) || FileGetSize(cusFilePath) = 0 {
     WriteValueToFile(cusFilePath, "ys2 := 0")
     WriteValueToFile(cusFilePath, '---')
     WriteValueToFile(cusFilePath, "doorDis := 2310")
+    WriteValueToFile(cusFilePath, "CusdoorDis := 2110")
     WriteValueToFile(cusFilePath, "centerDis := 2440")
     WriteValueToFile(cusFilePath, "maxDis(cDis) := 30")
+    WriteValueToFile(cusFilePath, "Robloxopentimeoutvar := 15000")
+    WriteValueToFile(cusFilePath, "CustomModetimeoutvar := 7200000")
     WriteValueToFile(cusFilePath, '---')
     WriteValueToFile(cusFilePath, "GearModeKeyBind := B")
     WriteValueToFile(cusFilePath, '---')
@@ -143,6 +147,11 @@ If !FileExist(cusFilePath) || FileGetSize(cusFilePath) = 0 {
     WriteValueToFile(cusFilePath, "RechargeNormalGear5th := 26")
     WriteValueToFile(cusFilePath, "RechargeSpecialGear1 := 17")
     WriteValueToFile(cusFilePath, "ShopUpgradeRound := 21")
+    WriteValueToFile(cusFilePath, '---')
+    WriteValueToFile(cusFilePath, "xMode1 := 0")
+    WriteValueToFile(cusFilePath, "yMode1 := 0")
+    WriteValueToFile(cusFilePath, "xMode2 := 0")
+    WriteValueToFile(cusFilePath, "yMode2 := 0")
 }
 
 ;tạo file data
@@ -213,11 +222,12 @@ global c9 := ReadValueFromFile(cusFilePath, "c9")
 
 ; thời gian di chuyển các chặng
 global doorDis := ReadValueFromFile(cusFilePath, "doorDis")
+global CusdoorDis := ReadValueFromFile(cusFilePath, "CusdoorDis")
 global centerDis := ReadValueFromFile(cusFilePath, "centerDis")
 global GearModeKey := ReadValueFromFile(cusFilePath, "GearModeKeyBind")
 global maxDis := ReadValueFromFile(cusFilePath, "maxDis(cDis)")
-
-
+global Robloxopentimeoutvar := ReadValueFromFile(cusFilePath, "Robloxopentimeoutvar")
+global CustomModetimeoutvar := ReadValueFromFile(cusFilePath, "CustomModetimeoutvar")
 ; 4 vị trí đặt đồ
 global x10 := ReadValueFromFile(cusFilePath, "x10")
 global y10 := ReadValueFromFile(cusFilePath, "y10")
@@ -280,6 +290,10 @@ global RechargeNormalGear4th := ReadValueFromFile(cusFilePath, "RechargeNormalGe
 global RechargeNormalGear5th := ReadValueFromFile(cusFilePath, "RechargeNormalGear5th")
 global RechargeSpecialGear1 := ReadValueFromFile(cusFilePath, "RechargeSpecialGear1")
 global ShopUpgradeRound := ReadValueFromFile(cusFilePath, "ShopUpgradeRound")
+global xMode1 := ReadValueFromFile(cusFilePath, "xMode1")
+global yMode1 := ReadValueFromFile(cusFilePath, "yMode1")
+global xMode2 := ReadValueFromFile(cusFilePath, "xMode2")
+global yMode2 := ReadValueFromFile(cusFilePath, "yMode2")
 
 
 
@@ -323,10 +337,10 @@ if (robloxPath == ""){
     MsgBox("Enter your Roblox file Path in MacroCustomization.ini first before open this macro again", "Macro By Vezyl")
     ExitApp
 }
+
 runRoblox(){ ;run Roblox as Administrator
     Run ("*RunAs " robloxPath)
-    LongWaitingTime
-    LongWaitingTime
+    Robloxopentimeout
     While(true){
         if WinExist('Roblox'){
             WinActivate
@@ -356,12 +370,7 @@ if !A_IsAdmin{ ; run as Administrator
         Run( "*RunAs " AHKfilePath " " ScriptfilePath)
         ExitApp
     }
-
 }
-
-
-
-
 
 
 
@@ -439,6 +448,40 @@ LongWaitingTime(){ ;wait for system response
     }
 }
 
+Robloxopentimeout(){ ;wait for roblox open
+    global StopFlag
+
+    totalSleepDuration := Robloxopentimeoutvar
+    sleepInterval := 50
+    elapsed := 0
+    While (elapsed < totalSleepDuration) {
+        if (GetKeyState("PgUp", "P")) {
+            stopFlag := true
+            ErrorMissTime
+        }
+        Sleep sleepInterval
+        elapsed += sleepInterval
+    }
+}
+
+CustomModetimeout(){ ;wait for roblox open
+    global StopFlag
+    totalSleepDuration := CustomModetimeoutvar
+    sleepInterval := 50
+    elapsed := 0
+    While (elapsed < totalSleepDuration) {
+        if (GetKeyState("PgUp", "P")) {
+            stopFlag := true
+            ErrorMissTime
+        }
+        if (globalDeath >0){
+            break
+        }
+        Sleep sleepInterval
+        elapsed += sleepInterval
+    }
+}
+
 
 DoorTime(){ ;time to go from corner to door (default 2310ms)
     global StopFlag
@@ -459,6 +502,24 @@ DoorTime(){ ;time to go from corner to door (default 2310ms)
     }
 }
 
+CusDoorTime(){ ;time to go from corner to door (default 2310ms)
+    global StopFlag
+
+    totalSleepDuration := CusdoorDis
+    sleepInterval := 50
+    elapsed := 0
+    While (elapsed < totalSleepDuration) {
+        if (GetKeyState("PgUp", "P")) {
+            stopFlag := true
+            ErrorMissTime
+            if (!StopFlag) {
+                SendEvent("{a down}") ; Đảm bảo phím 'a' vẫn được giữ
+            }
+        }
+        Sleep sleepInterval
+        elapsed += sleepInterval
+    }
+}
 
 CenterTime(){ ;time to go from door to center (default 2440ms)
     global StopFlag
@@ -620,9 +681,7 @@ GearSetup(){
     3 gear cơ bản sẽ được setup ở đây
     */
     x13able := true
-    global globalDeath
-    global recharging
-    global rechargeWait
+    global globalDeath, recharging, rechargeWait
     round := 2
     currentHotKey1 := 0
     currentHotKey2 := 0
@@ -1131,12 +1190,26 @@ main(){
                     ErrorMissTime
                 }
                 if (color == c4 || color == c41){
-                    MouseMove x%currentXYC%, y%currentXYC%
-                    SetTimer(CloseMsgBox, 500) 
-                    MsgBox("Nhấm Chuột tại vị trí: x" currentXYC, "Macro By Vezyl")
-                    ShortWaitingTime
-                    Click
-                    NormalWaitingTime
+                    if (currentXYC == 4 and Mode1 == 1){
+                        MouseMove xMode1, yMode1
+                        SetTimer(CloseMsgBox, 500) 
+                        MsgBox("Nhấm Chuột tại mode 1", "Macro By Vezyl")
+                        ShortWaitingTime
+                        Click
+                    }else if(currentXYC == 4 and Mode1 == 2){
+                        MouseMove xMode2, yMode2
+                        SetTimer(CloseMsgBox, 500) 
+                        MsgBox("Nhấm Chuột tại mode 2", "Macro By Vezyl")
+                        ShortWaitingTime
+                        Click
+                    }else{
+                        MouseMove x%currentXYC%, y%currentXYC%
+                        SetTimer(CloseMsgBox, 500) 
+                        MsgBox("Nhấm Chuột tại vị trí: x" currentXYC, "Macro By Vezyl")
+                        ShortWaitingTime
+                        Click
+                        NormalWaitingTime
+                    }
                 }
                 if (color == c%currentXYC% || color == c21) { ;nếu trùng màu rồi thì xét màu tiếp theo
                     minicount := 0
@@ -1178,6 +1251,7 @@ main(){
                     }
                     break
                 }
+
             }
             currentXYC++
         }
@@ -1242,7 +1316,9 @@ main(){
                 AvgLongWaitingTime     
                 SendEvent("{d up}")
                 SendEvent("{a down}")
-                DoorTime     
+                if(Mode1 ==0 and Mode2 ==0){
+                    DoorTime
+                }else CusDoorTime
                 SendEvent("{a up}")
                 KeyTracker := false
                 ShortWaitingTime
@@ -1255,21 +1331,61 @@ main(){
         SendEvent("{d down}") 
         CenterTime  
         SendEvent("{d up}")
-        SendEvent("{w down}")
-        PlacementWalkTime    
-        SendEvent("{w up}")
-        ShortWaitingTime
         KeyTracker := false
-        SpecialGear1Setup
-        
-
-
-        global rechargeWait :=false
-        GearSetup
-        global rechargeWait := true
-        global globalAutoReady := true
-        ReadyUp
-
+        if (Mode1 == 0){ ; che do career
+            KeyTracker := true
+            SendEvent("{w down}")
+            PlacementWalkTime    
+            SendEvent("{w up}")
+            ShortWaitingTime
+            KeyTracker := false
+            SpecialGear1Setup
+            global rechargeWait :=false
+            GearSetup
+            global rechargeWait := true
+            global globalAutoReady := true
+            ReadyUp
+        }else if (Mode1 == 1 || Mode2 == 1){
+            if (GetKeyState("PgUp", "P")) {
+                StopFlag := true
+                ErrorMissTime
+            }
+            if WinExist('TinyTask'){
+                WinActivate
+                for index, char in StrSplit(tinytaskHotkey) {
+                    if char == "+"{
+                        char := "Ctrl"
+                    }
+                    if char == "^"{
+                        char := "Shift"
+                    }
+                    if char == "!"{
+                        char := "Alt"
+                    }
+                    Send "{" char " Down}" ; Nhấn giữ phím
+                    Sleep(50)
+                }
+                Sleep(1000)
+                for index, char in StrSplit(tinytaskHotkey){
+                    if char == "+"{
+                        char := "Ctrl"
+                    }
+                    if char == "^"{
+                        char := "Shift"
+                    }
+                    if char == "!"{
+                        char := "Alt"
+                    }
+                    Send "{" char " up}" ; Nhấn giữ phím
+                    Sleep(50)
+                }
+            }
+            if WinExist('Roblox'){
+                WinActivate
+            }
+            CustomModetimeout
+            globalDeath := 1
+        }
 
         if (globalDeath >0 || roundcount == Resetround){
             SendEvent "{Esc}"
@@ -1307,34 +1423,38 @@ global Totalhotkey5
 
 
 mainGUI := Gui()
+mainGUI.OnEvent("Close", MyGui_Close)
 ; mainGUI.Opt("+AlwaysOnTop")
 mainGUI.SetFont("s14", "Segoe UI")
-mainGUI.SetFont("s30 cBlack")
+mainGUI.SetFont("s30 c484b6a")
+mainGUI.BackColor := 0xFBFBFB
 
-mainGUI.Title := "MACRO THE FINAL STAND 2 v2.2"
+mainGUI.Title := MacroName
 
+mainGUI.SetFont("s14", "Segoe UI")
+mainGUI.Add("Text", "x16 y16 w309 h34 +0x200", "Enter the number of loops you want:")
+MyText := mainGUI.Add("Text", "x400 y16 w137 h33 +0x200", "Estimated time")
+textInput := mainGUI.Add("ComboBox", "x328 y16 w62 +AltSubmit", ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"])
+mainGUI.SetFont("s30")
+startButton := mainGUI.Add("Button", "x544 y16 w64 h49", "▸")
+mainGUI.SetFont("s14", "Segoe UI")
 
 ; nhập thông tin số lần loop
 mainGUI.SetFont("s9", "Segoe UI")
-Tab := mainGUI.Add("Tab3", "x0 y0 w623 h514 +Bottom", ["Edit", "Info"])
+Tab := mainGUI.Add("Tab3", "x0 y60 w623 h454", ["Career Macro", "Custom Function", "     Help     ", "     Update     "])
 mainGUI.SetFont("s14", "Segoe UI")
 
 Tab.UseTab(1)
-mainGUI.Add("Text", "x16 y16 w309 h34 +0x200 -Background", "Enter the number of loops you want:")
-MyText := mainGUI.Add("Text", "x400 y16 w137 h33 +0x200", "Estimated time")
-textInput := mainGUI.Add("ComboBox", "x328 y16 w62", ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"])
-mainGUI.SetFont("s30 cBlack")
-startButton := mainGUI.Add("Button", "x544 y16 w64 h49", "▸")
-mainGUI.SetFont("s14", "Segoe UI")
+
 ;phần chữ
-mainGUI.Add("Text", "x16 y72 w120 h23 +0x200", "Gear Setting")
+mainGUI.Add("Text", "x16 y82 w120 h23 +0x200", "Gear Setting")
 mainGUI.Add("Text", "x16 y112 w112 h23 +0x200", "Hotkey")
 mainGUI.Add("Text", "x160 y112 w112 h23 +0x200", "Round 2, 18, 21")
 mainGUI.Add("Text", "x304 y112 w112 h23 +0x200", "Round 3, 19, 22")
 mainGUI.Add("Text", "x448 y112 w113 h23 +0x200", "Round 4, 20, 23")
 
 ;simple macro
-input1 := mainGUI.Add("ComboBox", "x16 y136 w112", ["1", "2", "3", "4", "5", "6", "7", "8"])
+input1 := mainGUI.Add("ComboBox", "x16 y136 w112 ", ["1", "2", "3", "4", "5", "6", "7", "8"])
 input2 := mainGUI.Add("ComboBox", "x160 y136 w112", ["1", "2", "3", "4", "5", "6", "7", "8"])
 input3 := mainGUI.Add("ComboBox", "x304 y136 w112", ["1", "2", "3", "4", "5", "6", "7", "8"])
 input4 := mainGUI.Add("ComboBox", "x448 y136 w112", ["1", "2", "3", "4", "5", "6", "7", "8"])
@@ -1409,7 +1529,178 @@ input14.OnEvent("Change", OnEventHandler)
 input15.OnEvent("Change", OnEventHandler)
 input16.OnEvent("Change", OnEventHandler)
 mainGUI.OnEvent('Close', (*) => ExitApp())
+
+global HotkeyBox
 Tab.UseTab(2)
+ButtonAutoReadyMode := mainGUI.Add("Button", "x32 y464 w275 h30", "Auto Ready Mode")
+ButtonAutoClick := mainGUI.Add("Button", "x317 y464  w275 h30", "Auto Click")
+mainGUI.SetFont("s10")
+HotkeyBox := mainGUI.Add("Hotkey", "x464 y152 w145 h34")
+mainGUI.SetFont("s14")
+mainGUI.Add("Text", "x464 y120 w144 h32 +0x200", "Tinytask Hotkey")
+Radio1 := mainGUI.Add("Radio", "x16 y120 w200 h42", "Func 1")
+Radio2 := mainGUI.Add("Radio", "x16 y224 w200 h42", "Func 2")
+Radio3 := mainGUI.Add("Radio", "x16 y328 w200 h42", "Func 3")
+mainGUI.SetFont("s10")
+mainGUI.Add("Text", "x32 y160 w200 h23 +0x200", "Work with TinyTask")
+mainGUI.Add("Text", "x32 y264 w200 h23 +0x200", "Work with TinyTask")
+mainGUI.Add("Text", "x32 y368 w200 h23 +0x200", "not yet developed")
+
+ButtonAutoClick.OnEvent("Click", AutoClickGUIFunc)
+
+global Spider, SpiderX, SpiderY
+mainGUI.SetFont("s20", "Tahoma")
+Spider := mainGUI.Add("Text", "x150 y100 w20 h50 Center BackgroundTrans", "🕷️")
+Spider.OnEvent("Click", (*) => ClimbUp())
+SetTimer(() => MoveSpiderRandom(), 150)
+SpiderX := RandomPos(220, 494)
+SpiderY := RandomPos(0, 494)
+global Climbing := false
+mainGUI.SetFont("s50", "Tahoma")
+Arrow := mainGUI.Add("Text", "x100 y100 w50 h80 c380d04 Center BackgroundTrans", "🕸️")
+Arrow.OnEvent("Click", (*) => ArrowBig())
+Arrow.Move(SpiderX, SpiderY)
+
+
+Tab.UseTab(3)
+
+
+
+Base64Decode(base64) {
+    static charset := "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+    bin := ""  ; Chuỗi trống để lưu trữ kết quả giải mã
+    bits := 0
+    pad := 0
+
+    ; Duyệt qua từng ký tự trong chuỗi Base64
+    for i, char in StrSplit(base64) {
+        if (char == "=") {
+            pad++
+            continue
+        }
+
+        charPos := InStr(charset, char) - 1
+        if (charPos < 0)  ; Nếu không phải ký tự hợp lệ
+            continue
+
+        bits := (bits << 6) | charPos
+        if (i//4 == 3) {  ; Sau mỗi 4 ký tự, lưu vào bin
+            bin .= Chr((bits >> 16) & 0xFF)
+            bin .= Chr((bits >> 8) & 0xFF)
+            bin .= Chr(bits & 0xFF)
+            bits := 0
+        }
+    }
+
+    ; Xử lý padding
+    if (pad) {
+        bin := SubStr(bin, 1, StrLen(bin) - pad)
+    }
+
+    return bin
+}
+
+
+
+global NetMove := 0
+MoveSpiderDown() {
+    global Spider, SpiderY, Climbing
+    if (Climbing) ; Nếu đang bò lên thì không đi xuống
+        return
+    SpiderY += 1
+    if (SpiderY > 250) ; Khi chạm đáy, reset về trên
+        SpiderY := 100
+    Spider.Move(SpiderX, SpiderY)
+    Spider.BackgroundColor := "BackgroundTrans"
+}
+
+MoveSpiderRandom() {
+    global Spider, SpiderX, SpiderY, Climbing
+    if (Climbing) ; Nếu đang bò lên thì không đi lung tung
+        return
+
+    ; Sinh giá trị ngẫu nhiên để thay đổi vị trí
+    oldX := SpiderX
+    oldY := SpiderY
+    
+    SpiderY += RandomPos(-5, 15)
+    if (SpiderX >550){
+        SpiderX += RandomPos(-30, 5)
+    }else if (SpiderX < 250){
+        SpiderX += RandomPos(-5, 30)
+    }else SpiderX += RandomPos(-30, 30)
+
+    if (SpiderY > 350){
+        SpiderY += RandomPos(-30, 5)
+    }else if (SpiderY <100){
+        SpiderY += RandomPos(-5, 30)
+    }else SpiderY += RandomPos(-15, 15)
+
+    ; Giới hạn vị trí trong phạm vi của GUI
+    SpiderX := Clamp(SpiderX, 220, 583) ; 300 (GUI rộng) - 20 (kích thước nhện)
+    SpiderY := Clamp(SpiderY, 0, 424) ; 300 (GUI cao) - 20 (kích thước nhện)
+
+    ; Di chuyển nhện
+    NetMove := RandomPos(-2, 2)
+    Arrow.Text := "🕸️"
+    if (SpiderX > oldX) {
+        Direction := "right"
+        Spider.Text := "🕷️" ; Nhện di chuyển sang phải
+        if NetMove ==1
+            Arrow.Move(RandomPos(SpiderX-50, SpiderX+50), RandomPos(SpiderY-50, SpiderY+50))
+    }
+    else if (SpiderX < oldX) {
+        Direction := "left"
+        Spider.Text := "🕷️" ; Nhện di chuyển sang trái
+        if NetMove ==1
+            Arrow.Move(RandomPos(SpiderX-50, SpiderX+50), RandomPos(SpiderY-50, SpiderY+50))
+    }
+    else if (SpiderY > oldY) {
+        Direction := "down"
+        Spider.Text := "🕷️" ; Nhện di chuyển xuống dưới
+    }
+    else if (SpiderY < oldY) {
+        Direction := "up"
+        Spider.Text := "🕷️" ; Nhện di chuyển lên trên
+    }
+    Spider.Move(SpiderX, SpiderY)
+}
+RandomPos(min, max) {
+    result := Random(min, max)
+    return result
+}
+
+Clamp(value, min, max) {
+    return value < min ? min : value > max ? max : value
+}
+
+ClimbUp() {
+    global Spider, SpiderY, Climbing
+    if (Climbing){ ; Nếu đang bò lên rồi thì không lặp lại
+        return
+    }
+    Climbing := true
+    Arrow.Text := ""
+    
+    Loop 50 {
+        Spider.Text := "🕷️"
+        SpiderY -= 2
+        
+        Spider.Move(SpiderX, SpiderY)
+        Spider.BackgroundColor := "BackgroundTrans"
+        Sleep(20)
+    }
+    
+    Climbing := false
+}
+
+ArrowBig(*){
+    mainGUI.SetFont("s350", "Tahoma")
+    ArrowBig := mainGUI.Add("Text", "x0 y0 w623 h514 cff0000 Center BackgroundTrans", "🕸️")
+    sleep (500)
+    ArrowBig.Opt("Hidden")
+    ; ArrowBig.Text := ""
+}
 isContinuePressed := false
 global roundcount
 
@@ -1439,6 +1730,15 @@ OnEventHandler(*){ ;gán các giá trị người dùng vào biến xử lý khi
     global Totalhotkey4
     global Totalhotkey5
 
+    vars := [
+        input1, input2, input3, input4, input5, input6, input7, input8, input9, input10, input11, input12, input13, input14, input15, input16
+    ]
+    for var in vars {
+        if (!IsNumber(var.text) and var.text != "") {
+            shakeButton(var)
+        }
+    }
+
     Totalhotkey1.value := NumforHotkey1round2 + NumforHotkey1round3 + NumforHotkey1round4
     Totalhotkey2.text := NumforHotkey2round2 + NumforHotkey2round3 + NumforHotkey2round4
     Totalhotkey3.text := NumforHotkey3round2 + NumforHotkey3round3 + NumforHotkey3round4
@@ -1452,7 +1752,7 @@ OnEventHandler(*){ ;gán các giá trị người dùng vào biến xử lý khi
     MyText.Text := (result)
 }
 
-
+global tinytaskHotkey
 onButtonClick(*) {
     global isContinuePressed  ; Sử dụng biến toàn cục
     global userInput := textInput.Value
@@ -1468,8 +1768,10 @@ onButtonClick(*) {
     global NumforHotkey3round2 := input10.Value
     global NumforHotkey3round3 := input11.Value
     global NumforHotkey3round4 := input12.Value
-
-
+    global tinytaskHotkey := HotkeyBox.Value
+    global Mode1 := Radio1.Value
+    global Mode2 := Radio2.Value
+    global Mode3 := Radio3.Value
     if FileExist(dataFilePath)
         FileDelete(dataFilePath) ;xóa file data cũ
     FileAppend("", dataFilePath) ; Tạo file mới
@@ -1490,28 +1792,38 @@ onButtonClick(*) {
     WriteValueToFile(dataFilePath, "input15 := " input15.value)
     WriteValueToFile(dataFilePath, "input16 := " input16.value)
 
-        
-        global totalMinutes := userInput * 54
-        hours := totalMinutes // 60
-        minutes := Mod(totalMinutes, 60)
-        result := " " hours "h" minutes "m"
-        confirm := MsgBox("Run the program with the number of loops is " userInput "`nEstimated time :" result, "Macro by Vezyl - Press Pgup Key to force Stop", 262212)
-        if (confirm == 'No') {
-            ; ExitApp  ; Nếu người dùng chọn "No", kết thúc
-            isContinuePressed := false
-        }else{
-            isContinuePressed := true
-            mainGUI.Hide()
-            main()
-        }
+
+    if (!IsNumber(userInput) || userInput == 0) {
+        shakeButton(startButton)
+        return
+    }
+    if (Mode3 ==1) {
+        shakeButton(Radio3)
+        return
+    }
+    if tinytaskHotkey == "" and (Mode1 ==1 || Mode2 ==1) {
+        shakeButton(HotkeyBox)
+        return
+    }
+    global totalMinutes := userInput * 54
+    hours := totalMinutes // 60
+    minutes := Mod(totalMinutes, 60)
+    result := " " hours "h" minutes "m"
+    confirm := MsgBox("Run the program with the number of loops is " userInput "`nEstimated time :" result, "Macro by Vezyl - Press Pgup Key to force Stop", 262212)
+    if (confirm == 'No') {
+        ; ExitApp  ; Nếu người dùng chọn "No", kết thúc
+        isContinuePressed := false
+    }else{
+        isContinuePressed := true
+        mainGUI.Hide()
+        main()
+    }
 }
 
 mainGUI.Show ("w623 h514")
 if (!isContinuePressed) {
     return
 }
-
-
 
 
 
@@ -1536,10 +1848,9 @@ Constructor(){
     gameGUI.SetFont("cWhite")
 	gameGUI.SetFont("s14", "Segoe UI")
 	gameGUI.SetFont("s16", "Segoe UI")
-	gameGUI.Add("Text", "x-1 y8 w407 h42 +0x200 +Center", "MACRO THE FINAL STAND 2 v2.2")
+	gameGUI.Add("Text", "x-1 y8 w407 h42 +0x200 +Center", MacroName)
 	gameGUI.SetFont("s14", "Segoe UI")
 	loopEdit := gameGUI.Add("Text", "x8 y96 w96 h26 +0x200", "Loop" loopCurrent "/" userInput)
-
 	roundsSurvived := gameGUI.Add("Text", "x8 y64 w254 h23 +0x200", "Rounds survived last time: " getroundsSurvivedvalue)
 	gameGUI.Add("Text", "x-8 y56 w493 h1 +0x10")
 	roundEdit := gameGUI.Add("Text", "x104 y96 w176 h26 +0x200", "Current Round: " roundcount)
@@ -1567,13 +1878,17 @@ Constructor(){
         
         if (!changeText){
             timeEdit.Text := hours "h " mins "m " seconds "s"
-            if(KeyTracker == true){
+            if(KeyTracker){
                 roundEdit.Text := "force stop disabled"
+            }else if (Mode1 == 1){
+                roundEdit.Text := "Custom Mode 1"
+            }else if (Mode2 ==1){
+                roundEdit.Text := "Custom Mode 2"
             }else roundEdit.Text := "Current Round: " roundcount
             
             if (!robloxopen){
                 roundsSurvived.Text := "Starting Roblox ..."
-            }else{
+            }else if (Mode1 ==0){
                 closest := 0
                 if (RechargeNormalGear1st >= roundcount && (closest == 0 || RechargeNormalGear1st < closest)){
                     roundsSurvived.Text := "Next gear setup in round: " RechargeNormalGear1st
@@ -1603,19 +1918,26 @@ Constructor(){
                     roundsSurvived.Text := "upgrade shop in round" ShopUpgradeRound
                     closest := ShopUpgradeRound
                 }
-            changeText := true
             }
+            changeText := true
         }else {
-            if(KeyTracker == true){
+            if(KeyTracker){
                 roundEdit.Text := "force stop disabled"
-            }else roundEdit.Text := "Current Round: " roundcount
-            timeEdit.Text := "Dis: " cDis
-            changeText := false
+            }else if (Mode1 == 1){
+                roundEdit.Text := "Custom Mode 1"
+            }else if (Mode2 ==1){
+                roundEdit.Text := "Custom Mode 2"
+            }else {
+                roundEdit.Text := "Current Round: " roundcount
+                timeEdit.Text := "Dis: " cDis
+            }
+            
             if (!robloxopen){
                 roundsSurvived.Text := "Starting Roblox ..."
             }else roundsSurvived.Text := "Rounds survived last time: " getroundsSurvivedvalue
-    }
-        roundEdit.Text := "Current Round: " roundcount
+            changeText := false
+        }
+        ; roundEdit.Text := "Me cha may hien lein" roundcount
         loopEdit.Text := "Loop" loopCurrent "/" userInput
         Progressvar := ElapsedTime / totalTime * 100
         gameProgress.Value := Progressvar
@@ -1629,6 +1951,21 @@ Constructor(){
     
     gameGUI.Show
     return gameGUI
+}
+
+shakeButton(button) {
+    button.GetPos(&x, &y)
+
+    ; Lắc nút theo trục x
+    loop 4 {
+        button.Move(x + 5, y) ; Dịch sang phải
+        Sleep(50)
+        button.Move(x - 5, y) ; Dịch sang trái
+        Sleep(50)
+    }
+
+    ; Trả về vị trí ban đầu
+    button.Move(x, y)
 }
 
 
@@ -1707,4 +2044,144 @@ GetDpiScale() { ;lấy tỉ lệ scale của màn hình
     
     ; Calculate the scaling factor based on DPI (96 is the default DPI)
     return dpi / 96
+}
+
+
+AutoClickGUIFunc(*){
+    Run("test4.exe")
+    mainGUI.Minimize()
+    global clicking := false, Clickinterval, StartClickButton, StopClickButton, Isclose := false, whichmouseClick, DropDownList1, SmartClick
+    autoclickGUI := Gui()
+    autoclickGUI.MyName := "autoclickGUI"
+    autoclickGUI.SetFont("s8", "Segoe UI")
+    autoclickGUI.SetFont("c484b6a")
+	autoclickGUI.Opt("-MaximizeBox +AlwaysOnTop -DPIScale")
+	autoclickGUI.Add("Text", "x16 y8 w74 h26 +0x200", "Click interval")
+	Clickinterval := autoclickGUI.Add("Edit", "x88 y8 w120 h26")
+    Clickinterval.text := "100"
+	autoclickGUI.Add("Text", "x208 y8 w25 h26 +0x200", "ms")
+	StartClickButton := autoclickGUI.Add("Radio", "x16 y80 w104 h23", "Start")
+	StopClickButton := autoclickGUI.Add("Radio", "x128 y80 w104 h23", "Stop")
+    DropDownList1 := autoclickGUI.Add("DropDownList", "x112 y48 w120", ["Left", "Right", "Middle"])
+	SmartClick := autoclickGUI.Add("CheckBox", "x16 y105 w104 h23", "Smart Click")
+    DropDownList1.Text := "Left"
+	autoclickGUI.Add("Text", "x16 y48 w95 h22 +0x200", "Mouse Button")
+	StartClickButton.OnEvent("Click", StartClick)
+	StopClickButton.OnEvent("Click", CancelClick)
+    StopClickButton.value := 1
+    SmartClick.value := 1
+	DropDownList1.OnEvent("Change", (*) => whichmouseClick := DropDownList1.Value)
+	autoclickGUI.Title := "Auto Click"
+    autoclickGUI.Show("w248 h132")
+    autoclickGUI.OnEvent("Close", MyGui_Close)
+    autoclickGUI.Restore()
+    Loop {
+        if (Isclose){
+            break
+        }
+        if (GetKeyState("PgUp", "P")){
+            if (!clicking){
+                StartClickButton.value := 1
+                Sleep(200)
+                StartClick
+            }else {
+                StopClickButton.value := 1
+                Sleep(200)
+                CancelClick
+            }
+        }
+    }
+    return  
+}
+
+StartClick(*){
+    global clicking := true, StartClickButton, StopClickButton, Isclose, whichmouseClick, DropDownList1, SmartClick, oldXclick := "", oldYclick := ""
+    whichmouseClick := DropDownList1.Value
+    if (Clickinterval.value == ""){
+        StopClickButton.value := 1
+        Sleep(200)
+        CancelClick
+        return
+    }
+
+    totalSleepDuration := 200000000
+    sleepInterval := Clickinterval.value
+    elapsed := 0
+    oldElapsed := 0
+    SetTimer(SmartAI, 50)
+    While (elapsed < totalSleepDuration and clicking and !Isclose) {
+        
+        if (GetKeyState("PgUp", "P")) {
+            StopClickButton.value := 1
+            Sleep(200)
+            CancelClick
+            break
+        }
+        
+        if (elapsed == 500 || (sleepInterval > 500 and elapsed == sleepInterval)){
+            MouseGetPos &xpos, &ypos
+            oldXclick := xpos
+            oldYclick := ypos
+        }
+        if (SmartClick.value == 1 and elapsed >= 500){
+            switch whichmouseClick{
+                case "1": Click
+                case "2": SendEvent "{RButton}"
+                case "3": SendEvent "{MButton}"
+            }
+            
+            
+        }else if (SmartClick.value == 0){
+            switch whichmouseClick{
+                case "1": Click
+                case "2": SendEvent "{RButton}"
+                case "3": SendEvent "{MButton}"
+            }
+        }
+        Sleep sleepInterval
+        elapsed += sleepInterval
+    }
+    SmartAI(*){
+        global oldXclick, oldYclick
+        MouseGetPos &xpos, &ypos
+        if (oldXclick == ""){
+            return
+        }
+        if !Isclose and (xpos < (oldXclick -300) || xpos > (oldXclick +300)){
+            StopClickButton.value := 1
+            Sleep(200)
+            CancelClick
+        }
+        if !Isclose and (ypos < (oldYclick -300) || ypos > (oldYclick +300)){
+            StopClickButton.value := 1
+            Sleep(200)
+            CancelClick
+        }
+        if (elapsed >=oldElapsed){
+            oldElapsed := elapsed
+            MouseGetPos &xpos, &ypos
+            oldXclick := xpos
+            oldYclick := ypos
+        }
+    }
+    return
+}
+
+CancelClick(*){
+    global clicking := false
+    ToolTip( "Stop Auto Click")
+    SetTimer () => ToolTip(), -3000
+}
+
+MyGui_Close(thisGui) {  ; Declaring this parameter is optional.
+    global Isclose
+    if (thisGui.Title == "Auto Click" and Isclose == false){
+        thisGui.Destroy()
+        Isclose := true
+        return true
+    }
+    ; thisGui.Close
+    if MsgBox("Are you sure you want to close this program?",, "y/n") == "No"
+        return true  ; true = 1
+    ExitApp
 }
