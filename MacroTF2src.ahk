@@ -1,6 +1,5 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
-
 /*
 Macro The final stand 2 Roblox
 Author: Tuan Viet Nguyen
@@ -1336,7 +1335,7 @@ global Totalhotkey3
 global Totalhotkey4
 global Totalhotkey5 
 global nameTab1 := "Career Macro", nameTab2 := "Custom Function", nameTab3 := "Help", nameTab4 := "Update"
-TraySetIcon(A_WorkingDir "\Ico\mainIcon.ico")
+TraySetIcon(A_WorkingDir "\Ico\main.ico")
 mainGUI := Gui()
 mainGUI.OnEvent("Close", MyGui_Close)
 ; mainGUI.Opt("+AlwaysOnTop")
