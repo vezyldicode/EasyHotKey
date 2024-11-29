@@ -313,18 +313,22 @@ OnEventHandler(*){ ;gán các giá trị người dùng vào biến xử lý khi
 onButtonClick(*) {
     global isContinuePressed  ; Sử dụng biến toàn cục
     MacroParam.LoopCount := mainGUIattribute.LoopInput.Value
-    global HotKey1 := mainGUIattribute.input1.Value
-    global NumforHotkey1round2 := mainGUIattribute.input2.Value
-    global NumforHotkey1round3 := mainGUIattribute.input3.Value
-    global NumforHotkey1round4 := mainGUIattribute.input4.Value
-    global HotKey2 := mainGUIattribute.input5.Value
-    global NumforHotkey2round2 := mainGUIattribute.input6.Value
-    global NumforHotkey2round3 := mainGUIattribute.input7.Value
-    global NumforHotkey2round4 := mainGUIattribute.input8.Value
-    global HotKey3 := mainGUIattribute.input9.Value
-    global NumforHotkey3round2 := mainGUIattribute.input10.Value
-    global NumforHotkey3round3 := mainGUIattribute.input11.Value
-    global NumforHotkey3round4 := mainGUIattribute.input12.Value
+    MacroParam.SetupInfor.HotKey1 := mainGUIattribute.input1.Value
+    MacroParam.SetupInfor.NumforHotkey1round2 := mainGUIattribute.input2.Value
+    MacroParam.SetupInfor.NumforHotkey1round3 := mainGUIattribute.input3.Value
+    MacroParam.SetupInfor.NumforHotkey1round4 := mainGUIattribute.input4.Value
+    MacroParam.SetupInfor.HotKey2 := mainGUIattribute.input5.Value
+    MacroParam.SetupInfor.NumforHotkey2round2 := mainGUIattribute.input6.Value
+    MacroParam.SetupInfor.NumforHotkey2round3 := mainGUIattribute.input7.Value
+    MacroParam.SetupInfor.NumforHotkey2round4 := mainGUIattribute.input8.Value
+    MacroParam.SetupInfor.HotKey3 := mainGUIattribute.input9.Value
+    MacroParam.SetupInfor.NumforHotkey3round2 := mainGUIattribute.input10.Value
+    MacroParam.SetupInfor.NumforHotkey3round3 := mainGUIattribute.input11.Value
+    MacroParam.SetupInfor.NumforHotkey3round4 := mainGUIattribute.input12.Value
+    MacroParam.SetupInfor.Hotkey4 := mainGUIattribute.input13.Value
+    MacroParam.SetupInfor.NumforHotkey4 := mainGUIattribute.input14.Value
+    MacroParam.SetupInfor.Hotkey5 := mainGUIattribute.input15.Value
+    MacroParam.SetupInfor.NumforHotkey5 := mainGUIattribute.input16.Value
     HotKey.tinytaskHotkey := mainGUIattribute.HotkeyBox.Value
     global Mode1 := mainGUIattribute.Mode1.Value
     global Mode2 := mainGUIattribute.Mode2.Value
@@ -362,6 +366,15 @@ onButtonClick(*) {
     }else{
         isContinuePressed := true
         mainGUI.Hide()
+        if (mainGUIattribute.Mode1.Value == "1"){
+            Metadata.Mode := Metadata.ModeList[2]
+        }else if (mainGUIattribute.Mode2.Value == "1"){
+            Metadata.Mode := Metadata.ModeList[3]
+        }else if (mainGUIattribute.Mode3.Value == "1"){
+            Metadata.Mode := Metadata.ModeList[4]
+        }else {
+            Metadata.Mode := Metadata.ModeList[1]
+        }
         main()
     }
 }

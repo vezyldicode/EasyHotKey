@@ -251,7 +251,6 @@ runRoblox(){ ;run Roblox as Administrator
     }
     ; WinActivate('Roblox')
     NormalWaitingTime
-
 }
 
 RestartRoblox(){
