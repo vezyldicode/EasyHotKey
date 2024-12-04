@@ -34,6 +34,7 @@ class Hotkey {
 }
 
 class MacroParam {
+    static RespondTimeout := "180"
     static DeathdetectorWork := false
     static PendingActList := ["Find Game"
     , "Game Exec"
@@ -60,16 +61,16 @@ class MacroParam {
     static EstimatedTime := "60"
     static globalDeath := "0"
     static roundcount := "0"
-    static IsAutoReady := "false"
-    static rcing := "false"
-    static IsShopUpgrade := "false"
+    static IsAutoReady := false
+    static rcing := false
+    static IsShopUpgrade := false
     static ResetRound := "31"
     static DoorTime := "2310"
     static CusDoorTime := "2110"
     static CenterTime := "2440"
-    static 1Dis := "1400"
+    static 1Dis := "700"
     static cDis := "0"
-    static maxDis := "30"
+    static maxDis := "40"
     class Bild {
         static TF2 := ReadKeyWordFromFile(filePath.cus, "TF2.Bild")
         static PlayButton := ReadKeyWordFromFile(filePath.cus, "PlayButton.Bild")
@@ -82,9 +83,21 @@ class MacroParam {
         static Mode1 := ReadKeyWordFromFile(filePath.cus, "")
         static Mode2 := ReadKeyWordFromFile(filePath.cus, "")
         static Mode3 := ReadKeyWordFromFile(filePath.cus, "")
+        static lv50 := ReadKeyWordFromFile(filePath.cus, "lv50.Bild")
+        static unlock := ReadKeyWordFromFile(filePath.cus, "Unlock.Bild")
+        static prestige := ReadKeyWordFromFile(filePath.cus, "Prestige.Bild")
+        static perk := ReadKeyWordFromFile(filePath.cus, "Perk.Bild")
+        static PrestigeButton := ReadKeyWordFromFile(filePath.cus, "PrestigeButton.Bild")
     }
 
     class SetupInfor{
+        static RC1st := ReadKeyWordFromFile(filePath.cus, "RechargeNormalGear1st")
+        static RC2nd := ReadKeyWordFromFile(filePath.cus, "RechargeNormalGear2nd")
+        static RC3rd := ReadKeyWordFromFile(filePath.cus, "RechargeNormalGear3rd")
+        static RC4th := ReadKeyWordFromFile(filePath.cus, "RechargeNormalGear4th")
+        static RC5th := ReadKeyWordFromFile(filePath.cus, "RechargeNormalGear5th")
+        static RCSpecial1 := "17"
+        static RCSpecial2 := "24"
         static HotKey1 := "0"
         static NumforHotkey1round2 := "0"
         static NumforHotkey1round3 := "0"
@@ -97,10 +110,18 @@ class MacroParam {
         static NumforHotkey3round2 := "0"
         static NumforHotkey3round3 := "0"
         static NumforHotkey3round4 := "0"
-        static HotKey4 := "0"
-        static NumforHotkey4 := "0"
+        static HotKey4 :="0"
+        static NumforHotkey4round2 := "0"
+        static NumforHotkey4round3 := "0"
+        static NumforHotkey4round4 := "0"
         static HotKey5 := "0"
-        static NumforHotkey5 := "0"
+        static NumforHotkey5round2 := "0"
+        static NumforHotkey5round3 := "0"
+        static NumforHotkey5round4 := "0"
+        static SHotKey1 := "0"
+        static NumforSHotKey1 := "0"
+        static SHotKey2 := "0"
+        static NumforSHotKey2 := "0"
         static GearModeKey := "B"
         static xGear1 := "802"
         static yGear1 := "691"
@@ -110,8 +131,24 @@ class MacroParam {
         static yGear3 := "796"
         static xGear4 := "872"
         static yGear4 := "799"
+    }
+    class tmp{
+        static currentHotKey1 := "0"
+        static currentHotKey2 := "0"
+        static currentHotKey3 := "0"
+        static currentHotKey4 := "0"
+        static currentHotKey5 := "0"
+        static currentSHotKey1 := "0"
+        static currentSHotKey2 := "0"
+        static currentNumforHotkey1 := "0"
+        static currentNumforHotkey2 := "0"
+        static currentNumforHotkey3 := "0"
+        static currentNumforHotkey4 := "0"
+        static currentNumforHotkey5 := "0"
+        static RoundtoSetupCount := "2"
         static CurrentX := "0"
         static CurrentY := "0"
+        static xGear4able := true
     }
     static KeyHoldDuration := 150 ;ms
 }
@@ -185,7 +222,6 @@ LongWaitingTime(count := "1"){
 }
 
 MacroPause(*){
-
     if (GetKeyState(Hotkey.stopkey, "P")) {
         confirm := MsgBox("Are you sure to close the program? ", "Macro Stopped", 262164)
         if (confirm == 'No') {
@@ -249,6 +285,7 @@ AutoReadyModeFunc(*){
     
 }
 
+; Giá trị out biểu diễn cho việc có nhấn nút hay không, nếu out ="1" thì chỉ đợi đến hết round và không nhấn ready
 ReadyUp(out := "0"){ ;wait for the ready button and press (function has a waiting time of about 1 round)
     /*
     Hàm điều phối và thực hiện lệnh bấm ready khi round mới
@@ -261,7 +298,7 @@ ReadyUp(out := "0"){ ;wait for the ready button and press (function has a waitin
     */
     LongWaitingTime
     count := 0
-    While (true) {
+    While (MacroParam.globalDeath == "0") {
         MacroParam.PendingAct := MacroParam.PendingActList[7]
         Image:= FindText(&X := "wait1", &Y := "2000", 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.ReadyUp)
         NormalWaitingTime
@@ -282,92 +319,29 @@ ReadyUp(out := "0"){ ;wait for the ready button and press (function has a waitin
             }else if (MacroParam.roundcount == MacroParam.ResetRound){
                 break
             }
-            MacroParam.roundcount++
-            if (MacroParam.roundcount == "2"){
-                SpecialGear1Controll("1")
-            }
-            if (MacroParam.roundcount == "3"){
+            
+            if (MacroParam.roundcount == MacroParam.SetupInfor.RCSpecial1 ){
                 SpecialGear1Controll("2")
+            }
+            if (MacroParam.roundcount == MacroParam.SetupInfor.RCSpecial2){
+                SpecialGear1Controll("3")
+            }
+            if (MacroParam.roundcount == MacroParam.SetupInfor.RC1st-1 and MacroParam.rcing == false){ ;vẫn bị gọi lên 2 lần
+                MoveBackward
+                NormalGearControll
             }
             MouseMove Image[1].1, Image[1].2
             AutoCloseMsgBox
             NormalWaitingTime
+            MacroParam.roundcount++
             SendKey("LButton")
-            ShortWaitingTime
+            LongWaitingTime("2")
             if (!MacroParam.IsAutoReady || MacroParam.rcing)
                 break
             else {
                 continue
             }
         }
-        
-        ; if (color == c7) ;
-        ; {
-        ;     if (roundcount == (RechargeSpecialGear1 -1) and SpecialGear1SetupDone == false){ ;setup sau round chỉ định 1 round
-        ;         currentDis := cDis
-        ;         oldPos := cDis
-        ;         While (currentDis < 30){
-        ;             MoveForward
-        ;             currentDis := cDis
-        ;         }
-        ;         SpecialGear1Setup
-        ;         While (currentDis > oldPos){
-        ;             MoveBackward
-        ;             currentDis := cDis
-        ;         }
-        ;         SpecialGear1SetupDone := true
-        ;         MouseMove x7, y7
-        ;     }
-        ;     if (roundcount == (ShopUpgradeRound -1) and isShopUpgrade == false){
-        ;         currentDis := cDis
-        ;         oldPos := cDis
-        ;         While (currentDis >0){
-        ;             MoveBackward
-        ;             currentDis := cDis
-        ;         }
-        ;         ShopUpgrade
-        ;         While (currentDis < oldPos){
-        ;             MoveForward
-        ;             currentDis := cDis
-        ;         }
-        ;     }
-            
-        ; }
-        ; if (roundcount == RechargeNormalGear1st and rechargeWait == true){
-        ;     MoveBackward
-        ;     GearSetup
-        ; }
-        ; if (roundcount == RechargeNormalGear2nd and rechargeWait == true){
-        ;     MoveBackward
-        ;     GearSetup
-        ; }
-
-        ; if (roundcount == RechargeNormalGear3rd and rechargeWait == true){
-        ;     MoveBackward
-        ;     GearSetup
-        ; }
-        ; /*
-        ; Thêm đoạn code bên dưới nếu muốn thêm 1 lần recharge vào round đó
-        ; Lưu ý mỗi lần recharge sẽ mấy 3 round liên tục (ví dụ set round 18 recharge thì sẽ recharge trong các round 18 19 20)
-        ; ---
-        ; if (roundcount == 18 and rechargeWait == true){
-        ; MoveBackward
-        ; GearSetup
-        ; ---
-        ; Thêm lệnh "rechargeWait := false" vào lần cuối cùng recharge để đảm bảo không có lỗi
-        ; }
-        ; */
-        ; if (roundcount == RechargeNormalGear4th and rechargeWait == true){
-        ;     MoveBackward
-        ;     GearSetup
-        ; }
-        ; if (roundcount == RechargeNormalGear5th and rechargeWait == true){
-        ;     MoveBackward
-        ;     GearSetup
-        ;     rechargeWait := false
-        ; }
-
-        
     }
 }
 
@@ -375,28 +349,28 @@ SpecialGear1Controll(time := "1"){ ;đặt special gear 1 cách sang bên phải
     saveDis := MacroParam.cDis
     ; ĐẶT FLAME TURRET
     MacroParam.PendingAct := MacroParam.PendingActList[12]
-    if (MacroParam.SetupInfor.NumforHotkey4 >0 and MacroParam.SetupInfor.HotKey4 != 0 and MacroParam.globalDeath == 0){
+    if (MacroParam.SetupInfor.NumforSHotKey1 >0 and MacroParam.SetupInfor.SHotKey1 != 0 and MacroParam.globalDeath == 0){
         While (MacroParam.cDis < MacroParam.maxDis){
             MoveForward
         }
         SendEvent("{d down}") 
         sleep MacroParam.CenterTime
         SendEvent("{d up}")
-        currentHotKey4 := "0"
+        MacroParam.tmp.currentSHotKey1 := "0"
         if (Mod(time, 2) == "1"){
-            MacroParam.SetupInfor.CurrentX := MacroParam.SetupInfor.xGear1
-            MacroParam.SetupInfor.CurrentY := MacroParam.SetupInfor.yGear1
+            MacroParam.tmp.CurrentX := MacroParam.SetupInfor.xGear1
+            MacroParam.tmp.CurrentY := MacroParam.SetupInfor.yGear1
         }else{
-            MacroParam.SetupInfor.CurrentX := MacroParam.SetupInfor.xGear3
-            MacroParam.SetupInfor.CurrentY := MacroParam.SetupInfor.yGear3
+            MacroParam.tmp.CurrentX := MacroParam.SetupInfor.xGear3
+            MacroParam.tmp.CurrentY := MacroParam.SetupInfor.yGear3
         }
 
-        ;khi mà số đồ hiện có của hotkey4 bé hơn hoặc bằng số lượng đặt được trong round đấy
-        While (MacroParam.globalDeath == 0 and currentHotKey4 < MacroParam.SetupInfor.NumforHotkey4){ 
-            currentHotKey4++ ;cộng 1 đồ đã được đặt
+        ;khi mà số đồ hiện có của SHotKey1 bé hơn hoặc bằng số lượng đặt được trong round đấy
+        While (MacroParam.globalDeath == 0 and MacroParam.tmp.currentSHotKey1 < MacroParam.SetupInfor.NumforSHotKey1){ 
+            MacroParam.tmp.currentSHotKey1++ ;cộng 1 đồ đã được đặt
             SendEvent "1"
             AvgLongWaitingTime
-            SendEvent MacroParam.SetupInfor.HotKey4 ; chỉnh sang đồ thứ 4
+            SendEvent MacroParam.SetupInfor.SHotKey1 ; chỉnh sang đồ thứ 4
             GearSetup
         }
         SendEvent("{a down}") 
@@ -408,234 +382,181 @@ SpecialGear1Controll(time := "1"){ ;đặt special gear 1 cách sang bên phải
         ShortWaitingTime
     }
 }
-; NormalGearControll(){
-;     /*
-;     Tổ hợp lệnh phức tạp để điều khiển quá trình setup đồ
-;     Mặc định sẽ là 4 đồ trên mỗi cDis
-;     3 gear cơ bản sẽ được setup ở đây
-;     */
-;     x13able := true
-;     global globalDeath, recharging, rechargeWait
-;     round := 2
-;     currentHotKey1 := 0
-;     currentHotKey2 := 0
-;     currentHotKey3 := 0
-;     currentX := x10
-;     currentY := y10
-;     While (round <5 and globalDeath == 0){ ;setup đến hết round 4
-;         NormalWaitingTime
 
-;         SendEvent "1"
-;         currentHotKey1 := 0
-;         currentHotKey2 := 0
-;         currentHotKey3 := 0
-;         switch round {
-;             case 2:  ;nếu đang round 2 thì chỉnh số lượng hiện có của các đồ cho round 2
-;                 currentNumforHotkey1 := NumforHotkey1round2
-;                 currentNumforHotkey2 := NumforHotkey2round2
-;                 currentNumforHotkey3 := NumforHotkey3round2
-;                 if (rechargeWait == false) { ;nếu không phải lần recharge thì bấm ready
-;                     ReadyUp
-;                 }else {
-;                     recharging := true
-;                     rechargeWait := false
-;                     ; MsgBox ('tat recharge wait')
-;                 }
-;             case 3: 
-;                 currentNumforHotkey1 := NumforHotkey1round3
-;                 currentNumforHotkey2 := NumforHotkey2round3
-;                 currentNumforHotkey3 := NumforHotkey3round3
-;                 ReadyUp
-;             case 4: 
-;                 currentNumforHotkey1 := NumforHotkey1round4
-;                 currentNumforHotkey2 := NumforHotkey2round4
-;                 currentNumforHotkey3 := NumforHotkey3round4
-;                 ReadyUp
-;                 recharging := false
-;                 rechargeWait := true
-;         }
-;         While (globalDeath == 0 and currentHotKey1 < currentNumforHotkey1){ ;khi mà số đồ hiện có của hotkey1 bé hơn hoặc bằng số lượng đặt được trong round đấy
-;             currentHotKey1++ ;cộng 1 đồ đã được đặt
-;             if (!x13able){
-;                 MoveBackward
-;                 currentX := x10
-;                 currentY := y10
-;                 x13able := true
-;             }
-;             SendEvent "1"
-;             ShortWaitingTime
-;             SendEvent HotKey1 ; chỉnh sang đồ thứ 1
-;             MouseMove currentX, currentY ;chỉnh chuột đến vị trí có thể đặt đồ
-;             SetTimer(CloseMsgBox, 500) 
-;             MsgBox("Đặt ở vị trí x" currentX " y" currentY , "Thông báo")
-;             oldColor := PixelGetColor(currentX, currentY)
-;             currentColor := oldColor
-;             While (currentColor == oldColor){
-;                 SetTimer(CloseMsgBox, 500) 
-;                 MsgBox("Đang đặt đặt ... " currentHotKey1 " cho " HotKey1, "Thông báo")
-;                 ShortWaitingTime
-;                 ;SendEvent "{Lbutton}" ;đặt đồ
-;                 Click "Down"
-;                 Sleep 100
-;                 Click "Up"
-;                 ShortWaitingTime
-;                 currentColor := PixelGetColor(currentX, currentY)
-;             }
-;             switch currentX {
-;                 case x10:
-;                     currentX := x11
-;                     currentY := y11
-;                 case x11:
-;                     currentX := x12
-;                     currentY := y12
-;                 case x12:
-;                     currentX := x13
-;                     currentY := y13
-;                 case x13:
-;                     if (currentHotKey2 < currentNumforHotkey2 || currentHotKey1 < currentNumforHotkey1 || currentHotKey3 < currentNumforHotkey3){
-;                         MoveBackward
-;                         currentX := x10
-;                         currentY := y10
-;                     }else if (round <4){
-;                         x13able := false
-;                     }
-;             } 
-;         }
-;         While (globalDeath == 0 and currentHotKey2 < currentNumforHotkey2){ ;khi mà số đồ hiện có của hotkey2 bé hơn hoặc bằng số lượng đặt được trong round đấy
-;             currentHotKey2++ ;cộng 1 đồ đã được đặt
-;             if (!x13able){
-;                 MoveBackward
-;                 currentX := x10
-;                 currentY := y10
-;                 x13able := true
-;             }
-;             SendEvent "1"
-;             ShortWaitingTime
-;             SendEvent HotKey2 ; chỉnh sang đồ thứ 2
-;             MouseMove currentX, currentY ;chỉnh chuột đến vị trí có thể đặt đồ
-;             SetTimer(CloseMsgBox, 500) 
-;             MsgBox("Đặt ở vị trí x" currentX " y" currentY , "Thông báo")
-;             oldColor := PixelGetColor(currentX, currentY)
-;             currentColor := oldColor
-;             While (currentColor == oldColor){
-;                 SetTimer(CloseMsgBox, 500) 
-;                 MsgBox("Đang đặt đặt ... " currentHotKey2 " cho " HotKey2, "Thông báo")
-;                 ShortWaitingTime
-;                 ;SendEvent "{Lbutton}" ;đặt đồ
-;                 Click "Down"
-;                 Sleep 100
-;                 Click "Up"
-;                 ShortWaitingTime
-;                 currentColor := PixelGetColor(currentX, currentY)
-;             }
-;             switch currentX {
-;                 case x10:
-;                     currentX := x11
-;                     currentY := y11
-;                 case x11:
-;                     currentX := x12
-;                     currentY := y12
-;                 case x12:
-;                     currentX := x13
-;                     currentY := y13
-;                 case x13:
-;                     if (currentHotKey2 < currentNumforHotkey2 || currentHotKey3 < currentNumforHotkey3){
-;                         MoveBackward
-;                         currentX := x10
-;                         currentY := y10
-;                     }else if (round <4){
-;                         x13able := false
-;                     }
-;             } 
-;         }
-;         While (globalDeath == 0 and currentHotKey3 < currentNumforHotkey3){ ;khi mà số đồ hiện có của hotkey2 bé hơn hoặc bằng số lượng đặt được trong round đấy
-;             currentHotKey3++ ;cộng 1 đồ đã được đặt
-;             if (!x13able){
-;                 MoveBackward
-;                 currentX := x10
-;                 currentY := y10
-;                 x13able := true
-;             }
-;             SendEvent "1"
-;             ShortWaitingTime
-;             SendEvent HotKey3 ; chỉnh sang đồ thứ 3
-;             MouseMove currentX, currentY ;chỉnh chuột đến vị trí có thể đặt đồ
-;             SetTimer(CloseMsgBox, 500) 
-;             MsgBox("Đặt ở vị trí x" currentX " y" currentY , "Thông báo")
-;             oldColor := PixelGetColor(currentX, currentY)
-;             currentColor := oldColor
-;             While (currentColor == oldColor){
-;                 SetTimer(CloseMsgBox, 500) 
-;                 MsgBox("Đang đặt đặt ... " currentHotKey3 " cho " HotKey3, "Thông báo")
-;                 ShortWaitingTime
-;                 ;SendEvent "{Lbutton}" ;đặt đồ
-;                 Click "Down"
-;                 Sleep 100
-;                 Click "Up"
-;                 ShortWaitingTime
-;                 currentColor := PixelGetColor(currentX, currentY)
-;             }
-;             switch currentX {
-;                 case x10:
-;                     currentX := x11
-;                     currentY := y11
-;                 case x11:
-;                     currentX := x12
-;                     currentY := y12
-;                 case x12:
-;                     currentX := x13
-;                     currentY := y13
-;                 case x13:
-;                     if (currentHotKey3 < currentNumforHotkey3){
-;                         MoveBackward
-;                         currentX := x10
-;                         currentY := y10
-;                     }else if (round <4){
-;                         x13able := false
-;                     }
-;             }
-;         }
-;         round++
-;     }
-; }
+NormalGearControll(){
+    /*
+    Tổ hợp lệnh phức tạp để điều khiển quá trình setup đồ
+    Mặc định sẽ là 4 đồ trên mỗi cDis
+    3 gear cơ bản sẽ được setup ở đây
+    */
+    MacroParam.PendingAct := MacroParam.PendingActList[11]
+    MacroParam.tmp.xGear4able := true
+    MacroParam.tmp.RoundtoSetupCount := 2
+    MacroParam.tmp.CurrentX := MacroParam.SetupInfor.xGear1
+    MacroParam.tmp.CurrentY := MacroParam.SetupInfor.yGear1
+    While (MacroParam.tmp.RoundtoSetupCount <5 and MacroParam.globalDeath == 0){ ;setup đến hết round 4
+        NormalWaitingTime
+        SendEvent "1"
+        MacroParam.tmp.currentHotKey1 := 0
+        MacroParam.tmp.currentHotKey2 := 0
+        MacroParam.tmp.currentHotKey3 := 0
+        MacroParam.tmp.currentHotKey4 := 0
+        MacroParam.tmp.currentHotKey5 := 0
 
-GearSetup(){
+        switch MacroParam.tmp.RoundtoSetupCount {
+            case 2:
+                MacroParam.tmp.currentNumforHotkey1 := MacroParam.SetupInfor.NumforHotkey1round2
+                MacroParam.tmp.currentNumforHotkey2 := MacroParam.SetupInfor.NumforHotkey2round2
+                MacroParam.tmp.currentNumforHotkey3 := MacroParam.SetupInfor.NumforHotkey3round2
+                MacroParam.tmp.currentNumforHotkey4 := MacroParam.SetupInfor.NumforHotkey4round2
+                MacroParam.tmp.currentNumforHotkey5 := MacroParam.SetupInfor.NumforHotkey5round2
+                MacroParam.rcing := true
+            case 3: 
+                MacroParam.tmp.currentNumforHotkey1 := MacroParam.SetupInfor.NumforHotkey1round3
+                MacroParam.tmp.currentNumforHotkey2 := MacroParam.SetupInfor.NumforHotkey2round3
+                MacroParam.tmp.currentNumforHotkey3 := MacroParam.SetupInfor.NumforHotkey3round3
+                MacroParam.tmp.currentNumforHotkey4 := MacroParam.SetupInfor.NumforHotkey4round3
+                MacroParam.tmp.currentNumforHotkey5 := MacroParam.SetupInfor.NumforHotkey5round3
+                ReadyUp("1")
+            case 4: 
+                MacroParam.tmp.currentNumforHotkey1 := MacroParam.SetupInfor.NumforHotkey1round4
+                MacroParam.tmp.currentNumforHotkey2 := MacroParam.SetupInfor.NumforHotkey2round4
+                MacroParam.tmp.currentNumforHotkey3 := MacroParam.SetupInfor.NumforHotkey3round4
+                MacroParam.tmp.currentNumforHotkey4 := MacroParam.SetupInfor.NumforHotkey4round4
+                MacroParam.tmp.currentNumforHotkey5 := MacroParam.SetupInfor.NumforHotkey5round4
+                ReadyUp("1")
+                MacroParam.rcing := false
+        }
+        While (MacroParam.globalDeath == 0 and MacroParam.tmp.currentHotKey1 < MacroParam.tmp.currentNumforHotkey1 and MacroParam.SetupInfor.HotKey1 != "0"){
+            MacroParam.tmp.currentHotKey1++
+            if (MacroParam.tmp.xGear4able == false){
+                MoveBackward
+                MacroParam.tmp.CurrentX := MacroParam.SetupInfor.xGear1
+                MacroParam.tmp.CurrentY := MacroParam.SetupInfor.yGear1
+                MacroParam.tmp.xGear4able := true
+            }
+            SendEvent "1"
+            AvgLongWaitingTime
+            SendEvent MacroParam.SetupInfor.HotKey1
+            if MacroParam.tmp.CurrentX == MacroParam.SetupInfor.xGear4 and (MacroParam.tmp.currentHotKey2 < MacroParam.tmp.currentNumforHotkey2 || MacroParam.tmp.currentHotKey1 < MacroParam.tmp.currentNumforHotkey1 || MacroParam.tmp.currentHotKey3 < MacroParam.tmp.currentNumforHotkey3 || MacroParam.tmp.currentHotKey4 < MacroParam.tmp.currentNumforHotkey4 || MacroParam.tmp.currentHotKey5 < MacroParam.tmp.currentNumforHotkey5){
+                GearSetup(true)
+            }else GearSetup(false)
+        }
+        While (MacroParam.globalDeath == 0 and MacroParam.tmp.currentHotKey2 < MacroParam.tmp.currentNumforHotkey2 and MacroParam.SetupInfor.HotKey2 != "0"){
+            MacroParam.tmp.currentHotKey2++
+            if (!MacroParam.tmp.xGear4able){
+                MoveBackward
+                MacroParam.tmp.CurrentX := MacroParam.SetupInfor.xGear1
+                MacroParam.tmp.CurrentY := MacroParam.SetupInfor.yGear1
+                MacroParam.tmp.xGear4able := true
+            }
+            SendEvent "1"
+            ShortWaitingTime
+            SendEvent MacroParam.SetupInfor.HotKey2
+            if MacroParam.tmp.CurrentX == MacroParam.SetupInfor.xGear4 and (MacroParam.tmp.currentHotKey2 < MacroParam.tmp.currentNumforHotkey2 || MacroParam.tmp.currentHotKey3 < MacroParam.tmp.currentNumforHotkey3 || MacroParam.tmp.currentHotKey4 < MacroParam.tmp.currentNumforHotkey4 || MacroParam.tmp.currentHotKey5 < MacroParam.tmp.currentNumforHotkey5){
+                GearSetup(true)
+            }else GearSetup(false)
+        }
+        While (MacroParam.globalDeath == 0 and MacroParam.tmp.currentHotKey3 < MacroParam.tmp.currentNumforHotkey3 and MacroParam.SetupInfor.HotKey3 != "0"){
+            MacroParam.tmp.currentHotKey3++
+            if (!MacroParam.tmp.xGear4able){
+                MoveBackward
+                MacroParam.tmp.CurrentX := MacroParam.SetupInfor.xGear1
+                MacroParam.tmp.CurrentY := MacroParam.SetupInfor.yGear1
+                MacroParam.tmp.xGear4able := true
+            }
+            SendEvent "1"
+            ShortWaitingTime
+            SendEvent MacroParam.SetupInfor.HotKey3
+            ;xét điều kiện nếu chuột đang ở vị trí thứ 4 VÀ vẫn còn đồ để đặt thì lùi xuống (trả về true và lùi xuống ở hàm gearsetup)
+            if MacroParam.tmp.CurrentX == MacroParam.SetupInfor.xGear4 and (MacroParam.tmp.currentHotKey3 < MacroParam.tmp.currentNumforHotkey3 || MacroParam.tmp.currentHotKey4 < MacroParam.tmp.currentNumforHotkey4 || MacroParam.tmp.currentHotKey5 < MacroParam.tmp.currentNumforHotkey5){
+                GearSetup(true)
+            }else GearSetup(false)
+        }
+        While (MacroParam.globalDeath == 0 and MacroParam.tmp.currentHotKey4 < MacroParam.tmp.currentNumforHotkey4 and MacroParam.SetupInfor.HotKey4 != "0"){
+            MacroParam.tmp.currentHotKey4++
+            if (!MacroParam.tmp.xGear4able){
+                MoveBackward
+                MacroParam.tmp.CurrentX := MacroParam.SetupInfor.xGear1
+                MacroParam.tmp.CurrentY := MacroParam.SetupInfor.yGear1
+                MacroParam.tmp.xGear4able := true
+            }
+            SendEvent "1"
+            ShortWaitingTime
+            SendEvent MacroParam.SetupInfor.HotKey4
+            ;xét điều kiện nếu chuột đang ở vị trí thứ 4 VÀ vẫn còn đồ để đặt thì lùi xuống (trả về true và lùi xuống ở hàm gearsetup)
+            if MacroParam.tmp.CurrentX == MacroParam.SetupInfor.xGear4 and (MacroParam.tmp.currentHotKey4 < MacroParam.tmp.currentNumforHotkey4 || MacroParam.tmp.currentHotKey5 < MacroParam.tmp.currentNumforHotkey5){
+                GearSetup(true)
+            }else GearSetup(false)
+        }
+        While (MacroParam.globalDeath == 0 and MacroParam.tmp.currentHotKey5 < MacroParam.tmp.currentNumforHotkey5 and MacroParam.SetupInfor.HotKey5 != "0"){
+            MacroParam.tmp.currentHotKey5++
+            if (!MacroParam.tmp.xGear4able){
+                MoveBackward
+                MacroParam.tmp.CurrentX := MacroParam.SetupInfor.xGear1
+                MacroParam.tmp.CurrentY := MacroParam.SetupInfor.yGear1
+                MacroParam.tmp.xGear4able := true
+            }
+            SendEvent "1"
+            ShortWaitingTime
+            SendEvent MacroParam.SetupInfor.HotKey5
+            ;xét điều kiện nếu chuột đang ở vị trí thứ 4 VÀ vẫn còn đồ để đặt thì lùi xuống (trả về true và lùi xuống ở hàm gearsetup)
+            if MacroParam.tmp.CurrentX == MacroParam.SetupInfor.xGear4 and (MacroParam.tmp.currentHotKey5 < MacroParam.tmp.currentNumforHotkey5){
+                GearSetup(true)
+            }else GearSetup(false)
+        }
+        MacroParam.tmp.RoundtoSetupCount++
+        ReadyUp
+    }
+}
+
+;mặc định là không lùi xuống
+GearSetup(coninute := false){
+    CallFrom :=  MacroParam.PendingAct
     MacroParam.PendingAct := MacroParam.PendingActList[10]
-    MouseMove MacroParam.SetupInfor.CurrentX, MacroParam.SetupInfor.CurrentY ;chỉnh chuột đến vị trí có thể đặt đồ
+    MouseMove MacroParam.tmp.CurrentX, MacroParam.tmp.CurrentY ;chỉnh chuột đến vị trí có thể đặt đồ
     AvgLongWaitingTime
     AutoCloseMsgBox
-    oldColor := PixelGetColor(MacroParam.SetupInfor.CurrentX, MacroParam.SetupInfor.CurrentY)
+    oldColor := PixelGetColor(MacroParam.tmp.CurrentX, MacroParam.tmp.CurrentY)
     currentColor := oldColor
     While (currentColor == oldColor){
         AutoCloseMsgBox
         ShortWaitingTime
         SendKey("LButton")
-        NormalWaitingTime
-        currentColor := PixelGetColor(MacroParam.SetupInfor.CurrentX, MacroParam.SetupInfor.CurrentY)
+        LongWaitingTime
+        currentColor := PixelGetColor(MacroParam.tmp.CurrentX, MacroParam.tmp.CurrentY)
     }
     AvgLongWaitingTime
     SendKey MacroParam.SetupInfor.GearModeKey
-    switch MacroParam.SetupInfor.CurrentX {
+    switch MacroParam.tmp.CurrentX {
         case MacroParam.SetupInfor.xGear1:
-            MacroParam.SetupInfor.CurrentX := MacroParam.SetupInfor.xGear2
-            MacroParam.SetupInfor.CurrentY := MacroParam.SetupInfor.yGear2
+            MacroParam.tmp.CurrentX := MacroParam.SetupInfor.xGear2
+            MacroParam.tmp.CurrentY := MacroParam.SetupInfor.yGear2
         case MacroParam.SetupInfor.xGear2:
-            MacroParam.SetupInfor.CurrentX := MacroParam.SetupInfor.xGear3
-            MacroParam.SetupInfor.CurrentY := MacroParam.SetupInfor.yGear3
+            MacroParam.tmp.CurrentX := MacroParam.SetupInfor.xGear3
+            MacroParam.tmp.CurrentY := MacroParam.SetupInfor.yGear3
         case MacroParam.SetupInfor.xGear3:
-            MacroParam.SetupInfor.CurrentX := MacroParam.SetupInfor.xGear4
-            MacroParam.SetupInfor.CurrentY := MacroParam.SetupInfor.yGear4
+            MacroParam.tmp.CurrentX := MacroParam.SetupInfor.xGear4
+            MacroParam.tmp.CurrentY := MacroParam.SetupInfor.yGear4
         case MacroParam.SetupInfor.xGear4:
-            MacroParam.SetupInfor.CurrentX := MacroParam.SetupInfor.xGear1
-            MacroParam.SetupInfor.CurrentY := MacroParam.SetupInfor.yGear1
-    }
-    return
+            MacroParam.tmp.CurrentX := MacroParam.SetupInfor.xGear1
+            MacroParam.tmp.CurrentY := MacroParam.SetupInfor.yGear1
+            if CallFrom == MacroParam.PendingActList[12]{
+                return
+            }
+            if coninute {
+                MoveBackward
+            }else if(MacroParam.tmp.RoundtoSetupCount <4){
+                MacroParam.tmp.xGear4able := false
+            }
+        }
 }
 
  ;di chuyển lên 1 cDis
 MoveForward(){
     MacroParam.PendingAct := MacroParam.PendingActList[14]
     MacroParam.cDis++
+    SendEvent("{Shift down}")
     SendEvent("{w down}")
     totalSleepDuration := MacroParam.1Dis
     sleepInterval := 50
@@ -645,6 +566,7 @@ MoveForward(){
         elapsed += sleepInterval
     }
     SendEvent("{w up}")
+    SendEvent("{Shift up}")
 }
 
 
@@ -652,6 +574,7 @@ MoveForward(){
 MoveBackward(){
     MacroParam.PendingAct := MacroParam.PendingActList[15]
     MacroParam.cDis--
+    SendEvent("{Shift down}")
     SendEvent("{s down}")
     totalSleepDuration := MacroParam.1Dis
     sleepInterval := 50
@@ -661,10 +584,45 @@ MoveBackward(){
         elapsed += sleepInterval
     }
     SendEvent("{s up}")
+    SendEvent("{Shift up}")
+}
+
+PrestigeCheck(*){
+    
+    CheckBild := FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.lv50)
+    if (CheckBild == "0"){
+        PresBilds := [MacroParam.Bild.unlock, MacroParam.Bild.prestige]
+        for i, currentBild in PresBilds{
+            Image := FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, currentBild)
+            try{
+                if (Image == 0) 
+                    throw
+                MouseMove Image[1].x, Image[1].y
+                AutoCloseMsgBox
+                ShortWaitingTime
+                SendKey("LButton")
+                LongWaitingTime
+            }catch 
+                Msgbox("Không thể tìm thấy ảnh", Metadata.name)
+        }
+        MouseMove HwID.xct, HwID.yct
+        AutoCloseMsgBox
+        LongWaitingTime("5")
+        perkfound := FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.perk)
+        While (perkfound == "0"){
+            SendEvent "WheelDown"
+            perkfound := FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.perk)
+        }
+        MouseMove perkfound[1].1, perkfound[1].2
+        AutoCloseMsgBox
+        SendKey("LButton")
+    }
+    return
 }
 
 main(){
-    SetTimer(MacroPause, 50)
+    SetTimer(DeathDetector, 0)
+    SetTimer(MacroPause, 10)
     
     AutoFindRoblox()
     if WinExist(filePath.roblox){
@@ -675,13 +633,20 @@ main(){
 
     t1:=A_TickCount, Text:=X:=Y:=""
     MacroParam.PendingAct := MacroParam.PendingActList[1]
-    TF2 := FindText(&X := "wait1", &Y := "2000", 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.TF2)
+    TF2 := FindText(&X := "wait1", &Y := MacroParam.RespondTimeout, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.TF2)
+    if TF2 == "0"{
+        main()
+    }
     MouseMove TF2[1].1 +40, TF2[1].2
+    While (FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.TF2) != "0"){
         AutoCloseMsgBox
-        ShortWaitingTime("2")
+        NormalWaitingTime
         SendKey("LButton")
+    }
+
 
     Loop MacroParam.LoopCount{
+        MacroParam.globalDeath := "0", MacroParam.cDis := "0", MacroParam.roundcount := "0", MacroParam.IsAutoReady := false, MacroParam.tmp.xGear4able := true
         MacroParam.LoopCurrent := A_Index
         MacroParam.LoopRemaining := MacroParam.LoopCount - MacroParam.LoopCurrent
         getroundsSurvivedvalue := MacroParam.roundcount
@@ -690,29 +655,99 @@ main(){
             MacroParam.PendingAct := MacroParam.PendingActList[i+1]
             LongWaitingTime("1")
             ; MouseMove HwID.xct, HwID.yct
-            if i != 3{
-                Image:=FindText(&X := "wait1", &Y := "2000", 0, 0, HwID.xMax, HwID.yMax, 0, 0, currentBild)
-            }else if (Metadata.Mode == Metadata.ModeList[2]){
-                Image:=FindText(&X := "wait1", &Y := "2000", 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.Mode1)
-            }else if (Metadata.Mode == Metadata.ModeList[3]){
-                Image:=FindText(&X := "wait1", &Y := "2000", 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.Mode2)
-            }else if (Metadata.Mode == Metadata.ModeList[4]){
-                Image:=FindText(&X := "wait1", &Y := "2000", 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.Mode3)
-            }else{
-                Image:=FindText(&X := "wait1", &Y := "2000", 0, 0, HwID.xMax, HwID.yMax, 0, 0, currentBild)
+            ;Nếu không phải chọn mode thì xét các ảnh liên tục
+            switch currentBild {
+                ;nếu đang cần chọn private game, nếu chưa thấy ảnh Career hiện lên thì nhấn liên tục
+                case MacroParam.Bild.PrivateGame:
+                    Image:=FindText(&X := "wait1", &Y := MacroParam.RespondTimeout, 0, 0, HwID.xMax, HwID.yMax, 0, 0, currentBild)
+                    While (FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.Career) == "0"){
+                        MouseMove Image[1].1, Image[1].2
+                        AutoCloseMsgBox
+                        ShortWaitingTime
+                        SendKey("LButton")
+                        AvgLongWaitingTime
+                    }
+                case MacroParam.Bild.Career:
+                    switch Metadata.Mode{
+                        case Metadata.ModeList[1]:
+                            Goto OuterDefault
+                        case Metadata.ModeList[2]:
+                            currentBild := MacroParam.Bild.Mode1
+                            Goto OuterDefault
+                        case Metadata.ModeList[3]:
+                            currentBild := MacroParam.Bild.Mode2
+                            Goto OuterDefault
+                        case Metadata.ModeList[4]:
+                            currentBild := MacroParam.Bild.Mode3
+                            Goto OuterDefault
+                    }
+                case MacroParam.Bild.PlayGame:
+                    PrestigeCheck
+                    Goto OuterDefault
+                Default:
+                    OuterDefault:
+                    Image:=FindText(&X := "wait1", &Y := MacroParam.RespondTimeout, 0, 0, HwID.xMax, HwID.yMax, 0, 0, currentBild)
+                    MouseMove HwID.xMax, HwID.yQ1
+                    While (FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, currentBild) != "0"){
+                        MouseMove Image[1].1, Image[1].2
+                        AutoCloseMsgBox
+                        ShortWaitingTime
+                        SendKey("LButton")
+                        AvgLongWaitingTime
+                    }   
             }
-            MouseMove Image[1].1, Image[1].2
-            AutoCloseMsgBox
-            ShortWaitingTime("2")
-            SendKey("LButton")
+            ; if i != 3{
+            ;     Image:=FindText(&X := "wait1", &Y := MacroParam.RespondTimeout, 0, 0, HwID.xMax, HwID.yMax, 0, 0, currentBild)
+            ;     if Image == "0"{
+            ;         Msgbox
+            ;     }
+            ; ;chọn mode
+            ; }else if (Metadata.Mode == Metadata.ModeList[2]){
+            ;     Image:=FindText(&X := "wait1", &Y := MacroParam.RespondTimeout, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.Mode1)
+            ; }else if (Metadata.Mode == Metadata.ModeList[3]){
+            ;     Image:=FindText(&X := "wait1", &Y := MacroParam.RespondTimeout, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.Mode2)
+            ; }else if (Metadata.Mode == Metadata.ModeList[4]){
+            ;     Image:=FindText(&X := "wait1", &Y := MacroParam.RespondTimeout, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.Mode3)
+            ; }else{
+            ;     ;không có mode thì chọn vào mode career, theo thứ tự ảnh liên tục, không khác gì
+            ;     Image:=FindText(&X := "wait1", &Y := MacroParam.RespondTimeout, 0, 0, HwID.xMax, HwID.yMax, 0, 0, currentBild)
+            ; }
+
+
+        ;     MouseMove Image[1].1, Image[1].2
+        ;     ShortWaitingTime("2")
+
+        ;     ;nếu khác vị trí nhấn chọn private game
+        ;     if i != "2" {
+        ;         ;nếu vào đến màn hình game thì check prestige
+        ;         if i == "5"{
+        ;             PrestigeCheck
+        ;             MouseMove Image[1].1, Image[1].2
+        ;         }
+        ;         ; khi vẫn còn ảnh của action hiện tại thì nhấn liên tục đến khi mất ảnh
+        ;         While (FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, currentBild) != "0"){
+        ;             AutoCloseMsgBox
+        ;             ShortWaitingTime
+        ;             SendKey("LButton")
+        ;             AvgLongWaitingTime
+        ;         }
+        ;     ; hoặc nếu đang cần chọn private game, nếu chưa thấy ảnh Career hiện lên thì nhấn liên tục
+        ;     }else {
+        ;         While (FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.Career) == "0"){
+        ;             AutoCloseMsgBox
+        ;             ShortWaitingTime
+        ;             SendKey("LButton")
+        ;             AvgLongWaitingTime
+        ;         }
+        ;     }
         }
         SetTimer(DeathDetector, 1000)
         ReadyUp
-        Image:=FindText(&X := "wait1", &Y := "2000", 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.View)
+        Image:=FindText(&X := "wait1", &Y := MacroParam.RespondTimeout, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.View)
         MouseMove Image[1].x, Image[1].y
+        AutoCloseMsgBox
         Loop 3{
             MacroParam.PendingAct := MacroParam.PendingActList[8]
-            AutoCloseMsgBox
             NormalWaitingTime
             SendKey("LButton")
             NormalWaitingTime
@@ -730,36 +765,42 @@ main(){
             sleep MacroParam.DoorTime
         }else sleep MacroParam.CusDoorTime
         SendEvent("{a up}")
-        KeyTracker := false
         ShortWaitingTime
         SendEvent "F"
         SendEvent("{d down}") 
         sleep MacroParam.CenterTime  
         SendEvent("{d up}")
         if (Metadata.Mode == Metadata.ModeList[1]){ ; che do career
-            Loop 30{
+            Loop MacroParam.maxDis{
                 MoveForward
             }
             AvgLongWaitingTime
-            ; ShortWaitingTime
-            ; SpecialGear1Setup
-            ; global rechargeWait :=false
-            ; GearSetup
-            ; global rechargeWait := true
-            ; global globalAutoReady := true
-            ReadyUp
-            ReadyUp
+            SpecialGear1Controll("1")
+            NormalGearControll
+            MacroParam.IsAutoReady := true
             ReadyUp
         }
+        if (MacroParam.globalDeath >0 || MacroParam.roundcount == MacroParam.ResetRound){
+            SendEvent "{Esc}"
+            sleep 1000
+            SendEvent "L"
+            sleep 1000
+            SendEvent "{Enter}"
+            sleep 1000
+        }
+        SetTimer(DeathDetector, -1)
+        MacroParam.DeathdetectorWork := false
+        AutoCloseMsgBox(,"complete the loop: " MacroParam.LoopCurrent "`nremaining loop : " MacroParam.LoopRemaining,,)
     }
-
+    MsgBox("Chạy thành công", "Thông báo")
+    ExitApp
 }
 
 
 SendKey(key){
-    Send("{Blind}{" Key " Down}") ; Nhấn phím xuống
-    Sleep(MacroParam.KeyHoldDuration) ; Giữ phím trong khoảng thời gian
-    Send("{Blind}{" Key " Up}") ; Nhả phím
+    Send("{Blind}{" Key " Down}")
+    Sleep(MacroParam.KeyHoldDuration)
+    Send("{Blind}{" Key " Up}")
 }
 
 AutoCloseMsgBox(time := "1000", content := Metadata.InfoMessage, title := Metadata.name, opt := "48") {
@@ -802,7 +843,7 @@ if not (A_IsAdmin or RegExMatch(full_command_line, " /restart(?!\S)")){
 If A_IsAdmin{
     SetTimer(DevMode, 50)
     mainGUI := mainGUIcall()
-    mainGUI.Show ("w623 h514")
+    mainGUI.Show ("w623 h642")
 }
 
 DevMode(mode := "1"){
@@ -814,6 +855,16 @@ DevMode(mode := "1"){
         . "AutoReady =>" MacroParam.IsAutoReady "`n"
         . "Round =>" MacroParam.roundcount "`n"
         . "Current Dis => " MacroParam.cDis "`n"
+        . "Recharging => " MacroParam.rcing "`n"
+        . "Hotkey" MacroParam.SetupInfor.HotKey1 " => " MacroParam.tmp.currentHotKey1 "/" MacroParam.tmp.currentNumforHotkey1 "`n"
+        . "Hotkey" MacroParam.SetupInfor.HotKey2 " => " MacroParam.tmp.currentHotKey2 "/" MacroParam.tmp.currentNumforHotkey2 "`n"
+        . "Hotkey" MacroParam.SetupInfor.HotKey3 " => " MacroParam.tmp.currentHotKey3 "/" MacroParam.tmp.currentNumforHotkey3 "`n"
+        . "Hotkey" MacroParam.SetupInfor.HotKey4 " => " MacroParam.tmp.currentHotKey4 "/" MacroParam.tmp.currentNumforHotkey4 "`n"
+        . "Hotkey" MacroParam.SetupInfor.HotKey5 " => " MacroParam.tmp.currentHotKey5 "/" MacroParam.tmp.currentNumforHotkey5 "`n"
+        . "Special Gear" "`n"
+        . "Hotkey" MacroParam.SetupInfor.SHotKey1 " => " MacroParam.tmp.currentSHotKey1 "/" MacroParam.SetupInfor.NumforSHotKey1 "`n"
+        . "Hotkey" MacroParam.SetupInfor.SHotKey2 " => " MacroParam.tmp.currentSHotKey2 "/" MacroParam.SetupInfor.NumforSHotKey2 "`n"
+        . "Pos4able => " MacroParam.tmp.xGear4able "`n" 
 		. "Deathcount => " MacroParam.globalDeath "`n" 
 		. "MousePos => " x ", " y "`n"
 		. "End`n"

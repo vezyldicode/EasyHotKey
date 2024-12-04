@@ -29,6 +29,8 @@ Base64Decode(s) {
     ; Must reinterpret the binary bytes from UTF-8.
     return StrGet(bin, size, "UTF-8")
 }
+
+
 Base64Encode(s) {
     ; Convert the input string into a byte string of UTF-8 characters.
     size := StrPut(s, "UTF-8")

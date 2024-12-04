@@ -2,10 +2,6 @@
 
 
 ;Main Graphical User Interface
-global Totalhotkey1 := "0", Totalhotkey2 := "0", Totalhotkey3 := "0", Totalhotkey4 := "0", Totalhotkey5  := "0"
-global nameTab1 := "Career Macro", nameTab2 := "Custom Function", nameTab3 := "Help", nameTab4 := "Update"
-
-
 class mainGUIattribute {
     static TimeText := "0"
     static StartButton := "0"
@@ -20,10 +16,10 @@ class mainGUIattribute {
         static nameTab4 := "Update"
     }
     static LoopInput := "0"
-    static input1 := "0", input2 := "0", input3 := "0", input4 := "0", input5 := "0", input6 := "0", input7 := "0", input8 := "0", input9 := "0", input10 := "0", input11 := "0", input12 := "0", input13 := "0", input14 := "0", input15 := "0", input16 := "0"
+    static input1 := "0", input2 := "0", input3 := "0", input4 := "0", input5 := "0", input6 := "0", input7 := "0", input8 := "0", input9 := "0", input10 := "0", input11 := "0", input12 := "0", input13 := "0", input14 := "0", input15 := "0", input16 := "0", input17 := "0", input18 := "0", input19:= "0", input20:= "0", input21 := "0", input22 := "0", input23:= "0", input24:= "0"
     static HotkeyBox := "0"
     static Mode1 := "0", Mode2 := "0", Mode3 := "0"
-    static Totalhotkey1 := "0", Totalhotkey2 := "0", Totalhotkey3 := "0", Totalhotkey4 := "0", Totalhotkey5  := "0"
+    static Totalhotkey1 := "0", Totalhotkey2 := "0", Totalhotkey3 := "0", Totalhotkey4 := "0", Totalhotkey5 := "0", TotalSHotKey1 := "0", TotalSHotKey2  := "0"
 }
 
 class Spider {
@@ -51,19 +47,22 @@ mainGUIcall(*){
     mainGUI.SetFont("s14")
 
     ; nhập thông tin số lần loop
-    mainGUI.SetFont("s9"), Tab := mainGUI.Add("Tab3", "x0 y60 w623 h454", [mainGUIattribute.Tab.nameTab1, mainGUIattribute.Tab.nameTab2, "     " mainGUIattribute.Tab.nameTab3 "     ", "     " mainGUIattribute.Tab.nameTab4 "     "])
+    mainGUI.SetFont("s9"), Tab := mainGUI.Add("Tab3", "x0 y60 w623 h582", [mainGUIattribute.Tab.nameTab1, mainGUIattribute.Tab.nameTab2, "     " mainGUIattribute.Tab.nameTab3 "     ", "     " mainGUIattribute.Tab.nameTab4 "     "])
     mainGUI.SetFont("s14")
     Tab.UseTab(1)
     ;phần chữ
-    mainGUI.Add("Text", "x16 y82 w120 h23 +0x200", "Gear Setting")
-    mainGUI.Add("Text", "x16 y112 w112 h23 +0x200", "Hotkey")
-    mainGUI.Add("Text", "x160 y112 w112 h23 +0x200", "Round 2, 18, 21")
-    mainGUI.Add("Text", "x304 y112 w112 h23 +0x200", "Round 3, 19, 22")
-    mainGUI.Add("Text", "x448 y112 w113 h23 +0x200", "Round 4, 20, 23")
-    mainGUI.Add("Text", "x16 y336 w291 h25 +0x200", "Special Gear ")
+    
+    mainGUI.Add("Text", "x16 y87 w120 h23 +0x200", "Gear Setting")
+    mainGUI.Add("Text", "x16 y464 w291 h25 +0x200", "Special Gear ")
     mainGUI.SetFont("s10")
-        mainGUI.Add("Text", "x304 y384 w257 h34", "Upper right corner (recommended: Flame turret). Round 2, 17")
-        mainGUI.Add("Text", "x304 y448 w257 h34", "Bottom corner (recommended: Mortar). Round 17")
+    mainGUI.Add("Text", "x16 y112 w112 h23 +0x200", "Hotkey")
+    mainGUI.Add("Text", "x160 y102 w122 h33 ", "Round 2, " MacroParam.SetupInfor.RC1st ", " MacroParam.SetupInfor.RC2nd ", " MacroParam.SetupInfor.RC3rd ", " MacroParam.SetupInfor.RC4th)
+    mainGUI.Add("Text", "x304 y102 w122 h33 ", "Round 3, " MacroParam.SetupInfor.RC1st+1 ", " MacroParam.SetupInfor.RC2nd+1 ", " MacroParam.SetupInfor.RC3rd+1 ", " MacroParam.SetupInfor.RC4th+1)
+    mainGUI.Add("Text", "x448 y102 w122 h33 ", "Round 4, " MacroParam.SetupInfor.RC1st+2 ", " MacroParam.SetupInfor.RC2nd+2 ", " MacroParam.SetupInfor.RC3rd+2 ", " MacroParam.SetupInfor.RC4th+2)
+
+    mainGUI.SetFont("s10")
+        mainGUI.Add("Text", "x304 y512 w257 h34", "Upper right corner (recommended: Flame turret). Round 2, 17")
+        mainGUI.Add("Text", "x304 y576 w257 h34", "Bottom corner (recommended: Mortar). Round 17")
     mainGUI.SetFont("s14")
 
     ;simple macro
@@ -79,21 +78,31 @@ mainGUIcall(*){
     mainGUIattribute.input10 := mainGUI.Add("ComboBox", "x160 y264 w112", mainGUIattribute.NumberofGearRange)
     mainGUIattribute.input11 := mainGUI.Add("ComboBox", "x304 y264 w112", mainGUIattribute.NumberofGearRange)
     mainGUIattribute.input12 := mainGUI.Add("ComboBox", "x448 y264 w112", mainGUIattribute.NumberofGearRange)
+    mainGUIattribute.input17 := mainGUI.Add("ComboBox", "x16 y328 w112", mainGUIattribute.HotkeyNumberRange)
+    mainGUIattribute.input18 := mainGUI.Add("ComboBox", "x160 y328 w112", mainGUIattribute.NumberofGearRange)
+    mainGUIattribute.input19 := mainGUI.Add("ComboBox", "x304 y328 w112", mainGUIattribute.NumberofGearRange)
+    mainGUIattribute.input20 := mainGUI.Add("ComboBox", "x448 y328 w112", mainGUIattribute.NumberofGearRange)
+    mainGUIattribute.input21 := mainGUI.Add("ComboBox", "x16 y392 w112", mainGUIattribute.HotkeyNumberRange)
+    mainGUIattribute.input22 := mainGUI.Add("ComboBox", "x160 y392 w112", mainGUIattribute.NumberofGearRange)
+    mainGUIattribute.input23 := mainGUI.Add("ComboBox", "x304 y392 w112", mainGUIattribute.NumberofGearRange)
+    mainGUIattribute.input24 := mainGUI.Add("ComboBox", "x448 y392 w112", mainGUIattribute.NumberofGearRange)
 
     ;advanced macro
 
-    mainGUIattribute.input13 := mainGUI.Add("ComboBox", "x16 y384 w112", mainGUIattribute.HotkeyNumberRange)
-    mainGUIattribute.input14 := mainGUI.Add("ComboBox", "x160 y384 w112", mainGUIattribute.NumberofGearRangeLimited)
-    mainGUIattribute.input15 := mainGUI.Add("ComboBox", "x16 y448 w112", mainGUIattribute.HotkeyNumberRange)
-    mainGUIattribute.input16 := mainGUI.Add("ComboBox", "x160 y448 w112", mainGUIattribute.NumberofGearRangeLimited)
+    mainGUIattribute.input13 := mainGUI.Add("ComboBox", "x16 y512 w112", mainGUIattribute.HotkeyNumberRange)
+    mainGUIattribute.input14 := mainGUI.Add("ComboBox", "x160 y512 w112", mainGUIattribute.NumberofGearRangeLimited)
+    mainGUIattribute.input15 := mainGUI.Add("ComboBox", "x16 y576 w112", mainGUIattribute.HotkeyNumberRange)
+    mainGUIattribute.input16 := mainGUI.Add("ComboBox", "x160 y576 w112", mainGUIattribute.NumberofGearRangeLimited)
 
     ; thông tin total gear
 
     mainGUIattribute.Totalhotkey1 := mainGUI.Add("Text", "x568 y136 w48 h33 +0x200", "0")
     mainGUIattribute.Totalhotkey2 := mainGUI.Add("Text", "x568 y200 w48 h33 +0x200", "0")
     mainGUIattribute.Totalhotkey3 := mainGUI.Add("Text", "x568 y264 w48 h33 +0x200", "0")
-    mainGUIattribute.Totalhotkey4 := mainGUI.Add("Text", "x568 y384 w48 h33 +0x200", "0")
-    mainGUIattribute.Totalhotkey5 := mainGUI.Add("Text", "x568 y448 w48 h33 +0x200", "0")
+    mainGUIattribute.Totalhotkey4 := mainGUI.Add("Text", "x568 y328 w48 h33 +0x200", "0")
+    mainGUIattribute.Totalhotkey5 := mainGUI.Add("Text", "x568 y392 w48 h33 +0x200", "0")
+    mainGUIattribute.TotalSHotKey1 := mainGUI.Add("Text", "x568 y512 w48 h33 +0x200", "0")
+    mainGUIattribute.TotalSHotKey2 := mainGUI.Add("Text", "x568 y576 w48 h33 +0x200", "0")
 
     Tab.UseTab(2)
     ButtonAutoReadyMode := mainGUI.Add("Button", "x32 y464 w275 h30", "Auto Ready Mode")
@@ -125,7 +134,7 @@ mainGUIcall(*){
     mainGUI.SetFont("s12", "Segoe UI")
     mainGUI.Add("Text", "x16 y104 w590 h70", "I've done some useful stuff to help you prestige `"lightning fast`" in the game the final stand 2 or more. `nHere are some recommended perks in career mode:")
     mainGUI.Add("Picture", "x16 y176 w195 h128", "E:\Macro-Roblox\EasyHotKey\Ico\Perk.png")
-    mainGUI.Add("Text", "x16 y320 w580 h63", "You can explore more features in `"" nameTab2 "`". Or play with the spider there.`nGood luck have fun!!!")
+    mainGUI.Add("Text", "x16 y320 w580 h63", "You can explore more features in `"" mainGUIattribute.Tab.nameTab2 "`". Or play with the spider there.`nGood luck have fun!!!")
 
     mainGUI.Add("Text", "x224 y200 w380 h85 cee2a02", "Note that you should not use perks that can affect the amount of reward received in the first round,`notherwise my code will punch you in the face like I did with Shuriky.")
 
@@ -154,6 +163,15 @@ mainGUIcall(*){
     mainGUIattribute.input14.OnEvent("Change", OnEventHandler)
     mainGUIattribute.input15.OnEvent("Change", OnEventHandler)
     mainGUIattribute.input16.OnEvent("Change", OnEventHandler)
+    mainGUIattribute.input17.OnEvent("Change", OnEventHandler)
+    mainGUIattribute.input18.OnEvent("Change", OnEventHandler)
+    mainGUIattribute.input19.OnEvent("Change", OnEventHandler)
+    mainGUIattribute.input20.OnEvent("Change", OnEventHandler)
+    mainGUIattribute.input21.OnEvent("Change", OnEventHandler)
+    mainGUIattribute.input22.OnEvent("Change", OnEventHandler)
+    mainGUIattribute.input23.OnEvent("Change", OnEventHandler)
+    mainGUIattribute.input24.OnEvent("Change", OnEventHandler)
+    OnEventHandler()
     mainGUI.OnEvent('Close', (*) => ExitApp())
     return mainGUI
 }
@@ -161,7 +179,7 @@ mainGUIcall(*){
 
 mainGUIAutoFill(*){
     vars := [
-        mainGUIattribute.input1, mainGUIattribute.input2, mainGUIattribute.input3, mainGUIattribute.input4, mainGUIattribute.input5, mainGUIattribute.input6, mainGUIattribute.input7, mainGUIattribute.input8, mainGUIattribute.input9, mainGUIattribute.input10, mainGUIattribute.input11, mainGUIattribute.input12, mainGUIattribute.input13, mainGUIattribute.input14, mainGUIattribute.input15, mainGUIattribute.input16
+        mainGUIattribute.input1, mainGUIattribute.input2, mainGUIattribute.input3, mainGUIattribute.input4, mainGUIattribute.input5, mainGUIattribute.input6, mainGUIattribute.input7, mainGUIattribute.input8, mainGUIattribute.input9, mainGUIattribute.input10, mainGUIattribute.input11, mainGUIattribute.input12, mainGUIattribute.input13, mainGUIattribute.input14, mainGUIattribute.input15, mainGUIattribute.input16, mainGUIattribute.input17, mainGUIattribute.input18, mainGUIattribute.input19, mainGUIattribute.input20, mainGUIattribute.input21, mainGUIattribute.input22, mainGUIattribute.input23, mainGUIattribute.input24
     ]
     i :=1
     for var in vars{
@@ -188,6 +206,132 @@ mainGUIAutoFill(*){
 
 
 
+
+
+
+OnEventHandler(*){ ;gán các giá trị người dùng vào biến xử lý khi các giá trị thay đổi
+    global isContinuePressed  ; Sử dụng biến toàn cục
+
+
+    vars := [
+        mainGUIattribute.input1, mainGUIattribute.input2, mainGUIattribute.input3, mainGUIattribute.input4, mainGUIattribute.input5, mainGUIattribute.input6, mainGUIattribute.input7, mainGUIattribute.input8, mainGUIattribute.input9, mainGUIattribute.input10, mainGUIattribute.input11, mainGUIattribute.input12, mainGUIattribute.input13, mainGUIattribute.input14, mainGUIattribute.input15, mainGUIattribute.input16
+    ]
+    for var in vars {
+        if (!IsNumber(var.text) and var.text != "") {
+            shakeButton(var)
+        }
+    }
+    mainGUIattribute.Totalhotkey1.text := mainGUIattribute.input2.Value + mainGUIattribute.input3.Value + mainGUIattribute.input4.Value
+    mainGUIattribute.Totalhotkey2.text := mainGUIattribute.input6.Value + mainGUIattribute.input7.Value + mainGUIattribute.input8.Value
+    mainGUIattribute.Totalhotkey3.text := mainGUIattribute.input10.Value + mainGUIattribute.input11.Value + mainGUIattribute.input12.Value
+    mainGUIattribute.Totalhotkey4.text := mainGUIattribute.input18.Value + mainGUIattribute.input19.Value + mainGUIattribute.input20.Value
+    mainGUIattribute.Totalhotkey5.text := mainGUIattribute.input22.Value + mainGUIattribute.input23.Value + mainGUIattribute.input24.Value
+    mainGUIattribute.TotalSHotKey1.text := mainGUIattribute.input14.value
+    mainGUIattribute.TotalSHotKey2.text := mainGUIattribute.input16.value
+    mainGUIattribute.TimeText.Text := EstimatedTimeCal()
+}
+
+; global tinytaskHotkey
+onButtonClick(*) {
+    global isContinuePressed  ; Sử dụng biến toàn cục
+    MacroParam.LoopCount := mainGUIattribute.LoopInput.Value
+    MacroParam.SetupInfor.HotKey1 := mainGUIattribute.input1.Value
+    MacroParam.SetupInfor.NumforHotkey1round2 := mainGUIattribute.input2.Value
+    MacroParam.SetupInfor.NumforHotkey1round3 := mainGUIattribute.input3.Value
+    MacroParam.SetupInfor.NumforHotkey1round4 := mainGUIattribute.input4.Value
+    MacroParam.SetupInfor.HotKey2 := mainGUIattribute.input5.Value
+    MacroParam.SetupInfor.NumforHotkey2round2 := mainGUIattribute.input6.Value
+    MacroParam.SetupInfor.NumforHotkey2round3 := mainGUIattribute.input7.Value
+    MacroParam.SetupInfor.NumforHotkey2round4 := mainGUIattribute.input8.Value
+    MacroParam.SetupInfor.HotKey3 := mainGUIattribute.input9.Value
+    MacroParam.SetupInfor.NumforHotkey3round2 := mainGUIattribute.input10.Value
+    MacroParam.SetupInfor.NumforHotkey3round3 := mainGUIattribute.input11.Value
+    MacroParam.SetupInfor.NumforHotkey3round4 := mainGUIattribute.input12.Value
+    MacroParam.SetupInfor.HotKey4 := mainGUIattribute.input17.Value
+    MacroParam.SetupInfor.NumforHotkey4round2 := mainGUIattribute.input18.Value
+    MacroParam.SetupInfor.NumforHotkey4round3 := mainGUIattribute.input19.Value
+    MacroParam.SetupInfor.NumforHotkey4round4 := mainGUIattribute.input20.Value
+    MacroParam.SetupInfor.HotKey5 := mainGUIattribute.input21.Value
+    MacroParam.SetupInfor.NumforHotkey5round2 := mainGUIattribute.input22.Value
+    MacroParam.SetupInfor.NumforHotkey5round3 := mainGUIattribute.input23.Value
+    MacroParam.SetupInfor.NumforHotkey5round4 := mainGUIattribute.input24.Value
+    MacroParam.SetupInfor.SHotKey1 := mainGUIattribute.input13.Value
+    MacroParam.SetupInfor.NumforSHotKey1 := mainGUIattribute.input14.Value
+    MacroParam.SetupInfor.SHotKey2 := mainGUIattribute.input15.Value
+    MacroParam.SetupInfor.NumforSHotKey2 := mainGUIattribute.input16.Value
+    HotKey.tinytaskHotkey := mainGUIattribute.HotkeyBox.Value
+    global Mode1 := mainGUIattribute.Mode1.Value
+    global Mode2 := mainGUIattribute.Mode2.Value
+    global Mode3 := mainGUIattribute.Mode3.Value
+    if FileExist(filePath.data)
+        FileDelete(filePath.data) ;xóa file data cũ
+    FileAppend("", filePath.data) ; Tạo file mới
+    vars := [
+        mainGUIattribute.input1, mainGUIattribute.input2, mainGUIattribute.input3, mainGUIattribute.input4, mainGUIattribute.input5, mainGUIattribute.input6, mainGUIattribute.input7, mainGUIattribute.input8, mainGUIattribute.input9, mainGUIattribute.input10, mainGUIattribute.input11, mainGUIattribute.input12, mainGUIattribute.input13, mainGUIattribute.input14, mainGUIattribute.input15, mainGUIattribute.input16, mainGUIattribute.input17, mainGUIattribute.input18, mainGUIattribute.input19, mainGUIattribute.input20, mainGUIattribute.input21, mainGUIattribute.input22, mainGUIattribute.input23, mainGUIattribute.input24
+    ]
+    i := 1
+    for var in vars{
+        WriteValueToFile(filePath.data, "input" i " := " var.Value)
+        i++
+    }
+
+
+    if (!IsNumber(MacroParam.LoopCount) || MacroParam.LoopCount == 0) {
+        shakeButton(mainGUIattribute.StartButton)
+        return
+    }
+    if (Mode3 ==1) {
+        shakeButton(mainGUIattribute.Mode3)
+        return
+    }
+    if HotKey.tinytaskHotkey == "" and (Mode1 ==1 || Mode2 ==1) {
+        shakeButton(mainGUIattribute.HotkeyBox)
+        return
+    }
+
+    confirm := MsgBox("Run the program with the number of loops is " MacroParam.LoopCount "`nEstimated time :" EstimatedTimeCal(), "Macro by Vezyl - Press Pgup Key to force Stop", 262212)
+    if (confirm == 'No') {
+        ; ExitApp  ; Nếu người dùng chọn "No", kết thúc
+        isContinuePressed := false
+    }else{
+        isContinuePressed := true
+        mainGUI.Hide()
+        if (mainGUIattribute.Mode1.Value == "1"){
+            Metadata.Mode := Metadata.ModeList[2]
+        }else if (mainGUIattribute.Mode2.Value == "1"){
+            Metadata.Mode := Metadata.ModeList[3]
+        }else if (mainGUIattribute.Mode3.Value == "1"){
+            Metadata.Mode := Metadata.ModeList[4]
+        }else {
+            Metadata.Mode := Metadata.ModeList[1]
+        }
+        main()
+    }
+}
+
+
+; if (!isContinuePressed) {
+;     return
+; }
+EstimatedTimeCal(){
+    global totalMinutes := mainGUIattribute.LoopInput.Value * MacroParam.EstimatedTime
+    hours := totalMinutes // 60
+    minutes := Mod(totalMinutes, 60)
+    result := " " hours "h" minutes "m"
+    return result
+}
+
+
+shakeButton(button) {
+    button.GetPos(&x, &y)
+    loop 4 {
+        button.Move(x + 5, y)
+        Sleep(50)
+        button.Move(x - 5, y)
+        Sleep(50)
+    }
+    button.Move(x, y)
+}
 
 ; global NetMove := 0
 
@@ -283,122 +427,3 @@ mainGUIAutoFill(*){
 ; }
 ; isContinuePressed := false
 ; global roundcount
-
-OnEventHandler(*){ ;gán các giá trị người dùng vào biến xử lý khi các giá trị thay đổi
-    global isContinuePressed  ; Sử dụng biến toàn cục
-    global Totalhotkey1
-    global Totalhotkey2
-    global Totalhotkey3
-    global Totalhotkey4
-    global Totalhotkey5
-
-
-    vars := [
-        mainGUIattribute.input1, mainGUIattribute.input2, mainGUIattribute.input3, mainGUIattribute.input4, mainGUIattribute.input5, mainGUIattribute.input6, mainGUIattribute.input7, mainGUIattribute.input8, mainGUIattribute.input9, mainGUIattribute.input10, mainGUIattribute.input11, mainGUIattribute.input12, mainGUIattribute.input13, mainGUIattribute.input14, mainGUIattribute.input15, mainGUIattribute.input16
-    ]
-    for var in vars {
-        if (!IsNumber(var.text) and var.text != "") {
-            shakeButton(var)
-        }
-    }
-    mainGUIattribute.Totalhotkey1.text := mainGUIattribute.input2.Value + mainGUIattribute.input3.Value + mainGUIattribute.input4.Value
-    mainGUIattribute.Totalhotkey2.text := mainGUIattribute.input6.Value + mainGUIattribute.input7.Value + mainGUIattribute.input8.Value
-    mainGUIattribute.Totalhotkey3.text := mainGUIattribute.input10.Value + mainGUIattribute.input11.Value + mainGUIattribute.input12.Value
-    mainGUIattribute.Totalhotkey4.text := mainGUIattribute.input14.value
-    mainGUIattribute.Totalhotkey5.text := mainGUIattribute.input16.value
-    mainGUIattribute.TimeText.Text := EstimatedTimeCal()
-}
-
-; global tinytaskHotkey
-onButtonClick(*) {
-    global isContinuePressed  ; Sử dụng biến toàn cục
-    MacroParam.LoopCount := mainGUIattribute.LoopInput.Value
-    MacroParam.SetupInfor.HotKey1 := mainGUIattribute.input1.Value
-    MacroParam.SetupInfor.NumforHotkey1round2 := mainGUIattribute.input2.Value
-    MacroParam.SetupInfor.NumforHotkey1round3 := mainGUIattribute.input3.Value
-    MacroParam.SetupInfor.NumforHotkey1round4 := mainGUIattribute.input4.Value
-    MacroParam.SetupInfor.HotKey2 := mainGUIattribute.input5.Value
-    MacroParam.SetupInfor.NumforHotkey2round2 := mainGUIattribute.input6.Value
-    MacroParam.SetupInfor.NumforHotkey2round3 := mainGUIattribute.input7.Value
-    MacroParam.SetupInfor.NumforHotkey2round4 := mainGUIattribute.input8.Value
-    MacroParam.SetupInfor.HotKey3 := mainGUIattribute.input9.Value
-    MacroParam.SetupInfor.NumforHotkey3round2 := mainGUIattribute.input10.Value
-    MacroParam.SetupInfor.NumforHotkey3round3 := mainGUIattribute.input11.Value
-    MacroParam.SetupInfor.NumforHotkey3round4 := mainGUIattribute.input12.Value
-    MacroParam.SetupInfor.Hotkey4 := mainGUIattribute.input13.Value
-    MacroParam.SetupInfor.NumforHotkey4 := mainGUIattribute.input14.Value
-    MacroParam.SetupInfor.Hotkey5 := mainGUIattribute.input15.Value
-    MacroParam.SetupInfor.NumforHotkey5 := mainGUIattribute.input16.Value
-    HotKey.tinytaskHotkey := mainGUIattribute.HotkeyBox.Value
-    global Mode1 := mainGUIattribute.Mode1.Value
-    global Mode2 := mainGUIattribute.Mode2.Value
-    global Mode3 := mainGUIattribute.Mode3.Value
-    if FileExist(filePath.data)
-        FileDelete(filePath.data) ;xóa file data cũ
-    FileAppend("", filePath.data) ; Tạo file mới
-    vars := [
-        mainGUIattribute.input1, mainGUIattribute.input2, mainGUIattribute.input3, mainGUIattribute.input4, mainGUIattribute.input5, mainGUIattribute.input6, mainGUIattribute.input7, mainGUIattribute.input8, mainGUIattribute.input9, mainGUIattribute.input10, mainGUIattribute.input11, mainGUIattribute.input12, mainGUIattribute.input13, mainGUIattribute.input14, mainGUIattribute.input15, mainGUIattribute.input16
-    ]
-    i := 1
-    for var in vars{
-        WriteValueToFile(filePath.data, "input" i " := " var.Value)
-        i++
-    }
-
-
-    if (!IsNumber(MacroParam.LoopCount) || MacroParam.LoopCount == 0) {
-        shakeButton(mainGUIattribute.StartButton)
-        return
-    }
-    if (Mode3 ==1) {
-        shakeButton(mainGUIattribute.Mode3)
-        return
-    }
-    if HotKey.tinytaskHotkey == "" and (Mode1 ==1 || Mode2 ==1) {
-        shakeButton(mainGUIattribute.HotkeyBox)
-        return
-    }
-
-    confirm := MsgBox("Run the program with the number of loops is " MacroParam.LoopCount "`nEstimated time :" EstimatedTimeCal(), "Macro by Vezyl - Press Pgup Key to force Stop", 262212)
-    if (confirm == 'No') {
-        ; ExitApp  ; Nếu người dùng chọn "No", kết thúc
-        isContinuePressed := false
-    }else{
-        isContinuePressed := true
-        mainGUI.Hide()
-        if (mainGUIattribute.Mode1.Value == "1"){
-            Metadata.Mode := Metadata.ModeList[2]
-        }else if (mainGUIattribute.Mode2.Value == "1"){
-            Metadata.Mode := Metadata.ModeList[3]
-        }else if (mainGUIattribute.Mode3.Value == "1"){
-            Metadata.Mode := Metadata.ModeList[4]
-        }else {
-            Metadata.Mode := Metadata.ModeList[1]
-        }
-        main()
-    }
-}
-
-
-; if (!isContinuePressed) {
-;     return
-; }
-EstimatedTimeCal(){
-    global totalMinutes := mainGUIattribute.LoopInput.Value * MacroParam.EstimatedTime
-    hours := totalMinutes // 60
-    minutes := Mod(totalMinutes, 60)
-    result := " " hours "h" minutes "m"
-    return result
-}
-
-
-shakeButton(button) {
-    button.GetPos(&x, &y)
-    loop 4 {
-        button.Move(x + 5, y)
-        Sleep(50)
-        button.Move(x - 5, y)
-        Sleep(50)
-    }
-    button.Move(x, y)
-}
