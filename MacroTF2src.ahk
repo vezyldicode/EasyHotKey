@@ -371,10 +371,10 @@ ReadyUp(out := "0"){ ;wait for the ready button and press (function has a waitin
                 break
             }
             
-            if (MacroParam.roundcount == MacroParam.SetupInfor.RCSpecial1){
+            if (MacroParam.roundcount == MacroParam.SetupInfor.RCSpecial1-1){
                 SpecialGear1Controll("2")
             }
-            if (MacroParam.roundcount == MacroParam.SetupInfor.RCSpecial2){
+            if (MacroParam.roundcount == MacroParam.SetupInfor.RCSpecial2-1){
                 SpecialGear1Controll("3")
             }
             if (MacroParam.roundcount == MacroParam.SetupInfor.ShopUpgradeRound-1){
