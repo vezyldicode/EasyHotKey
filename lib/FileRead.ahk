@@ -7,10 +7,47 @@ ReadKeyWordFromFile(filePath, keyword) {
             if InStr(line, keyword " := ") = 1 { ; Kiểm tra dòng bắt đầu bằng từ khóa
                 global value := StrSplit(line, " := ")[2] ; Lấy giá trị sau dấu :=
                 return value
+            }else if InStr(line, "    " keyword " := ") = 1 { ; Kiểm tra dòng bắt đầu bằng từ khóa
+                global value := StrSplit(line, " := ")[2] ; Lấy giá trị sau dấu :=
+                return value
             }
         }
     }
     return "0" ; Trả về chuỗi trống nếu không tìm thấy từ khóa
+}
+
+Read2value(number := "1", filePath := filePath.cus , content := "0") {
+    ; Mở file để đọc
+    fileContent := FileRead(filePath)
+    RegExMatch(fileContent, content " := (\d+), (\d+)", &match)
+    ; Kiểm tra nếu có kết quả tìm thấy
+    if (match) {
+        if number == "1"
+            return match[1]
+        else if number == "2"
+            return match[2]
+    } else {
+        return 0
+    }
+}
+
+Read4value(number := "1", filePath := filePath.cus , content := "0") {
+    ; Mở file để đọc
+    fileContent := FileRead(filePath)
+    RegExMatch(fileContent, content " := (\d+), (\d+), (\d+), (\d+)", &match)
+    ; Kiểm tra nếu có kết quả tìm thấy
+    if (match) {
+        if number == "1"
+            return match[1]
+        else if number == "2"
+            return match[2]
+        else if number == "3"
+            return match[3]
+        else if number == "4"
+            return match[4]
+    } else {
+        return 0
+    }
 }
 
 Base64Decode(s) {

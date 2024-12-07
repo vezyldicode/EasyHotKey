@@ -1,5 +1,8 @@
 #Requires AutoHotkey v2.0
 
+if (!A_IsCompiled && A_LineFile=A_ScriptFullPath){
+    ExitApp
+}
 
 ;Main Graphical User Interface
 class mainGUIattribute {
@@ -314,7 +317,8 @@ onButtonClick(*) {
 ;     return
 ; }
 EstimatedTimeCal(){
-    global totalMinutes := mainGUIattribute.LoopInput.Value * MacroParam.EstimatedTime
+    totalMinutes := mainGUIattribute.LoopInput.Value * MacroParam.EstimatedTime
+    Metadata.EstimatedTotalTime := totalMinutes*60
     hours := totalMinutes // 60
     minutes := Mod(totalMinutes, 60)
     result := " " hours "h" minutes "m"

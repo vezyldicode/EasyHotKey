@@ -287,6 +287,7 @@ Các hàm có ảnh hưởng đến thời gian hoặc vòng lặp đều mặc 
                 }
 */
 
+;200ms
 ShortWaitingTime(){ ;anti-system overload
     global StopFlag
 
@@ -302,7 +303,7 @@ ShortWaitingTime(){ ;anti-system overload
         elapsed += sleepInterval
     }
 }
-
+;1000ms
 NormalWaitingTime(){ ;pause between actions
     global StopFlag
 
@@ -318,7 +319,7 @@ NormalWaitingTime(){ ;pause between actions
         elapsed += sleepInterval 
     }
 }
-
+;2500ms
 AvgLongWaitingTime(){
     global StopFlag
 
@@ -334,7 +335,7 @@ AvgLongWaitingTime(){
         elapsed += sleepInterval
     }
 }
-
+;5000ms
 LongWaitingTime(){ ;wait for system response
     global StopFlag
 
