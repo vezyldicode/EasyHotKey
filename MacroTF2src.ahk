@@ -110,6 +110,8 @@ class MacroParam {
         static RC5th := ReadKeyWordFromFile(filePath.cus, "RechargeNormalGear5th")
         static RCSpecial1 := ReadKeyWordFromFile(filePath.cus, "FirstRechargeSpecialGear1")
         static RCSpecial2 := ReadKeyWordFromFile(filePath.cus, "SecondRechargeSpecialGear1")
+        ; static RSpecialgear2 := ReadKeyWordFromFile(filePath.cus, "RoundtoSetupSpecialGear2")
+        ; static RCSpecialgear2 := ReadKeyWordFromFile(filePath.cus, "FirstRechargeSpecialGear2")
         static ShopUpgradeRound := ReadKeyWordFromFile(filePath.cus, "ShopUpgradeRound")
         static HotKey1 := "0"
         static NumforHotkey1round2 := "0"
@@ -135,6 +137,9 @@ class MacroParam {
         static NumforSHotKey1 := "0"
         static SHotKey2 := "0"
         static NumforSHotKey2 := "0"
+        static SHotKey2Dis := "10"
+        static XPosforSHotKey2 := Read2value("1", filePath.cus, "S_Mouse_position_2")
+        static YPosforSHotKey2 := Read2value("2", filePath.cus, "S_Mouse_position_2")
         static GearModeKey := "B"
         static xGear1 := Read2value("1", filePath.cus, "N_Mouse_position_1")
         static yGear1 := Read2value("2", filePath.cus, "N_Mouse_position_1")
@@ -377,6 +382,9 @@ ReadyUp(out := "0"){ ;wait for the ready button and press (function has a waitin
             if (MacroParam.roundcount == MacroParam.SetupInfor.RCSpecial2-1){
                 SpecialGear1Controll("3")
             }
+            if (MacroParam.roundcount == MacroParam.SetupInfor.RSpecialgear2-1){
+                SpecialGear2Controll("1")
+            }
             if (MacroParam.roundcount == MacroParam.SetupInfor.ShopUpgradeRound-1){
                 ShopUpgrade
             }
@@ -406,8 +414,7 @@ ReadyUp(out := "0"){ ;wait for the ready button and press (function has a waitin
     }
 }
 
-SpecialGear1Controll(time := "1"){ ;đặt special gear 1 cách sang bên phải 2460ms
-    
+SpecialGear1Controll(time := "1"){ ;đặt special gear 1 cách sang bên phải
     saveDis := MacroParam.cDis
     ; ĐẶT FLAME TURRET
     MacroParam.PendingAct := MacroParam.PendingActList[12]
@@ -438,6 +445,50 @@ SpecialGear1Controll(time := "1"){ ;đặt special gear 1 cách sang bên phải
         SendEvent("{a down}") 
         sleep MacroParam.CenterTime
         SendEvent("{a up}")
+        While (MacroParam.cDis > saveDis){
+            MoveBackward
+        }
+        ShortWaitingTime
+    }
+}
+
+SpecialGear2Controll(time := "1"){ ;đặt special gear 2
+    
+    saveDis := MacroParam.cDis
+    ; ĐẶT FLAME TURRET
+    MacroParam.PendingAct := MacroParam.PendingActList[13]
+    if (MacroParam.SetupInfor.NumforSHotKey2 >0 and MacroParam.SetupInfor.SHotKey2 != 0 and MacroParam.globalDeath == 0){
+        if MacroParam.cDis < MacroParam.SetupInfor.SHotKey2Dis -time{
+            While (MacroParam.cDis < MacroParam.SetupInfor.SHotKey2Dis-time){
+                MoveForward
+            }
+        }else if MacroParam.cDis > MacroParam.SetupInfor.SHotKey2Dis -time{
+            While MacroParam.cDis > MacroParam.SetupInfor.SHotKey2Dis-time{
+                MoveBackward
+            }
+        }
+        MacroParam.tmp.currentSHotKey2 := "0"
+        MacroParam.tmp.CurrentX := MacroParam.SetupInfor.XPosforSHotKey2
+        MacroParam.tmp.CurrentY := MacroParam.SetupInfor.YPosforSHotKey2
+
+        ; While (MacroParam.globalDeath == 0 and MacroParam.tmp.currentSHotKey2 < MacroParam.SetupInfor.NumforSHotKey2){ 
+        ;     MacroParam.tmp.currentSHotKey2++ ;cộng 1 đồ đã được đặt
+            SendEvent "1"
+            AvgLongWaitingTime
+            SendEvent MacroParam.SetupInfor.SHotKey2 ; chỉnh sang đồ thứ 4
+            MouseMove MacroParam.tmp.CurrentX, MacroParam.tmp.CurrentY
+            AvgLongWaitingTime
+            SendKey("LButton")
+        ; }
+        if MacroParam.cDis < saveDis{
+            While (MacroParam.cDis < saveDis){
+                MoveForward
+            }
+        }else if MacroParam.cDis > saveDis{
+            While MacroParam.cDis > saveDis{
+                MoveBackward
+            }
+        }
         While (MacroParam.cDis > saveDis){
             MoveBackward
         }
