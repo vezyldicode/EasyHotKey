@@ -64,8 +64,8 @@ mainGUIcall(*){
     mainGUI.Add("Text", "x448 y102 w122 h33 ", "Round 4, " MacroParam.SetupInfor.RC1st+2 ", " MacroParam.SetupInfor.RC2nd+2 ", " MacroParam.SetupInfor.RC3rd+2 ", " MacroParam.SetupInfor.RC4th+2)
 
     mainGUI.SetFont("s10")
-        mainGUI.Add("Text", "x304 y512 w257 h34", "Upper right corner (recommended: Flame turret). Round 2, 17")
-        mainGUI.Add("Text", "x304 y576 w257 h34", "Bottom corner (recommended: Mortar). Round 17")
+        mainGUI.Add("Text", "x304 y512 w257 h34", "Upper right corner (recommended: Flame turret). Round 2, " MacroParam.SetupInfor.RCSpecial1 ", " MacroParam.SetupInfor.RCSpecial2)
+        mainGUI.Add("Text", "x304 y576 w257 h34", "Bottom corner (recommended: Mortar). Round " MacroParam.SetupInfor.RSpecialgear2 ", " MacroParam.SetupInfor.RCSpecialgear2)
     mainGUI.SetFont("s14")
 
     ;simple macro
