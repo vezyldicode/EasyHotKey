@@ -31,6 +31,7 @@ class filePath {
     static data := A_WorkingDir "\config\MacroData.dat"
     static his := "MacroHistory.log"
     static AHK := ReadKeyWordFromFile(filePath.cus, "AHKfilePath")
+    static update := A_ScriptDir "\config\updateconfig.ini"
 }
 
 TraySetIcon(Metadata.Icon)
@@ -67,7 +68,7 @@ class MacroParam {
     static LoopCount := "0"
     static LoopCurrent := "0"
     static LoopRemaining := "999"
-    static EstimatedTime := "60"
+    static EstimatedTime := "80"
     static globalDeath := "0"
     static roundcount := "0"
     static roundsSurvived := "0"
@@ -110,8 +111,8 @@ class MacroParam {
         static RC5th := ReadKeyWordFromFile(filePath.cus, "RechargeNormalGear5th")
         static RCSpecial1 := ReadKeyWordFromFile(filePath.cus, "FirstRechargeSpecialGear1")
         static RCSpecial2 := ReadKeyWordFromFile(filePath.cus, "SecondRechargeSpecialGear1")
-        ; static RSpecialgear2 := ReadKeyWordFromFile(filePath.cus, "RoundtoSetupSpecialGear2")
-        ; static RCSpecialgear2 := ReadKeyWordFromFile(filePath.cus, "FirstRechargeSpecialGear2")
+        static RSpecialgear2 := ReadKeyWordFromFile(filePath.cus, "RoundtoSetupSpecialGear2")
+        static RCSpecialgear2 := ReadKeyWordFromFile(filePath.cus, "FirstRechargeSpecialGear2")
         static ShopUpgradeRound := ReadKeyWordFromFile(filePath.cus, "ShopUpgradeRound")
         static HotKey1 := "0"
         static NumforHotkey1round2 := "0"
@@ -194,6 +195,47 @@ class MacroParam {
     }
     class PrestigeInfo{
         static PrestigeDone := false
+        static lv50Range1 := Read4value("1", filePath.cus, "lv50DetectRange")
+        static lv50Range2 := Read4value("2", filePath.cus, "lv50DetectRange")
+        static lv50Range3 := Read4value("3", filePath.cus, "lv50DetectRange")
+        static lv50Range4 := Read4value("4", filePath.cus, "lv50DetectRange")
+        static lv5 := ReadKeyWordFromFile(filePath.cus, "Lv5.Bild")
+        static lv15 := ReadKeyWordFromFile(filePath.cus, "Lv15.Bild")
+        static lv30 := ReadKeyWordFromFile(filePath.cus, "Lv30.Bild")
+        static PerkRange1 := Read4value("1", filePath.cus, "PerkBoard")
+        static PerkRange2 := Read4value("2", filePath.cus, "PerkBoard")
+        static PerkRange3 := Read4value("3", filePath.cus, "PerkBoard")
+        static PerkRange4 := Read4value("4", filePath.cus, "PerkBoard")
+        static Perk1 := ReadKeyWordFromFile(filePath.cus, "FillPerk.Bild1")
+        static Perk2 := ReadKeyWordFromFile(filePath.cus, "FillPerk.Bild2")
+        static Perk3 := ReadKeyWordFromFile(filePath.cus, "FillPerk.Bild3")
+        static Perk4 := ReadKeyWordFromFile(filePath.cus, "FillPerk.Bild4")
+        static Perk5 := ReadKeyWordFromFile(filePath.cus, "FillPerk.Bild5")
+        static Perk6 := ReadKeyWordFromFile(filePath.cus, "FillPerk.Bild6")
+        static Perk7 := ReadKeyWordFromFile(filePath.cus, "FillPerk.Bild7")
+        static Perk8 := ReadKeyWordFromFile(filePath.cus, "FillPerk.Bild8")
+        static Perk9 := ReadKeyWordFromFile(filePath.cus, "FillPerk.Bild9")
+        static Perk10 := ReadKeyWordFromFile(filePath.cus, "FillPerk.Bild10")
+        static slot1_X := Read2value("1", filePath.cus, "PerkSlot1")
+        static slot1_Y := Read2value("2", filePath.cus, "PerkSlot1")
+        static slot2_X := Read2value("1", filePath.cus, "PerkSlot2")
+        static slot2_Y := Read2value("2", filePath.cus, "PerkSlot2")
+        static slot3_X := Read2value("1", filePath.cus, "PerkSlot3")
+        static slot3_Y := Read2value("2", filePath.cus, "PerkSlot3")
+        static slot4_X := Read2value("1", filePath.cus, "PerkSlot4")
+        static slot4_Y := Read2value("2", filePath.cus, "PerkSlot4")
+        static slot5_X := Read2value("1", filePath.cus, "PerkSlot5")
+        static slot5_Y := Read2value("2", filePath.cus, "PerkSlot5")
+        static slot6_X := Read2value("1", filePath.cus, "PerkSlot6")
+        static slot6_Y := Read2value("2", filePath.cus, "PerkSlot6")
+        static slot7_X := Read2value("1", filePath.cus, "PerkSlot7")
+        static slot7_Y := Read2value("2", filePath.cus, "PerkSlot7")
+        static slot8_X := Read2value("1", filePath.cus, "PerkSlot8")
+        static slot8_Y := Read2value("2", filePath.cus, "PerkSlot8")
+        static slot9_X := Read2value("1", filePath.cus, "PerkSlot9")
+        static slot9_Y := Read2value("2", filePath.cus, "PerkSlot9")
+        static slot10_X := Read2value("1", filePath.cus, "PerkSlot10")
+        static slot10_Y := Read2value("2", filePath.cus, "PerkSlot10")
     }
     static KeyHoldDuration := 150 ;ms
 }
@@ -371,7 +413,7 @@ ReadyUp(out := "0"){ ;wait for the ready button and press (function has a waitin
             }
             ;thoát hàm nếu phát hiện chết hoặc quá round
             if (MacroParam.globalDeath >0){
-                break
+                return
             }else if (MacroParam.roundcount >= MacroParam.ResetRound){
                 break
             }
@@ -388,7 +430,7 @@ ReadyUp(out := "0"){ ;wait for the ready button and press (function has a waitin
             if (MacroParam.roundcount == MacroParam.SetupInfor.ShopUpgradeRound-1){
                 ShopUpgrade
             }
-            if MacroParam.rcing == false{
+            if MacroParam.rcing == false and MacroParam.roundcount >4{
                 switch MacroParam.roundcount{
                     case MacroParam.SetupInfor.RC1st-1, MacroParam.SetupInfor.RC2nd-1, MacroParam.SetupInfor.RC3rd-1, MacroParam.SetupInfor.RC4th-1, MacroParam.SetupInfor.RC5th-1:
                         MoveBackward
@@ -412,6 +454,7 @@ ReadyUp(out := "0"){ ;wait for the ready button and press (function has a waitin
             }
         }
     }
+    return
 }
 
 SpecialGear1Controll(time := "1"){ ;đặt special gear 1 cách sang bên phải
@@ -775,7 +818,7 @@ MoveBackward(){
 }
 
 PrestigeCheck(*){
-    CheckBild := FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.lv50)
+    CheckBild := FindText(&X, &Y, MacroParam.PrestigeInfo.lv50Range1, MacroParam.PrestigeInfo.lv50Range2, MacroParam.PrestigeInfo.lv50Range3, MacroParam.PrestigeInfo.lv50Range4, 0, 0, MacroParam.Bild.lv50)
     if (CheckBild != "0"){
         WriteLog("Prestige detected")
         PresBilds := [MacroParam.Bild.unlock, MacroParam.Bild.prestige]
@@ -790,22 +833,17 @@ PrestigeCheck(*){
                 SendKey("LButton")
                 LongWaitingTime
             }catch {
-                WriteLog("Cannot Prestige")
+                WriteLog("Cannot find 'Unlock' Button or Prestige Board")
                 return
             }
         }
-        ; Image := FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.PerksButton)
-        ; MouseMove Image[1].x, Image[1].y
-        ; AutoCloseMsgBox
-        ; ShortWaitingTime
-        ; SendKey("LButton")
         LongWaitingTime
         MouseMove HwID.xct, HwID.yct
         AutoCloseMsgBox
         LongWaitingTime
         perkfound := FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.perk)
         count := 1
-        While (perkfound == "0" and count <= 60){
+        While (perkfound == "0" and count <= 20){
             SendEvent "{WheelDown}"
             AvgLongWaitingTime
             perkfound := FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.perk)
@@ -827,10 +865,111 @@ PrestigeCheck(*){
             AutoCloseMsgBox
             AvgLongWaitingTime
             SendKey("LButton")
+        }else {
+            WriteLog("Cannot find Prestige Button")
+            return
         }
         MacroParam.PrestigeInfo.PrestigeDone := true
-    }else if MacroParam.PrestigeInfo.PrestigeDone{
-        Lv5check := FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.lv50)
+    }
+    if MacroParam.PrestigeInfo.PrestigeDone{
+        PerkBoardFinding := [MacroParam.Bild.unlock, MacroParam.Bild.PerksButton]
+        for i, currentBild in PerkBoardFinding{
+            Image := FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, currentBild)
+            try{
+                if (Image == 0) 
+                    throw
+                MouseMove Image[1].x, Image[1].y
+                AutoCloseMsgBox
+                ShortWaitingTime
+                SendKey("LButton")
+                LongWaitingTime
+            }catch {
+                WriteLog("Cannot find 'Unlock' Button or Perk Board")
+                return
+            }
+        }
+        ; Image := FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.PerksButton)
+        ; if Image != 0{
+        ;     MouseMove Image[1].x, Image[1].y
+        ;     AutoCloseMsgBox
+        ;     ShortWaitingTime
+        ;     SendKey("LButton")
+        ;     LongWaitingTime
+            MouseMove HwID.xct, HwID.yct
+            AutoCloseMsgBox
+            LongWaitingTime
+            PerkList := [MacroParam.PrestigeInfo.Perk1, MacroParam.PrestigeInfo.Perk2, MacroParam.PrestigeInfo.Perk3, MacroParam.PrestigeInfo.Perk4, MacroParam.PrestigeInfo.Perk5, MacroParam.PrestigeInfo.Perk6, MacroParam.PrestigeInfo.Perk7, MacroParam.PrestigeInfo.Perk8, MacroParam.PrestigeInfo.Perk9, MacroParam.PrestigeInfo.Perk10]
+            XList := [MacroParam.PrestigeInfo.slot1_X, MacroParam.PrestigeInfo.slot2_X, MacroParam.PrestigeInfo.slot3_X, MacroParam.PrestigeInfo.slot4_X, MacroParam.PrestigeInfo.slot5_X, MacroParam.PrestigeInfo.slot6_X, MacroParam.PrestigeInfo.slot7_X, MacroParam.PrestigeInfo.slot8_X, MacroParam.PrestigeInfo.slot9_X, MacroParam.PrestigeInfo.slot10_X]
+            YList := [MacroParam.PrestigeInfo.slot1_Y, MacroParam.PrestigeInfo.slot2_Y, MacroParam.PrestigeInfo.slot3_Y, MacroParam.PrestigeInfo.slot4_Y, MacroParam.PrestigeInfo.slot5_Y, MacroParam.PrestigeInfo.slot6_Y, MacroParam.PrestigeInfo.slot7_Y, MacroParam.PrestigeInfo.slot8_Y, MacroParam.PrestigeInfo.slot9_Y, MacroParam.PrestigeInfo.slot10_Y]
+            for i, perk in PerkList{
+                FindPerk := FindText(&X, &Y, MacroParam.PrestigeInfo.PerkRange1, MacroParam.PrestigeInfo.PerkRange2, MacroParam.PrestigeInfo.PerkRange3, MacroParam.PrestigeInfo.PerkRange4, 0, 0, perk)
+                count := 1
+                While FindPerk == 0 and count <= 20{
+                    SendEvent "{WheelDown}"
+                    AvgLongWaitingTime
+                    FindPerk := FindText(&X, &Y, MacroParam.PrestigeInfo.PerkRange1, MacroParam.PrestigeInfo.PerkRange2, MacroParam.PrestigeInfo.PerkRange3, MacroParam.PrestigeInfo.PerkRange4, 0, 0, perk)
+                    AvgLongWaitingTime
+                    count++
+                }
+                if FindPerk == 0{
+                    WriteLog("Cannot find Find Perk " i)
+                    Goto Skip
+                }else{
+                    MouseMove FindPerk[1].x, FindPerk[1].y
+                    AutoCloseMsgBox
+                    ShortWaitingTime
+                    SendKey("LButton")
+                    LongWaitingTime
+                    switch i{
+                        case 2: 
+                            Lv5check := FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.PrestigeInfo.lv5)
+                            if lv5check == 0{
+                                MouseMove XList[i], YList[i]
+                                AutoCloseMsgBox
+                                ShortWaitingTime
+                                SendKey("LButton")
+                            }else{
+                                WriteLog("not level 5 yet")
+                            }
+                        case 3: 
+                            Lv15check := FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.PrestigeInfo.lv15)
+                            if Lv15check == 0{
+                                MouseMove XList[i], YList[i]
+                                AutoCloseMsgBox
+                                ShortWaitingTime
+                                SendKey("LButton")
+                            }else{
+                                WriteLog("not level 15 yet")
+                            }
+                        case 4: 
+                            Lv30check := FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.PrestigeInfo.lv30)
+                            if Lv30check == 0{
+                                MouseMove XList[i], YList[i]
+                                AutoCloseMsgBox
+                                ShortWaitingTime
+                                SendKey("LButton")
+                            }else{
+                                WriteLog("not level 30 yet")
+                            }
+                        default: 
+                            MouseMove XList[i], YList[i]
+                            AutoCloseMsgBox
+                            ShortWaitingTime
+                            SendKey("LButton")
+                    }
+                }
+                Skip:
+                MouseMove HwID.xct, HwID.yct
+                AutoCloseMsgBox
+                Loop 15 {
+                    SendEvent "{WheelUp}"
+                    NormalWaitingTime
+                }
+            ; }
+        }else{
+            WriteLog("Cannot find PerkButton")
+            return
+        }
     }
     return
 }
@@ -928,50 +1067,6 @@ main(){
                         AvgLongWaitingTime
                     }   
             }
-            ; if i != 3{
-            ;     Image:=FindText(&X := "wait1", &Y := MacroParam.RespondTimeout, 0, 0, HwID.xMax, HwID.yMax, 0, 0, currentBild)
-            ;     if Image == "0"{
-            ;         Msgbox
-            ;     }
-            ; ;chọn mode
-            ; }else if (Metadata.Mode == Metadata.ModeList[2]){
-            ;     Image:=FindText(&X := "wait1", &Y := MacroParam.RespondTimeout, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.Mode1)
-            ; }else if (Metadata.Mode == Metadata.ModeList[3]){
-            ;     Image:=FindText(&X := "wait1", &Y := MacroParam.RespondTimeout, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.Mode2)
-            ; }else if (Metadata.Mode == Metadata.ModeList[4]){
-            ;     Image:=FindText(&X := "wait1", &Y := MacroParam.RespondTimeout, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.Mode3)
-            ; }else{
-            ;     ;không có mode thì chọn vào mode career, theo thứ tự ảnh liên tục, không khác gì
-            ;     Image:=FindText(&X := "wait1", &Y := MacroParam.RespondTimeout, 0, 0, HwID.xMax, HwID.yMax, 0, 0, currentBild)
-            ; }
-
-
-        ;     MouseMove Image[1].1, Image[1].2
-        ;     ShortWaitingTime("2")
-
-        ;     ;nếu khác vị trí nhấn chọn private game
-        ;     if i != "2" {
-        ;         ;nếu vào đến màn hình game thì check prestige
-        ;         if i == "5"{
-        ;             PrestigeCheck
-        ;             MouseMove Image[1].1, Image[1].2
-        ;         }
-        ;         ; khi vẫn còn ảnh của action hiện tại thì nhấn liên tục đến khi mất ảnh
-        ;         While (FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, currentBild) != "0"){
-        ;             AutoCloseMsgBox
-        ;             ShortWaitingTime
-        ;             SendKey("LButton")
-        ;             AvgLongWaitingTime
-        ;         }
-        ;     ; hoặc nếu đang cần chọn private game, nếu chưa thấy ảnh Career hiện lên thì nhấn liên tục
-        ;     }else {
-        ;         While (FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.Career) == "0"){
-        ;             AutoCloseMsgBox
-        ;             ShortWaitingTime
-        ;             SendKey("LButton")
-        ;             AvgLongWaitingTime
-        ;         }
-        ;     }
         }
         SetTimer(DeathDetector, 1000)
         ReadyUp
@@ -1026,6 +1121,7 @@ main(){
         AutoCloseMsgBox(,"complete the loop: " MacroParam.LoopCurrent "`nremaining loop : " MacroParam.LoopRemaining,,)
         WriteLog("Complete loop " MacroParam.LoopCurrent ", Rounds Survived: " MacroParam.roundcount)
     }
+    ExitPoint:
     WriteLog("The program has run successfully")
     notiGUIcall("Success", Metadata.name " has completed its mission. Thank you for using it.`nThis is an internal version only, please do NOT share it with anyone else.")
     ExitApp
@@ -1087,12 +1183,38 @@ If A_IsAdmin{
         }
         ExitApp
     }
-    if Metadata.devmode == "on"{
+    if Metadata.devmode == "true"{
         SetTimer(DevMode, 50)
     }
+    CheckForUpdates
     mainGUI := mainGUIcall()
     mainGUI.Show ("w623 h642")
 }
+
+CheckForUpdates() {
+    Url := "https://api.github.com/repos/vezyldicode/EasyHotKey/releases/latest"
+    HttpObj := ComObject("WinHttp.WinHttpRequest.5.1")
+    HttpObj.Open("GET", Url, True)
+    HttpObj.Send()
+    HttpObj.WaitForResponse()
+    Response := HttpObj.ResponseText
+    If !FileExist(filePath.update){
+        FileAppend(Response, filePath.update)
+        return
+    }
+    ; Parse JSON (you may need a JSON library for this)
+    filecontent := FileRead(filePath.update)
+    if Response != filecontent{
+        user := Msgbox("A new version has been released, would you like to update?", Metadata.name, "36")
+        if (user == "Yes"){
+            Run("https://github.com/vezyldicode/EasyHotKey/releases")
+            FileDelete(filePath.update)
+            ExitApp
+        }
+    }
+    return
+}
+
 
 DevMode(mode := "1"){
     MouseGetPos &x, &y
@@ -1120,5 +1242,4 @@ DevMode(mode := "1"){
     DevHis(){
         WriteValueToFile(filePath.his, Content)
     }
-
 }
