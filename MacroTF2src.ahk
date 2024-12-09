@@ -32,6 +32,7 @@ class filePath {
     static his := "MacroHistory.log"
     static AHK := ReadKeyWordFromFile(filePath.cus, "AHKfilePath")
     static update := A_ScriptDir "\config\updateconfig.ini"
+    static setting := A_ScriptDir "\config\Metaconfig.ini"
 }
 
 TraySetIcon(Metadata.Icon)
@@ -45,6 +46,7 @@ class Hotkey {
 class MacroParam {
     static RespondTimeout := ReadKeyWordFromFile(filePath.cus, "command_timeout(second)") ;"180"
     static RobloxOpenTimeout := ReadKeyWordFromFile(filePath.cus, "window_search_timeout(second)")
+    static CustomTimeout := ReadKeyWordFromFile(filePath.cus, "Custom_Mode_Timeout(ms)")
     static DeathdetectorWork := false
     static PendingActList := ["Find Game"
     , "Game Exec"
@@ -63,7 +65,9 @@ class MacroParam {
     , "Move Backward"
     , "ShopUpgrade"
     , "RestartGame"
-    , "Error. Re-open Roblox"]
+    , "Error. Re-open Roblox"
+    , "PrestigeChecking"
+    , "PerkChange"]
     static PendingAct := "None"
     static LoopCount := "0"
     static LoopCurrent := "0"
@@ -402,9 +406,8 @@ ReadyUp(out := "0"){ ;wait for the ready button and press (function has a waitin
         Image:= FindText(&X := "wait1", &Y := "2000", 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.ReadyUp)
         NormalWaitingTime
         if (Image == "0"){
-            formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
-            WriteValueToFile(filePath.his, formattedTime " Error: Cannot Ready. Current loop: " MacroParam.LoopCurrent ", Current round " MacroParam.roundcount)
-            ExitApp
+            WriteLog("Cannot Ready Up or 'ready' timeout has expired")
+            main()
         }else{
             ;chỉ xác nhận nút ready xuất hiện mà không bấm ready
             if (out == "1"){
@@ -818,6 +821,7 @@ MoveBackward(){
 }
 
 PrestigeCheck(*){
+    MacroParam.PendingAct := MacroParam.PendingActList[19]
     CheckBild := FindText(&X, &Y, MacroParam.PrestigeInfo.lv50Range1, MacroParam.PrestigeInfo.lv50Range2, MacroParam.PrestigeInfo.lv50Range3, MacroParam.PrestigeInfo.lv50Range4, 0, 0, MacroParam.Bild.lv50)
     if (CheckBild != "0"){
         WriteLog("Prestige detected")
@@ -870,11 +874,22 @@ PrestigeCheck(*){
             return
         }
         MacroParam.PrestigeInfo.PrestigeDone := true
+        if ReadKeyWordFromFile(filePath.setting, "AlwaysSetup") == 0{
+            PerkChange
+        }
     }
-    if MacroParam.PrestigeInfo.PrestigeDone{
+}
+
+PerkChange(){
+    callFrom := MacroParam.PendingAct
+    MacroParam.PendingAct := MacroParam.PendingActList[20]
+    if MacroParam.PrestigeInfo.PrestigeDone || ReadKeyWordFromFile(filePath.setting, "AlwaysSetup") == 1{
         PerkBoardFinding := [MacroParam.Bild.unlock, MacroParam.Bild.PerksButton]
         for i, currentBild in PerkBoardFinding{
             Image := FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, currentBild)
+            if i ==1 and callFrom == MacroParam.PendingActList[19]{
+                continue
+            }
             try{
                 if (Image == 0) 
                     throw
@@ -884,7 +899,7 @@ PrestigeCheck(*){
                 SendKey("LButton")
                 LongWaitingTime
             }catch {
-                WriteLog("Cannot find 'Unlock' Button or Perk Board")
+                WriteLog("Cannot find 'Unlock' Button or Perk Button")
                 return
             }
         }
@@ -978,6 +993,7 @@ WriteLog(content){
     formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
     WriteValueToFile(filePath.his, formattedTime " : " content)
 }
+
 main(){
     WriteValueToFile(filePath.his, "`n---")
     WriteLog("Starting Macro with " MacroParam.LoopCount " loop(s)")
@@ -1014,7 +1030,6 @@ main(){
         }
     }
 
-
     Loop MacroParam.LoopCount{
         MacroParam.globalDeath := "0", MacroParam.cDis := "0", MacroParam.roundcount := "0", MacroParam.IsAutoReady := false, MacroParam.tmp.xGear4able := true
         MacroParam.LoopCurrent := A_Index
@@ -1030,6 +1045,10 @@ main(){
                 ;nếu đang cần chọn private game, nếu chưa thấy ảnh Career hiện lên thì nhấn liên tục
                 case MacroParam.Bild.PrivateGame:
                     Image:=FindText(&X := "wait1", &Y := MacroParam.RespondTimeout, 0, 0, HwID.xMax, HwID.yMax, 0, 0, currentBild)
+                    if Image == 0{
+                        WriteLog("Unable to perform action: " MacroParam.PendingAct ", Auto Restart...")
+                        main()
+                    }
                     While (FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.Career) == "0"){
                         MouseMove Image[1].1, Image[1].2
                         AutoCloseMsgBox
@@ -1053,24 +1072,42 @@ main(){
                     }
                 case MacroParam.Bild.PlayGame:
                     LoadGame := FindText(&X := "wait1", &Y := MacroParam.RespondTimeout, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.PlayGame)
-                    PrestigeCheck
+                    if ReadKeyWordFromFile(filePath.setting, "AutoPrestige") == 1{
+                        PrestigeCheck
+                    }
+                    if ReadKeyWordFromFile(filePath.setting, "AlwaysSetup") == 1{
+                        PerkChange
+                    }
                     Goto OuterDefault
                 Default:
                     OuterDefault:
                     Image:=FindText(&X := "wait1", &Y := MacroParam.RespondTimeout, 0, 0, HwID.xMax, HwID.yMax, 0, 0, currentBild)
+                    if Image == 0{
+                        WriteLog("Unable to perform action: " MacroParam.PendingAct ", Auto Restart...")
+                        main()
+                    }
                     MouseMove HwID.xMax, HwID.yQ1
-                    While (FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, currentBild) != "0"){
+                    count := 0
+                    While (FindText(&X, &Y, 0, 0, HwID.xMax, HwID.yMax, 0, 0, currentBild) != "0" and count <=20){
                         MouseMove Image[1].1, Image[1].2
                         AutoCloseMsgBox
                         ShortWaitingTime
                         SendKey("LButton")
                         AvgLongWaitingTime
-                    }   
+                        count++
+                    }
+                    if count ==21{
+                        WriteLog("Skip " MacroParam.PendingAct " because time ran out")
+                    }
             }
         }
         SetTimer(DeathDetector, 1000)
         ReadyUp
         Image:=FindText(&X := "wait1", &Y := MacroParam.RespondTimeout, 0, 0, HwID.xMax, HwID.yMax, 0, 0, MacroParam.Bild.View)
+        if Image == 0{
+            WriteLog("Cannot find perspective switch icon, Auto Restart...")
+            main()
+        }
         MouseMove Image[1].x, Image[1].y
         AutoCloseMsgBox
         Loop 3{
@@ -1097,7 +1134,7 @@ main(){
         SendEvent("{d down}") 
         sleep MacroParam.CenterTime  
         SendEvent("{d up}")
-        if (Metadata.Mode == Metadata.ModeList[1]){ ; che do career
+        if (Metadata.Mode == Metadata.ModeList[1]){
             Loop MacroParam.maxDis{
                 MoveForward
             }
@@ -1106,6 +1143,9 @@ main(){
             NormalGearControll
             MacroParam.IsAutoReady := true
             ReadyUp
+        }else{
+            TinyTaskControl
+            LongWaitingTime(MacroParam.CustomTimeout)
         }
         if (MacroParam.globalDeath >0 || MacroParam.roundcount == MacroParam.ResetRound){
             SendEvent "{Esc}"
@@ -1157,9 +1197,46 @@ DeathDetector(){
     }
 }
 
+TinyTaskControl(*){
+    if WinExist('TinyTask'){
+        WinActivate
+        for index, char in StrSplit(HotKey.tinytaskHotkey) {
+            if char == "+"{
+                char := "Ctrl"
+            }
+            if char == "^"{
+                char := "Shift"
+            }
+            if char == "!"{
+                char := "Alt"
+            }
+            Send "{" char " Down}" ; Nhấn giữ phím
+            Sleep(50)
+        }
+        Sleep(1000)
+        for index, char in StrSplit(HotKey.tinytaskHotkey){
+            if char == "+"{
+                char := "Ctrl"
+            }
+            if char == "^"{
+                char := "Shift"
+            }
+            if char == "!"{
+                char := "Alt"
+            }
+            Send "{" char " up}" ; Nhấn giữ phím
+            Sleep(50)
+        }
+    }
+}
+
 AutoClickGUIFunc(*){
     Run("AutoClick.exe")
     mainGUI.Minimize()
+}
+
+ImgTool(*){
+    Run('ImgtoTextassistant.exe')
 }
 
 full_command_line := DllCall("GetCommandLine", "str")
@@ -1188,7 +1265,7 @@ If A_IsAdmin{
     }
     CheckForUpdates
     mainGUI := mainGUIcall()
-    mainGUI.Show ("w623 h642")
+    ; mainGUI.Show ("w623 h642")
 }
 
 CheckForUpdates() {
@@ -1210,6 +1287,7 @@ CheckForUpdates() {
             Run("https://github.com/vezyldicode/EasyHotKey/releases")
             FileDelete(filePath.update)
             ExitApp
+            return
         }
     }
     return

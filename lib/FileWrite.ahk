@@ -131,7 +131,6 @@ GenerateConfigFile(){
         WriteValueToFile(filePath.cus, "    theme := dark")
         WriteValueToFile(filePath.cus, '---`n`n')
         WriteValueToFile(filePath.cus, '[Logging]')
-        WriteValueToFile(filePath.cus, "    log_to_file := on")
         WriteValueToFile(filePath.cus, "    log_max_size(MB) := 10")
     }
 }

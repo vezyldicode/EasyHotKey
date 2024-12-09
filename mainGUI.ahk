@@ -6,6 +6,10 @@ if (!A_IsCompiled && A_LineFile=A_ScriptFullPath){
 
 ;Main Graphical User Interface
 class mainGUIattribute {
+    static LoggingCheckBox := 0, AutoPrestigeCheckBox := 0, PerkEdit := 0, AlwaysSetupCheckbox := 0, ImgtoTextButton := 0
+    static mainGUIWidth := "623"
+    static mainGUIHeight := "642"
+    static Img1 := A_WorkingDir "\Ico\Perk.png"
     static TimeText := "0"
     static StartButton := "0"
     static Looprange := ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50"]
@@ -17,6 +21,14 @@ class mainGUIattribute {
         static nameTab2 := "Custom Function"
         static nameTab3 := "Help"
         static nameTab4 := "Update"
+        static Setting := "Setting"
+        static Tabcount := 1
+    }
+    class Setting {
+        static Logging := false
+        static AutoPrestige := false
+        static Perk := "0"
+        static AlwaysSetup := false
     }
     static LoopInput := "0"
     static input1 := "0", input2 := "0", input3 := "0", input4 := "0", input5 := "0", input6 := "0", input7 := "0", input8 := "0", input9 := "0", input10 := "0", input11 := "0", input12 := "0", input13 := "0", input14 := "0", input15 := "0", input16 := "0", input17 := "0", input18 := "0", input19:= "0", input20:= "0", input21 := "0", input22 := "0", input23:= "0", input24:= "0"
@@ -24,6 +36,7 @@ class mainGUIattribute {
     static Mode1 := "0", Mode2 := "0", Mode3 := "0"
     static Totalhotkey1 := "0", Totalhotkey2 := "0", Totalhotkey3 := "0", Totalhotkey4 := "0", Totalhotkey5 := "0", TotalSHotKey1 := "0", TotalSHotKey2  := "0"
 }
+
 
 class Spider {
     static X := "0"
@@ -50,9 +63,12 @@ mainGUIcall(*){
     mainGUI.SetFont("s14")
 
     ; nhập thông tin số lần loop
-    mainGUI.SetFont("s9"), Tab := mainGUI.Add("Tab3", "x0 y60 w623 h582", [mainGUIattribute.Tab.nameTab1, mainGUIattribute.Tab.nameTab2, "     " mainGUIattribute.Tab.nameTab3 "     ", "     " mainGUIattribute.Tab.nameTab4 "     "])
+    mainGUI.SetFont("s9"), Tab := mainGUI.Add("Tab3", "x0 y60 w623 h582", [mainGUIattribute.Tab.nameTab1, mainGUIattribute.Tab.nameTab2,"    " mainGUIattribute.Tab.Setting "    ", "     " mainGUIattribute.Tab.nameTab3 "     ", "     " mainGUIattribute.Tab.nameTab4 "     "])
     mainGUI.SetFont("s14")
-    Tab.UseTab(1)
+
+
+    Tab.UseTab(mainGUIattribute.Tab.Tabcount)
+    mainGUIattribute.Tab.Tabcount++
     ;phần chữ
     
     mainGUI.Add("Text", "x16 y87 w120 h23 +0x200", "Gear Setting")
@@ -107,9 +123,10 @@ mainGUIcall(*){
     mainGUIattribute.TotalSHotKey1 := mainGUI.Add("Text", "x568 y512 w48 h33 +0x200", "0")
     mainGUIattribute.TotalSHotKey2 := mainGUI.Add("Text", "x568 y576 w48 h33 +0x200", "0")
 
-    Tab.UseTab(2)
-    ButtonAutoReadyMode := mainGUI.Add("Button", "x32 y464 w275 h30", "Auto Ready Mode")
-    ButtonAutoClick := mainGUI.Add("Button", "x317 y464  w275 h30", "Auto Click")
+    Tab.UseTab(mainGUIattribute.Tab.Tabcount)
+    mainGUIattribute.Tab.Tabcount++
+    ButtonAutoReadyMode := mainGUI.Add("Button", "x32 y" mainGUIattribute.mainGUIWidth - 20 " w275 h30", "Auto Ready Mode")
+    ButtonAutoClick := mainGUI.Add("Button", "x317 y" mainGUIattribute.mainGUIWidth - 20 " w275 h30", "Auto Click")
     mainGUI.SetFont("s10")
     mainGUIattribute.HotkeyBox := mainGUI.Add("Hotkey", "x464 y152 w145 h34")
     mainGUI.SetFont("s14")
@@ -133,18 +150,31 @@ mainGUIcall(*){
     ; Arrow := mainGUI.Add("Text", "x100 y100 w55 h80 c380d04 Center BackgroundTrans", "🕸️")
     ; Arrow.OnEvent("Click", (*) => ArrowBig())
     ; Arrow.Move(Spider.X, Spider.Y)
-    Tab.UseTab(3)
+
+    Tab.UseTab(mainGUIattribute.Tab.Tabcount)
+    mainGUIattribute.Tab.Tabcount++
+    mainGUIattribute.LoggingCheckBox := mainGUI.Add("CheckBox", "x16 y104 w361 h26", "Save note to log file")
+	mainGUIattribute.AutoPrestigeCheckBox := mainGUI.Add("CheckBox", "x16 y152 w361 h26", "Auto Prestige")
+	mainGUI.Add("Text", "x48 y192 w64 h26 +0x200", "Perk :=")
+	mainGUIattribute.PerkEdit := mainGUI.Add("Edit", "x112 y192 w488 h40 HScroll")
+	mainGUIattribute.AlwaysSetupCheckbox := mainGUI.Add("CheckBox", "x16 y240 w361 h26", "Always Auto Setup Perk Before Macro")
+	mainGUIattribute.ImgtoTextButton := mainGUI.Add("Button", "x416 y152 w186 h29", "Run ImgtoText")
+
+
+    Tab.UseTab(mainGUIattribute.Tab.Tabcount)
+    mainGUIattribute.Tab.Tabcount++
     mainGUI.SetFont("s12", "Segoe UI")
     mainGUI.Add("Text", "x16 y104 w590 h70", "I've done some useful stuff to help you prestige `"lightning fast`" in the game the final stand 2 or more. `nHere are some recommended perks in career mode:")
-    mainGUI.Add("Picture", "x16 y176 w195 h128", "E:\Macro-Roblox\EasyHotKey\Ico\Perk.png")
+    mainGUI.Add("Picture", "x16 y176 w195 h128", mainGUIattribute.Img1)
     mainGUI.Add("Text", "x16 y320 w580 h63", "You can explore more features in `"" mainGUIattribute.Tab.nameTab2 "`". Or play with the spider there.`nGood luck have fun!!!")
 
     mainGUI.Add("Text", "x224 y200 w380 h85 cee2a02", "Note that you should not use perks that can affect the amount of reward received in the first round,`notherwise my code will punch you in the face like I did with Shuriky.")
 
-    Tab.UseTab(4)
+    Tab.UseTab(mainGUIattribute.Tab.Tabcount)
+    mainGUIattribute.Tab.Tabcount++
     mainGUI.Add("Text", "x16 y104 w590 h30", "You can go to this page to download the latest version of this software.")
     mainGUI.Add("Link", "x16 y144 w120 h23", "<a href=`"https://github.com/vezyldicode/EasyHotKey/releases`">Download Here</a>")
-    mainGUI.Add("Text", "x16 y480 w591 h23 +0x200", "Current Version: " "currentversion")
+    mainGUI.Add("Text", "x16 y" mainGUIattribute.mainGUIWidth - 20 " w591 h23 +0x200", "Current Version: " Metadata.version)
     mainGUIAutoFill()
     mainGUIattribute.StartButton.OnEvent("Click", onButtonClick)
     ButtonAutoReadyMode.OnEvent("Click", AutoReadyModeFunc)
@@ -174,8 +204,14 @@ mainGUIcall(*){
     mainGUIattribute.input22.OnEvent("Change", OnEventHandler)
     mainGUIattribute.input23.OnEvent("Change", OnEventHandler)
     mainGUIattribute.input24.OnEvent("Change", OnEventHandler)
+    mainGUIattribute.LoggingCheckBox.OnEvent("Click", OnEventHandler)
+	mainGUIattribute.AutoPrestigeCheckBox.OnEvent("Click", OnEventHandler)
+	mainGUIattribute.PerkEdit.OnEvent("Change", OnEventHandler)
+	mainGUIattribute.AlwaysSetupCheckbox.OnEvent("Click", OnEventHandler)
+	mainGUIattribute.ImgtoTextButton.OnEvent("Click", ImgTool)
     OnEventHandler()
     mainGUI.OnEvent('Close', (*) => ExitApp())
+    mainGUI.Show("w" mainGUIattribute.mainGUIWidth " h" mainGUIattribute.mainGUIHeight)
     return mainGUI
 }
 
@@ -189,6 +225,10 @@ mainGUIAutoFill(*){
         var.value := ReadKeyWordFromFile(filePath.data, "input" i)
         i++
     }
+    mainGUIattribute.LoggingCheckBox.value := ReadKeyWordFromFile(filePath.setting, "Logging")
+    mainGUIattribute.AutoPrestigeCheckBox.value := ReadKeyWordFromFile(filePath.setting, "AutoPrestige")
+    mainGUIattribute.PerkEdit.value := ReadKeyWordFromFile(filePath.setting, "PerkEdit")
+    mainGUIattribute.AlwaysSetupCheckbox.value := ReadKeyWordFromFile(filePath.setting, "AlwaysSetup")
 }
 
 
@@ -277,7 +317,13 @@ onButtonClick(*) {
         WriteValueToFile(filePath.data, "input" i " := " var.Value)
         i++
     }
-
+    if FileExist(filePath.setting)
+        FileDelete(filePath.setting) ;xóa file data cũ
+    FileAppend("", filePath.setting) ; Tạo file mới
+    WriteValueToFile(filePath.setting, "Logging := " mainGUIattribute.LoggingCheckBox.Value)
+    WriteValueToFile(filePath.setting, "AutoPrestige := " mainGUIattribute.AutoPrestigeCheckBox.Value)
+    WriteValueToFile(filePath.setting, "PerkEdit := " mainGUIattribute.PerkEdit.Text)
+    WriteValueToFile(filePath.setting, "AlwaysSetup := " mainGUIattribute.AlwaysSetupCheckbox.Value)
 
     if (!IsNumber(MacroParam.LoopCount) || MacroParam.LoopCount == 0) {
         shakeButton(mainGUIattribute.StartButton)
