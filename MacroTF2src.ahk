@@ -1277,13 +1277,14 @@ CheckForUpdates() {
     HttpObj.Send()
     HttpObj.WaitForResponse()
     Response := HttpObj.ResponseText
+    version := ExtractTagName(Response, "tag_name")
     If !FileExist(filePath.update){
         FileAppend(Response, filePath.update)
         return
     }
-    ; Parse JSON (you may need a JSON library for this)
     filecontent := FileRead(filePath.update)
-    if Response != filecontent{
+    currentVersion := ExtractTagName(filecontent, "tag_name")
+    if version != currentVersion{
         user := Msgbox("A new version has been released, would you like to update?", Metadata.name, "36")
         if (user == "Yes"){
             Run("https://github.com/vezyldicode/EasyHotKey/releases")
@@ -1295,6 +1296,23 @@ CheckForUpdates() {
     return
 }
 
+ExtractTagName(Response, content) {
+    Start := InStr(Response, content)
+    if (Start == 0) {
+        return ""
+    }
+    Start += 11 ; Dời vị trí sau "tag_name":
+    ; Tìm vị trí của dấu phẩy sau giá trị
+    End := InStr(Response, ",",, Start)
+    if (End == 0) {
+        return ""
+    }
+    ; Lấy giá trị giữa Start và End
+    TagName := SubStr(Response, Start, End - Start -1)
+    ; Loại bỏ dấu ngoặc kép nếu có
+    TagName := StrReplace(TagName, "`"`"")
+    return TagName
+}
 
 DevMode(mode := "1"){
     MouseGetPos &x, &y

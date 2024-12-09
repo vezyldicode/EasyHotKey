@@ -98,7 +98,6 @@ GenerateConfigFile(){
         WriteValueToFile(filePath.cus, "    PerkBoard := 0, 0, 0, 0")
         WriteValueToFile(filePath.cus, "    Unlock.Bild := ")
         WriteValueToFile(filePath.cus, "    Prestige.Bild := ")
-        WriteValueToFile(filePath.cus, "    Perk.Bild := ")
         WriteValueToFile(filePath.cus, "    PrestigeButton.Bild := ")
         WriteValueToFile(filePath.cus, "    PerksButton.Bild := ")
         WriteValueToFile(filePath.cus, "    PerkBoard := 0, 0, 0, 0")
