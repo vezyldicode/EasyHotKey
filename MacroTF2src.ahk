@@ -102,7 +102,7 @@ class MacroParam {
         static lv50 := ReadKeyWordFromFile(filePath.cus, "lv50.Bild")
         static unlock := ReadKeyWordFromFile(filePath.cus, "Unlock.Bild")
         static prestige := ReadKeyWordFromFile(filePath.cus, "Prestige.Bild")
-        static perk := ReadKeyWordFromFile(filePath.cus, "Perk.Bild")
+        static perk := ReadKeyWordFromFile(filePath.setting, "PerkEdit")
         static PrestigeButton := ReadKeyWordFromFile(filePath.cus, "PrestigeButton.Bild")
         static PerksButton := ReadKeyWordFromFile(filePath.cus, "PerksButton.Bild")
     }
@@ -990,8 +990,10 @@ PerkChange(){
 }
 
 WriteLog(content){
-    formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
-    WriteValueToFile(filePath.his, formattedTime " : " content)
+    if ReadKeyWordFromFile(filePath.setting, "Logging") == 1{
+        formattedTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+        WriteValueToFile(filePath.his, formattedTime " : " content)
+    }
 }
 
 main(){
