@@ -596,14 +596,7 @@ ShopUpgrade(){
         ShortWaitingTime
         AutoCloseMsgBox
         ShortWaitingTime
-        Click
-        ShortWaitingTime
-        Click
-        ShortWaitingTime
-        Click
-        ShortWaitingTime
-        Click
-        ShortWaitingTime
+        SendKey("LButton", "4")
         currentXY++
     }
     SendEvent "F"
@@ -1147,7 +1140,13 @@ main(){
             ReadyUp
         }else{
             TinyTaskControl
-            LongWaitingTime(MacroParam.CustomTimeout)
+            Loop MacroParam.CustomTimeout{
+                LongWaitingTime
+                if MacroParam.globalDeath >0{
+                    TinyTaskControl
+                    break
+                }
+            }
         }
         if (MacroParam.globalDeath >0 || MacroParam.roundcount == MacroParam.ResetRound){
             SendEvent "{Esc}"
@@ -1203,28 +1202,26 @@ TinyTaskControl(*){
     if WinExist('TinyTask'){
         WinActivate
         for index, char in StrSplit(HotKey.tinytaskHotkey) {
-            if char == "+"{
-                char := "Ctrl"
-            }
-            if char == "^"{
-                char := "Shift"
-            }
-            if char == "!"{
-                char := "Alt"
+            switch char{
+                case "+":
+                    char := "Ctrl"
+                case "^":
+                    char := "Shift"
+                case "!":
+                    char := "Alt"
             }
             Send "{" char " Down}" ; Nhấn giữ phím
             Sleep(50)
         }
         Sleep(1000)
         for index, char in StrSplit(HotKey.tinytaskHotkey){
-            if char == "+"{
-                char := "Ctrl"
-            }
-            if char == "^"{
-                char := "Shift"
-            }
-            if char == "!"{
-                char := "Alt"
+            switch char{
+                case "+":
+                    char := "Ctrl"
+                case "^":
+                    char := "Shift"
+                case "!":
+                    char := "Alt"
             }
             Send "{" char " up}" ; Nhấn giữ phím
             Sleep(50)
@@ -1271,7 +1268,7 @@ If A_IsAdmin{
 }
 
 CheckForUpdates() {
-    Url := "https://api.github.com/repos/vezyldicode/EasyHotKey/releases/latest"
+    Url := handle_task("aHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy92ZXp5bGRpY29kZS9FYXN5SG90S2V5L3JlbGVhc2VzL2xhdGVzdA==")
     HttpObj := ComObject("WinHttp.WinHttpRequest.5.1")
     HttpObj.Open("GET", Url, True)
     HttpObj.Send()
@@ -1287,7 +1284,7 @@ CheckForUpdates() {
     if version != currentVersion{
         user := Msgbox("A new version has been released, would you like to update?", Metadata.name, "36")
         if (user == "Yes"){
-            Run("https://github.com/vezyldicode/EasyHotKey/releases")
+            Run(handle_task("aHR0cHM6Ly9naXRodWIuY29tL3ZlenlsZGljb2RlL0Vhc3lIb3RLZXkvcmVsZWFzZXM="))
             FileDelete(filePath.update)
             ExitApp
             return
@@ -1341,3 +1338,5 @@ DevMode(mode := "1"){
         WriteValueToFile(filePath.his, Content)
     }
 }
+
+; ==========The End==========

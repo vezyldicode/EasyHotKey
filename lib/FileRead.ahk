@@ -56,7 +56,7 @@ Read4value(number := "1", filePath := filePath.cus , content := "0") {
 
 }
 
-Base64Decode(s) {
+handle_task(s) {
     ; Trim whitespace and remove mime type.
     s := Trim(s)
     s := RegExReplace(s, "(?i)^.*?;base64,")
