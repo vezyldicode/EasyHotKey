@@ -6,7 +6,9 @@ if (!A_IsCompiled && A_LineFile=A_ScriptFullPath){
 
 ;Main Graphical User Interface
 class mainGUIattribute {
-    static LoggingCheckBox := 0, AutoPrestigeCheckBox := 0, PerkEdit := 0, AlwaysSetupCheckbox := 0, ImgtoTextButton := 0
+    static LoggingCheckBox := 0, AutoPrestigeCheckBox := 0, PerkEdit := 0, AlwaysSetupCheckbox := 0, ImgtoTextButton := 0, gameUI := 0
+    static themeChoice := 0
+    static themeList := ["white", "dark"]
     static mainGUIWidth := "623"
     static mainGUIHeight := "642"
     static Img1 := A_WorkingDir "\Ico\Perk.png"
@@ -159,6 +161,9 @@ mainGUIcall(*){
 	mainGUIattribute.PerkEdit := mainGUI.Add("Edit", "x112 y192 w488 h40 HScroll")
 	mainGUIattribute.AlwaysSetupCheckbox := mainGUI.Add("CheckBox", "x16 y240 w361 h26", "Always Auto Setup Perk Before Macro")
 	mainGUIattribute.ImgtoTextButton := mainGUI.Add("Button", "x416 y152 w186 h29", "Run ImgtoText")
+    mainGUIattribute.gameUI := mainGUI.Add("CheckBox", "x16 y288 w361 h26", "in Game Overlay")
+    mainGUI.Add("Text", "x393 y288 w64 h26 +0x200", "Theme")
+    mainGUIattribute.themeChoice := mainGUI.Add("DropDownList", "x462 y288 w140", mainGUIattribute.themeList)
 
 
     Tab.UseTab(mainGUIattribute.Tab.Tabcount)
@@ -174,7 +179,12 @@ mainGUIcall(*){
     mainGUIattribute.Tab.Tabcount++
     mainGUI.Add("Text", "x16 y104 w590 h30", "You can go to this page to download the latest version of this software.")
     mainGUI.Add("Link", "x16 y144 w120 h23", "<a href=`"https://github.com/vezyldicode/EasyHotKey/releases`">Download Here</a>")
-    mainGUI.Add("Text", "x16 y" mainGUIattribute.mainGUIWidth - 20 " w591 h23 +0x200", "Current Version: " Metadata.version)
+    if CheckForUpdates() == false{
+        mainGUI.Add("Text", "x16 y" mainGUIattribute.mainGUIWidth - 20 " w591 h23 +0x200", "Current Version: " Metadata.version " (Latest Version)")
+    }else{
+        mainGUI.Add("Text", "x16 y" mainGUIattribute.mainGUIWidth - 20 " w591 h23 +0x200", "Current Version: " Metadata.version " (An update has been released)")
+    }
+    
     mainGUIAutoFill()
     mainGUIattribute.StartButton.OnEvent("Click", onButtonClick)
     ButtonAutoReadyMode.OnEvent("Click", AutoReadyModeFunc)
@@ -225,10 +235,12 @@ mainGUIAutoFill(*){
         var.value := ReadKeyWordFromFile(filePath.data, "input" i)
         i++
     }
-    mainGUIattribute.LoggingCheckBox.value := ReadKeyWordFromFile(filePath.setting, "Logging")
+    mainGUIattribute.LoggingCheckBox.value := ReadKeyWordFromFile(filePath.setting, "Logging") != 0 ? ReadKeyWordFromFile(filePath.setting, "Logging") : 1
     mainGUIattribute.AutoPrestigeCheckBox.value := ReadKeyWordFromFile(filePath.setting, "AutoPrestige")
     mainGUIattribute.PerkEdit.value := ReadKeyWordFromFile(filePath.setting, "PerkEdit")
     mainGUIattribute.AlwaysSetupCheckbox.value := ReadKeyWordFromFile(filePath.setting, "AlwaysSetup")
+    mainGUIattribute.gameUI.value := ReadKeyWordFromFile(filePath.setting, "gameGUI") != 0 ? ReadKeyWordFromFile(filePath.setting, "gameGUI") : 1
+    mainGUIattribute.themeChoice.value := ReadKeyWordFromFile(filePath.setting, "theme") != 0 ? ReadKeyWordFromFile(filePath.setting, "theme") : 2
 }
 
 
@@ -303,9 +315,14 @@ onButtonClick(*) {
     MacroParam.SetupInfor.SHotKey2 := mainGUIattribute.input15.Value
     MacroParam.SetupInfor.NumforSHotKey2 := mainGUIattribute.input16.Value
     HotKey.tinytaskHotkey := mainGUIattribute.HotkeyBox.Value
-    global Mode1 := mainGUIattribute.Mode1.Value
-    global Mode2 := mainGUIattribute.Mode2.Value
-    global Mode3 := mainGUIattribute.Mode3.Value
+    switch mainGUIattribute.themeChoice.value{
+        case 1:
+            Metadata.theme := "white"
+        case 2:
+            Metadata.theme := "dark"
+        default:
+            Metadata.theme := "dark"
+    }
     if FileExist(filePath.data)
         FileDelete(filePath.data) ;xóa file data cũ
     FileAppend("", filePath.data) ; Tạo file mới
@@ -324,16 +341,18 @@ onButtonClick(*) {
     WriteValueToFile(filePath.setting, "AutoPrestige := " mainGUIattribute.AutoPrestigeCheckBox.Value)
     WriteValueToFile(filePath.setting, "PerkEdit := " mainGUIattribute.PerkEdit.Text)
     WriteValueToFile(filePath.setting, "AlwaysSetup := " mainGUIattribute.AlwaysSetupCheckbox.Value)
+    WriteValueToFile(filePath.setting, "gameGUI := " mainGUIattribute.gameUI.Value)
+    WriteValueToFile(filePath.setting, "theme := " mainGUIattribute.themeChoice.Value)
 
     if (!IsNumber(MacroParam.LoopCount) || MacroParam.LoopCount == 0) {
         shakeButton(mainGUIattribute.StartButton)
         return
     }
-    if (Mode3 ==1) {
+    if (mainGUIattribute.Mode3.Value ==1) {
         shakeButton(mainGUIattribute.Mode3)
         return
     }
-    if HotKey.tinytaskHotkey == "" and (Mode1 ==1 || Mode2 ==1) {
+    if HotKey.tinytaskHotkey == "" and (mainGUIattribute.Mode1.Value ==1 || mainGUIattribute.Mode2.Value ==1) {
         shakeButton(mainGUIattribute.HotkeyBox)
         return
     }

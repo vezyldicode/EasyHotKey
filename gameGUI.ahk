@@ -19,8 +19,9 @@ gameGUIcall(*){
     if Metadata.theme == "dark"{
         gameGUI.BackColor := "0x000040"
         gameGUI.SetFont("cWhite")
-    }else{
-
+    }else if Metadata.theme == "white"{
+        gameGUI.BackColor := "0x00ACC1"
+        gameGUI.SetFont("c0xF3FBFC")
     }
 	gameGUI.SetFont("s16")
 	gameGUI.Add("Text", "x0 y8 w405 h42 +0x200 +Center", Metadata.name)
@@ -98,7 +99,8 @@ UpdateTimer() {
             
         }
         ; roundEdit.Text := "Me cha may hien lein" roundcount
-        
-        Progressvar := ElapsedTime / Metadata.EstimatedTotalTime * 100
-        gameGUIattribute.gameProgress.Value := Progressvar
+        If Metadata.Mode == Metadata.ModeList[1]{
+            gameGUIattribute.Progressvar := ElapsedTime / Metadata.EstimatedTotalTime * 100
+        }
+        gameGUIattribute.gameProgress.Value := gameGUIattribute.Progressvar
 }

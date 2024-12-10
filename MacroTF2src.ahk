@@ -11,17 +11,17 @@ CoordMode "ToolTip", "Screen"
 CoordMode "Mouse", "Screen"
 SendMode ("InputThenPlay")
 class Metadata {
-    static name := "Game Controler Beta Test"
-    static version := "v4.0"
+    static name := "Game Controller Beta"
+    static version := "v4.0.5"
     static InfoMessage := "Cheating"
     static StartTime := A_TickCount
-    static ModeList := ["Career Macro", "TinyTask1","TinyTask2","Mode3", "AutoReady"]
+    static ModeList := ["Career Macro", "TinyTask1","TinyTask2","Mode3", "Auto Ready"]
     static Mode := "None"
     static Icon := A_WorkingDir "\Ico\mainIcon.ico"
     static devmode := ReadKeyWordFromFile(filePath.cus, "DevMode")
     static errorIcon := A_WorkingDir "\Ico\Error.png"
     static successIcon := A_WorkingDir "\Ico\success.png"
-    static theme := ReadKeyWordFromFile(filePath.cus, "theme")
+    static theme := "dark"
     static EstimatedTotalTime := 0 ;second
 }
 class filePath {
@@ -372,20 +372,19 @@ RunAdmin(filePath){ ;run Roblox as Administrator
 }
 
 AutoReadyModeFunc(*){
-    ; global IsAutoReady := true
-    ; loopCurrent := 1
-    ; global userInput := 1
-    ; global roundcount := 0
-    ; GUIingame()
-    ; SetTimer(Deathcount, 1000)
-    ; if WinExist('Roblox'){
-    ;     WinActivate
-    ; }
-    ; While (globalDeath ==0){
-    ;     ReadyUp
-    ; }
-    ; ExitApp
-    
+    Metadata.Mode := Metadata.ModeList[5]
+    mainGUI.Hide()
+    gameGUIcall()
+    SetTimer(DeathDetector, 1000)
+    if WinExist('Roblox'){
+        WinActivate
+    }
+    LongWaitingTime("2")
+    While (MacroParam.globalDeath ==0){
+        MacroParam.roundcount := 0
+        ReadyUp()
+    }
+    ExitApp
 }
 
 ; Giá trị out biểu diễn cho việc có nhấn nút hay không, nếu out ="1" thì chỉ đợi đến hết round và không nhấn ready
@@ -1262,7 +1261,7 @@ If A_IsAdmin{
     if Metadata.devmode == "true"{
         SetTimer(DevMode, 50)
     }
-    CheckForUpdates
+    CheckForUpdates()
     mainGUI := mainGUIcall()
     ; mainGUI.Show ("w623 h642")
 }
@@ -1274,23 +1273,22 @@ CheckForUpdates() {
     HttpObj.Send()
     HttpObj.WaitForResponse()
     Response := HttpObj.ResponseText
-    version := ExtractTagName(Response, "tag_name")
+    NewestVersion := ExtractTagName(Response, "tag_name")
     If !FileExist(filePath.update){
         FileAppend(Response, filePath.update)
-        return
+        return ""
     }
-    filecontent := FileRead(filePath.update)
-    currentVersion := ExtractTagName(filecontent, "tag_name")
-    if version != currentVersion{
+    currentVersion := ExtractTagName(FileRead(filePath.update), "tag_name")
+    if NewestVersion != currentVersion{
         user := Msgbox("A new version has been released, would you like to update?", Metadata.name, "36")
         if (user == "Yes"){
             Run(handle_task("aHR0cHM6Ly9naXRodWIuY29tL3ZlenlsZGljb2RlL0Vhc3lIb3RLZXkvcmVsZWFzZXM="))
             FileDelete(filePath.update)
             ExitApp
-            return
+            return ""
         }
-    }
-    return
+        return true
+    }else return false
 }
 
 ExtractTagName(Response, content) {
